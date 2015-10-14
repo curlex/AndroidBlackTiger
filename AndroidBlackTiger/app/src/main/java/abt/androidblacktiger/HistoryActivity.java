@@ -1,7 +1,5 @@
 package abt.androidblacktiger;
 
-import android.app.Activity;
-import android.app.ListActivity;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -11,7 +9,7 @@ import android.widget.ListView;
 
 import java.util.ArrayList;
 
-public class HistoryActivity extends Activity {
+public class HistoryActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,7 +27,7 @@ public class HistoryActivity extends Activity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_history, menu);
+        getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
     }
 

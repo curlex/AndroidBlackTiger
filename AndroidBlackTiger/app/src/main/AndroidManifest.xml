@@ -27,6 +27,14 @@
                 android:value="abt.androidblacktiger.MainActivity" />
         </activity>
         <activity
+            android:name=".WelcomeActivity"
+            android:label="Main_Menu"
+            android:parentActivityName=".MainActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="abt.androidblacktiger.MainActivity" />
+        </activity>
+        <activity
             android:name=".HistoryActivity"
             android:label="@string/title_activity_history" >
         </activity>

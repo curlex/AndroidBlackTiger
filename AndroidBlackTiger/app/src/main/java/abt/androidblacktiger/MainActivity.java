@@ -1,7 +1,8 @@
 package abt.androidblacktiger;
-//Diarmuid is best
+//Diarmuid is best or at least he likes to think so...
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -11,12 +12,29 @@ import android.widget.Button;
 
 public class MainActivity extends AppCompatActivity {
 
+    String preferences_language = "setLanguage";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Button mybutton = (Button) findViewById(R.id.my_button);
+        firstTime();
+    }
+
+    public  void  firstTime(){
+
+        SharedPreferences sharedTime = getSharedPreferences(preferences_language,0);
+        if (sharedTime.getBoolean("setLanguage",true))
+        {
+            //Call Language Set Activity
+            sharedTime.edit().putBoolean("setLanguage",false).apply();
+            startActivity(new Intent(MainActivity.this, WelcomeActivity.class));
+        }
+        else
+        {
+            //Call Main Menu Activity
+            startActivity(new Intent(MainActivity.this, MainMenuActivity.class));
+        }
     }
 // :)
     @Override

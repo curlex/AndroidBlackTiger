@@ -23,7 +23,6 @@ public class HistoryActivity extends AppCompatActivity {
         ArrayAdapter adapter = new ArrayAdapter<String>(this, R.layout.activity_history, words);
         ListView lv = new ListView(this);
         lv.setAdapter(adapter);
-        lv.
     }
 
     @Override

@@ -1,5 +1,6 @@
 package abt.androidblacktiger;
 
+import android.app.Activity;
 import android.app.ListActivity;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -10,7 +11,7 @@ import android.widget.ListView;
 
 import java.util.ArrayList;
 
-public class HistoryActivity extends AppCompatActivity {
+public class HistoryActivity extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -20,8 +21,8 @@ public class HistoryActivity extends AppCompatActivity {
         words.add("house");
         words.add("car");
         words.add("field");
-        ArrayAdapter adapter = new ArrayAdapter<String>(this, R.layout.activity_history, words);
-        ListView lv = new ListView(this);
+        ArrayAdapter adapter = new ArrayAdapter<String>(this, R.layout.textviewlay, words);
+        ListView lv = (ListView) findViewById(R.id.history_listview);
         lv.setAdapter(adapter);
     }
 

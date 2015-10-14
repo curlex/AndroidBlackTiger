@@ -44,10 +44,10 @@ public class MainMenuActivity extends AppCompatActivity {
 
     public void OpenNewActivity(View view)
     {
-        //Intent intent = null;
+        Intent intent = null;
         if(view.getId()==R.id.word_history_button)
         {
-            //intent = new Intent(this, HistoryActivity.class);
+            intent = new Intent(this, HistoryActivity.class);
         }
         else if (view.getId()==R.id.dictionary_button)
         {
@@ -59,6 +59,8 @@ public class MainMenuActivity extends AppCompatActivity {
             //Replace MainMenuActivity.class with the name of activity corresponding to Map
             //intent = new Intent(this, MainMenuActivity.class);
         }
-        // startActivity(intent);
+        if(intent != null) {
+            startActivity(intent);
+        }
     }
 }

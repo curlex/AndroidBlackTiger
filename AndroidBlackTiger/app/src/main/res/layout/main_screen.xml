@@ -21,12 +21,12 @@
               android:layout_gravity="center_horizontal"
               android:layout_weight="0.34"/>
 
-<Button       android:id="@+id/map_discovery_button"
-              android:layout_width="wrap_content"
-              android:layout_height="wrap_content"
+<ImageButton  android:id="@+id/map_discovery_button"
+              android:layout_width="100dp"
+              android:layout_height="100dp"
               android:text="Map Discovery"
               android:onClick="OpenNewActivity"
               android:layout_gravity="center_horizontal"
-              android:layout_weight="0.33"/>
+              android:background="@drawable/mao" />
 
 </LinearLayout>

@@ -3,13 +3,15 @@ package abt.androidblacktiger;
 /**
  * Created by Ciarán on 14/10/2015.
  */
+
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 
 public class MainMenuActivity extends AppCompatActivity {
 
@@ -19,8 +21,9 @@ public class MainMenuActivity extends AppCompatActivity {
 
         Button button_word_history = (Button) findViewById(R.id.word_history_button);
         Button button_dictionary = (Button) findViewById(R.id.dictionary_button);
-        Button button_map_discovery = (Button) findViewById(R.id.map_discovery_button);
-    }
+        ImageButton button_map_discovery = (ImageButton) findViewById(R.id.map_discovery_button);
+        button_map_discovery.setBackgroundResource(R.drawable.mao); // name map gave error :P
+}
 
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -57,7 +60,7 @@ public class MainMenuActivity extends AppCompatActivity {
         else
         {
             //Replace MainMenuActivity.class with the name of activity corresponding to Map
-            //intent = new Intent(this, MainMenuActivity.class);
+            intent = new Intent(this, MapsActivity.class);
         }
         if(intent != null) {
             startActivity(intent);

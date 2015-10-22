@@ -51,7 +51,7 @@
             android:layout_width="77dp"
             android:layout_height="83dp"
             android:background="@drawable/ie"
-            android:id="@+id/imageButton"
+            android:id="@+id/lang_button"
             android:layout_marginLeft="45dp"
             android:layout_marginStart="45dp"
             android:layout_gravity="right|center_vertical" />

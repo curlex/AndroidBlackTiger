@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageButton;
 
 /**
  * Created by Maria on 14/10/2015.
@@ -14,6 +15,8 @@ public class WelcomeActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.welcome_activity);
+        ImageButton button_lang = (ImageButton) findViewById(R.id.lang_button);
+        button_lang.setBackgroundResource(R.drawable.ie);
 
     }
 
@@ -43,6 +46,13 @@ public class WelcomeActivity extends Activity {
     public void OpenNewActivity(View view)
     {
         Intent intent = null;
+        if(view.getId()==R.id.lang_button)
+        {
+            intent = new Intent(this, MainMenuActivity.class);
+        }
+        if(intent != null) {
+            startActivity(intent);
+        }
 
     }
 }

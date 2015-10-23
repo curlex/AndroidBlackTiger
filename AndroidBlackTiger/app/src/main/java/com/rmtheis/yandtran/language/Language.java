@@ -22,6 +22,7 @@ package com.rmtheis.yandtran.language;
 public enum Language {
   ALBANIAN("sq"),
   ARMENIAN("hy"),
+  ARABIC("ar"),
   AZERBAIJANI("az"),
   BELARUSIAN("be"),
   BULGARIAN("bg"),

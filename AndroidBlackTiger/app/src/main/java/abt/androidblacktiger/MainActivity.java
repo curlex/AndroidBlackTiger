@@ -10,6 +10,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 
+import com.rmtheis.yandtran.ApiKeys;
+import com.rmtheis.yandtran.language.Language;
+
 public class MainActivity extends AppCompatActivity {
 
     String preferences_language = "setLanguage";
@@ -21,17 +24,18 @@ public class MainActivity extends AppCompatActivity {
         firstTime();
     }
 
-    public  void  firstTime(){
+    public  void  firstTime() {
 
-        SharedPreferences sharedTime = getSharedPreferences(preferences_language,0);
-        if (sharedTime.getBoolean("setLanguage",true))
-        {
+        SharedPreferences langPrefs = getSharedPreferences(Translator.preferencesLabel, 0);
+        langPrefs.edit().putString(Translator.sourceLanguage, Language.ENGLISH.toString());
+        langPrefs.edit().putString(Translator.destinationLanguage, Language.IRISH.toString());
+
+        SharedPreferences sharedTime = getSharedPreferences(preferences_language, 0);
+        if (sharedTime.getBoolean("setLanguage", true)) {
             //Call Language Set Activity
-            sharedTime.edit().putBoolean("setLanguage",false).apply();
+            sharedTime.edit().putBoolean("setLanguage", false).apply();
             startActivity(new Intent(MainActivity.this, WelcomeActivity.class));
-        }
-        else
-        {
+        } else {
             //Call Main Menu Activity
             startActivity(new Intent(MainActivity.this, MainMenuActivity.class));
         }
@@ -53,6 +57,8 @@ public class MainActivity extends AppCompatActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
+            Intent intent = new Intent(this, SettingsActivity.class);
+            startActivity(intent);
             return true;
         }
 

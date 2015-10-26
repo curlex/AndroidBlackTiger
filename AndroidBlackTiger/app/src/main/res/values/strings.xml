@@ -8,5 +8,6 @@
     <string name="select_lang">Please select Language</string>
     <string name="default_lang_from">Flag1</string>
     <string name="title_activity_maps">Map</string>
+    <string name="title_activity_why_maps">Map</string>
     <!--<string name="google_maps_key">  AIzaSyAypiPFKmFfutdEEunf0VcZRs9htVsZpp0</string>-->
 </resources>

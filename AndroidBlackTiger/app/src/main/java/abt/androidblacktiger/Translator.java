@@ -22,7 +22,7 @@ public class Translator {
             return Translate.execute(word, srcLang, destLang);
         } catch (Exception e) {
             e.printStackTrace();
-            return word;
+            return word + " " + srcLang.toString() + " " + destLang.toString();
         }
     }
 

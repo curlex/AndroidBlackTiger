@@ -1,36 +1,22 @@
 package abt.androidblacktiger;
 
-import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
 
-import java.util.ArrayList;
-
-public class HistoryActivity extends AppCompatActivity {
+public class SettingsActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_history);
-        ArrayList<String> words = new ArrayList<String>();
-        String house = Translator.translate(this, "house");
-        words.add(house);
-        words.add("house");
-        words.add("car");
-        words.add("field");
-        ArrayAdapter adapter = new ArrayAdapter<String>(this, R.layout.textviewlay, words);
-        ListView lv = (ListView) findViewById(R.id.history_listview);
-        lv.setAdapter(adapter);
+        setContentView(R.layout.activity_settings);
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
+//        getMenuInflater().inflate(R.menu.menu_settings, menu);
         return true;
     }
 
@@ -43,8 +29,6 @@ public class HistoryActivity extends AppCompatActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
-            Intent intent = new Intent(this, SettingsActivity.class);
-            startActivity(intent);
             return true;
         }
 

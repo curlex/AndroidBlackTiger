@@ -1,0 +1,52 @@
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <PreferenceScreen android:title="@string/pref_header_general" >
+        <CheckBoxPreference
+            android:key="track_setting"
+            android:title="@string/pref_title_tracking"
+            android:summary="@string/pref_description_gps_tracking"
+            android:defaultValue="true" />
+
+        <!-- NOTE: EditTextPreference accepts EditText attributes. -->
+        <!-- NOTE: EditTextPreference's summary should be set to its value by the activity code. -->
+        <EditTextPreference
+            android:key="name_setting"
+            android:title="@string/pref_title_display_name"
+            android:defaultValue="@string/pref_default_display_name"
+            android:selectAllOnFocus="true"
+            android:inputType="textCapWords"
+            android:capitalize="words"
+            android:singleLine="true"
+            android:maxLines="1" />
+
+        <!-- NOTE: Hide buttons to simplify the UI. Users can touch outside the dialog to
+             dismiss it. -->
+        <!-- NOTE: ListPreference's summary should be set to its value by the activity code. -->
+        <ListPreference
+            android:key="lang_setting"
+            android:title="@string/pref_title_choose_language"
+            android:defaultValue="en"
+            android:entries="@array/pref_language_titles"
+            android:entryValues="@array/pref_language_values"
+            android:negativeButtonText="@null"
+            android:positiveButtonText="@null" />
+    </PreferenceScreen>
+    <PreferenceScreen android:title="@string/pref_header_data_sync" >
+        <ListPreference
+            android:key="freq_setting"
+            android:title="@string/pref_title_notif_frequency"
+            android:defaultValue="15"
+            android:entries="@array/pref_notif_frequency_titles"
+            android:entryValues="@array/pref_notif_frequency_values"
+            android:negativeButtonText="@null"
+            android:positiveButtonText="@null"
+            />
+    </PreferenceScreen>
+    <PreferenceScreen android:title="@string/pref_header_notifications" >
+        <RingtonePreference
+            android:key="pref_tone"
+            android:title="@string/pref_title_ringtone"
+            android:showDefault="true"
+            android:showSilent="true"
+            />
+    </PreferenceScreen>
+</PreferenceScreen>

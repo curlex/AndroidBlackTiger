@@ -14,7 +14,7 @@
         android:id="@+id/textView"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="50dp" />
+        android:layout_marginTop="25dp" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -22,40 +22,42 @@
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="@string/select_lang"
         android:id="@+id/textView2"
-        android:layout_below="@+id/textView"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="50dp" />
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true" />
 
-    <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+
+    <Spinner
+        android:id="@+id/language_spinner"
+        android:layout_width="174dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="right|center_vertical"
         android:layout_below="@+id/textView2"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true">
+        android:layout_alignRight="@+id/textView2"
+        android:layout_alignEnd="@+id/textView2" />
 
-        <ImageView
-            android:layout_width="115dp"
-            android:layout_height="123dp"
-            android:src="@drawable/gb"
-            android:id="@+id/imageView"
-            android:layout_below="@+id/textView"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:layout_marginLeft="45dp"
-            android:layout_marginStart="45dp"
-            android:layout_toLeftOf="@+id/textView"
-            android:layout_toStartOf="@+id/textView"
-            android:layout_gravity="left|center_vertical" />
+    <Button   android:id="@+id/save_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/start_text"
+        android:onClick="OpenNewActivity"
+        android:layout_gravity="center_horizontal|bottom"
+        android:layout_below="@+id/language_spinner"
+        android:layout_alignLeft="@+id/textView"
+        android:layout_alignStart="@+id/textView"
+        android:layout_marginTop="68dp" />
 
-        <ImageButton
-            android:layout_width="77dp"
-            android:layout_height="83dp"
-            android:background="@drawable/ie"
-            android:id="@+id/lang_button"
-            android:layout_marginLeft="45dp"
-            android:layout_marginStart="45dp"
-            android:layout_gravity="right|center_vertical" />
-    </FrameLayout>
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/mao"
+        android:id="@+id/imageView"
+        android:layout_above="@+id/textView2"
+        android:layout_alignRight="@+id/textView2"
+        android:layout_alignEnd="@+id/textView2"
+        android:layout_alignLeft="@+id/language_spinner"
+        android:layout_alignStart="@+id/language_spinner"
+        android:layout_below="@+id/textView" />
+
 
 </RelativeLayout>
 

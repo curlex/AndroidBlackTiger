@@ -139,19 +139,11 @@
     <orderEntry type="library" exported="" name="play-services-wallet-8.1.0" level="project" />
     <orderEntry type="library" exported="" name="play-services-basement-8.1.0" level="project" />
     <orderEntry type="library" exported="" name="play-services-maps-8.1.0" level="project" />
+    <orderEntry type="library" exported="" name="json-simple-1.1" level="project" />
     <orderEntry type="library" exported="" name="play-services-nearby-8.1.0" level="project" />
     <orderEntry type="library" exported="" name="play-services-panorama-8.1.0" level="project" />
     <orderEntry type="library" exported="" name="play-services-fitness-8.1.0" level="project" />
     <orderEntry type="library" exported="" name="play-services-wearable-8.1.0" level="project" />
     <orderEntry type="library" exported="" name="play-services-plus-8.1.0" level="project" />
-    <orderEntry type="module-library">
-      <library>
-        <CLASSES>
-          <root url="jar://$MODULE_DIR$/libs/json-simple-1.1.jar!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES />
-      </library>
-    </orderEntry>
   </component>
 </module>

@@ -2,21 +2,33 @@ package abt.androidblacktiger;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ImageButton;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
+
+import com.rmtheis.yandtran.language.Language;
 
 /**
  * Created by Maria on 14/10/2015.
  */
-public class WelcomeActivity extends Activity {
+public class WelcomeActivity extends Activity implements AdapterView.OnItemSelectedListener {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.welcome_activity);
-        ImageButton button_lang = (ImageButton) findViewById(R.id.lang_button);
-        button_lang.setBackgroundResource(R.drawable.ie);
+        Spinner spinner = (Spinner) findViewById(R.id.language_spinner);
+        // Create an ArrayAdapter using the string array and a default spinner layout
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
+                R.array.language_options, android.R.layout.simple_spinner_item);
+        // Specify the layout to use when the list of choices appears
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        // Apply the adapter to the spinner
+        spinner.setAdapter(adapter);
+        spinner.setOnItemSelectedListener(this);
 
     }
 
@@ -48,13 +60,27 @@ public class WelcomeActivity extends Activity {
     public void OpenNewActivity(View view)
     {
         Intent intent = null;
-        if(view.getId()==R.id.lang_button)
+        if(view.getId()==R.id.save_button)
         {
             intent = new Intent(this, MainMenuActivity.class);
         }
         if(intent != null) {
             startActivity(intent);
         }
+
+    }
+
+    @Override
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+        System.out.println(""+id);
+        SharedPreferences langPrefs = getSharedPreferences(Translator.preferencesLabel, 0);
+        langPrefs.edit().putString(Translator.sourceLanguage, Language.ENGLISH.toString());
+        langPrefs.edit().putString(Translator.destinationLanguage, Language.IRISH.toString());
+
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> parent) {
 
     }
 }

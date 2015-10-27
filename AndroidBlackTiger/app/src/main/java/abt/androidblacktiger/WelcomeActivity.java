@@ -72,10 +72,31 @@ public class WelcomeActivity extends Activity implements AdapterView.OnItemSelec
 
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-        System.out.println(""+id);
+
         SharedPreferences langPrefs = getSharedPreferences(Translator.preferencesLabel, 0);
-        langPrefs.edit().putString(Translator.sourceLanguage, Language.ENGLISH.toString());
-        langPrefs.edit().putString(Translator.destinationLanguage, Language.IRISH.toString());
+        String option =  parent.getItemAtPosition(position).toString();
+        if(option == "Irish"){
+            langPrefs.edit().putString(Translator.destinationLanguage, Language.IRISH.toString());
+        }
+        else if(option == "French"){
+            langPrefs.edit().putString(Translator.destinationLanguage, Language.FRENCH.toString());
+        }
+        else if(option == "Dutch"){
+            langPrefs.edit().putString(Translator.destinationLanguage, Language.DUTCH.toString());
+        }
+        else if(option == "Italian"){
+            langPrefs.edit().putString(Translator.destinationLanguage, Language.ITALIAN.toString());
+        }
+        else if(option == "Portuguese"){
+            langPrefs.edit().putString(Translator.destinationLanguage, Language.PORTUGUESE.toString());
+        }
+        else if(option == "Spanish"){
+            langPrefs.edit().putString(Translator.destinationLanguage, Language.SPANISH.toString());
+        }
+        else if(option == "German"){
+            langPrefs.edit().putString(Translator.destinationLanguage, Language.GERMAN.toString());
+        }
+        System.out.println(option);
 
     }
 

@@ -2,19 +2,23 @@ package abt.androidblacktiger;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.os.AsyncTask;
+import android.preference.PreferenceManager;
 
 import com.rmtheis.yandtran.ApiKeys;
 import com.rmtheis.yandtran.language.Language;
 import com.rmtheis.yandtran.translate.Translate;
 
-public class Translator {
+import java.util.ArrayList;
+
+public class Translator extends AsyncTask<TranslatorParams, Void, ArrayList<String>> {
 
     public static String preferencesLabel = "abt.langPrefs";
     public static String sourceLanguage = "abt.srcLang";
-    public static String destinationLanguage = "abt.destLang";
+    public static String destinationLanguage = "lang_setting";
 
-    public static String translate(Context context, String word) {
-        SharedPreferences prefs = context.getSharedPreferences(preferencesLabel, 0);
+    private static String translate(Context context, String word) {
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context.getApplicationContext());
         Translate.setKey(ApiKeys.YANDEX_API_KEY);
         Language srcLang = Language.fromString(prefs.getString(sourceLanguage, "en"));
         Language destLang = Language.fromString(prefs.getString(destinationLanguage, "en"));
@@ -26,21 +30,31 @@ public class Translator {
         }
     }
 
-    public static void main(String[] args) throws Exception {
+    @Override
+    protected ArrayList<String> doInBackground(TranslatorParams... params) {
+        ArrayList<String> words = new ArrayList<>();
+        for (TranslatorParams param : params) {
+            words.add(translate(param.getContext(), param.getWord()));
+        }
+        return words;
+    }
+}
 
-        Translate.setKey(ApiKeys.YANDEX_API_KEY);
+class TranslatorParams {
+    private final Context context;
+    private final String word;
 
-        String translatedText = Translate.execute("School", Language.ENGLISH, Language.IRISH);
-        System.out.println(translatedText);
-        translatedText = Translate.execute("Supermarket", Language.ENGLISH, Language.IRISH);
-        System.out.println(translatedText);
-        translatedText = Translate.execute("School", Language.ENGLISH, Language.PORTUGUESE);
-        System.out.println(translatedText);
-        translatedText = Translate.execute("Supermarket", Language.ENGLISH, Language.PORTUGUESE);
-        System.out.println(translatedText);
-        translatedText = Translate.execute("Bus Station", Language.ENGLISH, Language.ARABIC);
-        System.out.println(translatedText);
-        translatedText = Translate.execute("Bus Station", Language.ENGLISH, Language.PORTUGUESE);
-        System.out.println(translatedText);
+    public TranslatorParams(Context context, String word) {
+
+        this.context = context;
+        this.word = word;
+    }
+
+    public Context getContext() {
+        return context;
+    }
+
+    public String getWord() {
+        return word;
     }
 }

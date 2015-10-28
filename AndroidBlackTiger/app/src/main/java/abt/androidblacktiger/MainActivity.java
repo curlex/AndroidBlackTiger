@@ -3,6 +3,7 @@ package abt.androidblacktiger;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -26,9 +27,9 @@ public class MainActivity extends AppCompatActivity {
 
     public  void  firstTime() {
 
-        SharedPreferences langPrefs = getSharedPreferences(Translator.preferencesLabel, 0);
-        langPrefs.edit().putString(Translator.sourceLanguage, Language.ENGLISH.toString());
-        langPrefs.edit().putString(Translator.destinationLanguage, Language.IRISH.toString());
+//        SharedPreferences langPrefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+//        langPrefs.edit().putString(Translator.destinationLanguage, Language.IRISH.toString());
+//        System.out.println(langPrefs.getAll());
 
         SharedPreferences sharedTime = getSharedPreferences(preferences_language, 0);
         if (sharedTime.getBoolean("setLanguage", true)) {

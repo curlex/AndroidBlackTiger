@@ -1,6 +1,8 @@
 package abt.androidblacktiger;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -9,6 +11,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import java.util.ArrayList;
+import java.util.concurrent.ExecutionException;
 
 public class HistoryActivity extends AppCompatActivity {
 
@@ -16,9 +19,17 @@ public class HistoryActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_history);
+        SharedPreferences langPrefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        System.out.println("prefs");
+        System.out.println(langPrefs.getAll());
         ArrayList<String> words = new ArrayList<String>();
-        String house = Translator.translate(this, "house");
-        words.add(house);
+        String house = null;
+        try {
+            house = new Translator().execute(new TranslatorParams(getApplicationContext(), "house")).get().get(0);
+            words.add(house);
+        } catch (InterruptedException | ExecutionException e) {
+            e.printStackTrace();
+        }
         words.add("house");
         words.add("car");
         words.add("field");

@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -73,29 +74,30 @@ public class WelcomeActivity extends Activity implements AdapterView.OnItemSelec
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 
-        SharedPreferences langPrefs = getSharedPreferences(Translator.preferencesLabel, 0);
+        SharedPreferences langPrefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         String option =  parent.getItemAtPosition(position).toString();
-        if(option == "Irish"){
+        if(option.equals("Irish")){
             langPrefs.edit().putString(Translator.destinationLanguage, Language.IRISH.toString());
         }
-        else if(option == "French"){
+        else if(option.equals("French")){
             langPrefs.edit().putString(Translator.destinationLanguage, Language.FRENCH.toString());
         }
-        else if(option == "Dutch"){
+        else if(option.equals("Dutch")){
             langPrefs.edit().putString(Translator.destinationLanguage, Language.DUTCH.toString());
         }
-        else if(option == "Italian"){
+        else if(option.equals("Italian")){
             langPrefs.edit().putString(Translator.destinationLanguage, Language.ITALIAN.toString());
         }
-        else if(option == "Portuguese"){
+        else if(option.equals("Portuguese")){
             langPrefs.edit().putString(Translator.destinationLanguage, Language.PORTUGUESE.toString());
         }
-        else if(option == "Spanish"){
+        else if(option.equals("Spanish")){
             langPrefs.edit().putString(Translator.destinationLanguage, Language.SPANISH.toString());
         }
-        else if(option == "German"){
+        else if(option.equals("German")){
             langPrefs.edit().putString(Translator.destinationLanguage, Language.GERMAN.toString());
         }
+        langPrefs.edit().apply();
         System.out.println(option);
 
     }

@@ -22,8 +22,8 @@ public class HistoryActivity extends AppCompatActivity {
         SharedPreferences langPrefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         System.out.println("prefs");
         System.out.println(langPrefs.getAll());
-        ArrayList<String> words = new ArrayList<String>();
-        String house = null;
+        ArrayList<String> words = new ArrayList<>();
+        String house;
         try {
             house = new Translator().execute(new TranslatorParams(getApplicationContext(), "house")).get().get(0);
             words.add(house);
@@ -33,7 +33,7 @@ public class HistoryActivity extends AppCompatActivity {
         words.add("house");
         words.add("car");
         words.add("field");
-        ArrayAdapter adapter = new ArrayAdapter<String>(this, R.layout.textviewlay, words);
+        ArrayAdapter adapter = new ArrayAdapter<>(this, R.layout.textviewlay, words);
         ListView lv = (ListView) findViewById(R.id.history_listview);
         lv.setAdapter(adapter);
     }

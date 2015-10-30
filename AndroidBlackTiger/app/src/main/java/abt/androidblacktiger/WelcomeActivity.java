@@ -76,28 +76,30 @@ public class WelcomeActivity extends Activity implements AdapterView.OnItemSelec
 
         SharedPreferences langPrefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         String option =  parent.getItemAtPosition(position).toString();
+        SharedPreferences.Editor editor = langPrefs.edit();
         if(option.equals("Irish")){
-            langPrefs.edit().putString(Translator.destinationLanguage, Language.IRISH.toString());
+            editor.putString(Translator.destinationLanguage, Language.IRISH.toString());
         }
         else if(option.equals("French")){
-            langPrefs.edit().putString(Translator.destinationLanguage, Language.FRENCH.toString());
+            editor.putString(Translator.destinationLanguage, Language.FRENCH.toString());
         }
         else if(option.equals("Dutch")){
-            langPrefs.edit().putString(Translator.destinationLanguage, Language.DUTCH.toString());
+            editor.putString(Translator.destinationLanguage, Language.DUTCH.toString());
         }
         else if(option.equals("Italian")){
-            langPrefs.edit().putString(Translator.destinationLanguage, Language.ITALIAN.toString());
+            editor.putString(Translator.destinationLanguage, Language.ITALIAN.toString());
         }
         else if(option.equals("Portuguese")){
-            langPrefs.edit().putString(Translator.destinationLanguage, Language.PORTUGUESE.toString());
+            editor.putString(Translator.destinationLanguage, Language.PORTUGUESE.toString());
         }
         else if(option.equals("Spanish")){
-            langPrefs.edit().putString(Translator.destinationLanguage, Language.SPANISH.toString());
+            editor.putString(Translator.destinationLanguage, Language.SPANISH.toString());
         }
         else if(option.equals("German")){
-            langPrefs.edit().putString(Translator.destinationLanguage, Language.GERMAN.toString());
+            editor.putString(Translator.destinationLanguage, Language.GERMAN.toString());
         }
-        langPrefs.edit().apply();
+        editor.apply();
+        System.out.println(langPrefs.getAll());
         System.out.println(option);
 
     }

@@ -27,9 +27,7 @@ public class MainActivity extends AppCompatActivity {
 
     public  void  firstTime() {
 
-//        SharedPreferences langPrefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-//        langPrefs.edit().putString(Translator.destinationLanguage, Language.IRISH.toString());
-//        System.out.println(langPrefs.getAll());
+        PreferenceManager.setDefaultValues(getApplicationContext(), R.xml.pref_general, false);
 
         SharedPreferences sharedTime = getSharedPreferences(preferences_language, 0);
         if (sharedTime.getBoolean("setLanguage", true)) {

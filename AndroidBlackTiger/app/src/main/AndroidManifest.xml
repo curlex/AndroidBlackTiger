@@ -77,7 +77,10 @@
             android:name=".CameraActivity"
             android:label="mCamera" >
         </activity>
-
+        <activity
+            android:name=".NewVocabActivity"
+            android:label="@string/title_activity_new_vocab" >
+        </activity>
     </application>
 
 </manifest>

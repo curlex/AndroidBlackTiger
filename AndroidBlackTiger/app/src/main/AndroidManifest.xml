@@ -69,12 +69,6 @@
                 android:value="abt.androidblacktiger.MainMenuActivity" />
         </activity>
 
-        <service
-            android:name=".LocationChecker"
-            android:enabled="true"
-            android:exported="true" >
-        </service>
-
         <activity
             android:name=".SettingsActivity"
             android:label="@string/title_activity_settings" >

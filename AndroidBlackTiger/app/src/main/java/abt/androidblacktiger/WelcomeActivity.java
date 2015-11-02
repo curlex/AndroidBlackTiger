@@ -78,25 +78,25 @@ public class WelcomeActivity extends Activity implements AdapterView.OnItemSelec
         String option =  parent.getItemAtPosition(position).toString();
         SharedPreferences.Editor editor = langPrefs.edit();
         if(option.equals("Irish")){
-            editor.putString(Settings.DESTINATION_LANGUAGE, Language.IRISH.toString());
+            editor.putString(SettingsListener.DESTINATION_LANGUAGE, Language.IRISH.toString());
         }
         else if(option.equals("French")){
-            editor.putString(Settings.DESTINATION_LANGUAGE, Language.FRENCH.toString());
+            editor.putString(SettingsListener.DESTINATION_LANGUAGE, Language.FRENCH.toString());
         }
         else if(option.equals("Dutch")){
-            editor.putString(Settings.DESTINATION_LANGUAGE, Language.DUTCH.toString());
+            editor.putString(SettingsListener.DESTINATION_LANGUAGE, Language.DUTCH.toString());
         }
         else if(option.equals("Italian")){
-            editor.putString(Settings.DESTINATION_LANGUAGE, Language.ITALIAN.toString());
+            editor.putString(SettingsListener.DESTINATION_LANGUAGE, Language.ITALIAN.toString());
         }
         else if(option.equals("Portuguese")){
-            editor.putString(Settings.DESTINATION_LANGUAGE, Language.PORTUGUESE.toString());
+            editor.putString(SettingsListener.DESTINATION_LANGUAGE, Language.PORTUGUESE.toString());
         }
         else if(option.equals("Spanish")){
-            editor.putString(Settings.DESTINATION_LANGUAGE, Language.SPANISH.toString());
+            editor.putString(SettingsListener.DESTINATION_LANGUAGE, Language.SPANISH.toString());
         }
         else if(option.equals("German")){
-            editor.putString(Settings.DESTINATION_LANGUAGE, Language.GERMAN.toString());
+            editor.putString(SettingsListener.DESTINATION_LANGUAGE, Language.GERMAN.toString());
         }
         editor.apply();
         System.out.println(langPrefs.getAll());

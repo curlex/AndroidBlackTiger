@@ -23,7 +23,7 @@ public class Translator extends AsyncTask<TranslatorParams, Void, ArrayList<Stri
         Translate.setKey(ApiKeys.YANDEX_API_KEY);
 //        Language srcLang = Language.fromString(prefs.getString(sourceLanguage, "en"));
         Language srcLang = Language.ENGLISH;
-        Language destLang = Language.fromString(prefs.getString(Settings.DESTINATION_LANGUAGE, "en"));
+        Language destLang = Language.fromString(prefs.getString(SettingsListener.DESTINATION_LANGUAGE, "en"));
         try {
             return Translate.execute(word, srcLang, destLang);
         } catch (Exception e) {

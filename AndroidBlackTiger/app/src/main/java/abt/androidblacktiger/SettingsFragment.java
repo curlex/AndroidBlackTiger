@@ -1,9 +1,11 @@
 package abt.androidblacktiger;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceFragment;
+import android.widget.Toast;
 
-public class SettingsFragment extends PreferenceFragment {
+public class SettingsFragment extends PreferenceFragment{
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -11,5 +13,5 @@ public class SettingsFragment extends PreferenceFragment {
         // Load the preferences from an XML resource
         addPreferencesFromResource(R.xml.pref_general);
     }
-
 }
+

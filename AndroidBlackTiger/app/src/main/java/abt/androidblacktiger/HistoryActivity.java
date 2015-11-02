@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.concurrent.ExecutionException;
@@ -32,6 +33,8 @@ public class HistoryActivity extends AppCompatActivity {
             house = new Translator().execute(new TranslatorParams(getApplicationContext(), "house")).get().get(0);
             words.add(house);
         } catch (InterruptedException | ExecutionException e) {
+            Toast toast = Toast.makeText(getApplicationContext(), "An error was encountered running the translation", Toast.LENGTH_SHORT);
+            toast.show();
             e.printStackTrace();
         }
         words.add("house");

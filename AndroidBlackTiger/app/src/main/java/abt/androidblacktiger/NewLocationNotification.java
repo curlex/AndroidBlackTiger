@@ -28,34 +28,24 @@ public class NewLocationNotification {
 
     public static void notify(final Context context, final String word, final String translation) {
         final Resources res = context.getResources();
-
         // This image is used as the notification's large icon (thumbnail).
         final Bitmap picture = BitmapFactory.decodeResource(res, R.drawable.example_picture);
-
-
-        final String title = res.getString(
-                R.string.new_location_notification_title_template, word);
+        final String title = res.getString(R.string.new_location_notification_title_template, word);
         final String text = res.getString(
                 R.string.new_location_notification_placeholder_text_template, word, translation);
-
         final NotificationCompat.Builder builder = new NotificationCompat.Builder(context)
-
                 // Set appropriate defaults for the notification light, sound,
                 // and vibration.
                 .setDefaults(Notification.DEFAULT_ALL)
-
                         // Set required fields, including the small icon, the
                         // notification title, and text.
                 .setSmallIcon(R.drawable.mao_notif)
                 .setContentTitle(title)
                 .setContentText(text)
-
-                        // All fields below this line are optional.
-
+                        // All fields below this line are optional. -----------------------------
                         // Use a default priority (recognized on devices running Android
                         // 4.1 or later)
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT)
-
                         // Provide a large icon, shown with the notification in the
                         // notification drawer on devices running Android 3.0 or later.
                 .setLargeIcon(picture)
@@ -78,7 +68,7 @@ public class NewLocationNotification {
                         PendingIntent.getActivity(
                                 context,
                                 0,
-                                new Intent(context,MapsActivity.class),
+                                new Intent(context, MapsActivity.class),
                                 PendingIntent.FLAG_UPDATE_CURRENT))
 
                         // Show expanded text content on devices running Android 4.1 or
@@ -86,7 +76,7 @@ public class NewLocationNotification {
                 .setStyle(new NotificationCompat.BigTextStyle()
                         .bigText(text)
                         .setBigContentTitle(title)
-                        .setSummaryText("Dummy summary text"))
+                        .setSummaryText("You have a new word to learn!"))
 
                         // Automatically dismiss the notification when it is touched.
                 .setAutoCancel(true);

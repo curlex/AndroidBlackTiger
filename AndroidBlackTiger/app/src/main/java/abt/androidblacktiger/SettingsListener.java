@@ -28,6 +28,7 @@ public class SettingsListener implements SharedPreferences.OnSharedPreferenceCha
 //        stopUsingGPS
 
             }
+            System.out.println(toastText);
             Toast.makeText(context, toastText, Toast.LENGTH_SHORT).show();
         }
     }

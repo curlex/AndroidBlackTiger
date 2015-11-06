@@ -26,18 +26,17 @@ public class NewLocationNotification {
      */
     private static final String NOTIFICATION_TAG = "NewLocation";
 
-    public static void notify(final Context context, final String ticker, final int distance) {
+    public static void notify(final Context context, final String word, final String translation) {
         final Resources res = context.getResources();
 
         // This image is used as the notification's large icon (thumbnail).
-        // TODO: Remove this if your notification has no relevant thumbnail.
         final Bitmap picture = BitmapFactory.decodeResource(res, R.drawable.example_picture);
 
 
         final String title = res.getString(
-                R.string.new_location_notification_title_template, ticker);
+                R.string.new_location_notification_title_template, word);
         final String text = res.getString(
-                R.string.new_location_notification_placeholder_text_template, ticker);
+                R.string.new_location_notification_placeholder_text_template, word, translation);
 
         final NotificationCompat.Builder builder = new NotificationCompat.Builder(context)
 
@@ -62,11 +61,7 @@ public class NewLocationNotification {
                 .setLargeIcon(picture)
 
                         // Set ticker text (preview) information for this notification.
-                .setTicker(ticker)
-
-                        // Show a number. This is useful when stacking notifications of
-                        // a single type.
-                .setNumber(distance)
+                .setTicker(word)
 
                         // If this notification relates to a past or upcoming event, you
                         // should set the relevant time information using the setWhen
@@ -83,7 +78,7 @@ public class NewLocationNotification {
                         PendingIntent.getActivity(
                                 context,
                                 0,
-                                new Intent(Intent.ACTION_VIEW, Uri.parse("http://www.google.com")),
+                                new Intent(context,MapsActivity.class),
                                 PendingIntent.FLAG_UPDATE_CURRENT))
 
                         // Show expanded text content on devices running Android 4.1 or
@@ -112,7 +107,7 @@ public class NewLocationNotification {
 
     /**
      * Cancels any notifications of this type previously shown using
-     * {@link #notify(Context, String, int)}.
+     * {@link #notify(Context, String, String)}.
      */
     @TargetApi(Build.VERSION_CODES.ECLAIR)
     public static void cancel(final Context context) {

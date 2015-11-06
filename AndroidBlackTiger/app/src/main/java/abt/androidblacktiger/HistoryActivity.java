@@ -52,7 +52,7 @@ public class HistoryActivity extends AppCompatActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent intent = new Intent(historyActivity, NewVocabActivity.class);
                 String clickedWord = words.get(position);
-                NewLocationNotification.notify(historyActivity,clickedWord, 0);
+                NewLocationNotification.notify(historyActivity,clickedWord, "teach1");
                 intent.putExtra(wordKey, clickedWord);
                 startActivity(intent);
             }

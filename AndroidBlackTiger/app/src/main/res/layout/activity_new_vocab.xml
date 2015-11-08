@@ -12,8 +12,9 @@
         android:text="New Vocabulary"
         android:textSize="30dp"
         android:textStyle="italic"
-        android:layout_marginTop="25dp"
+        android:layout_marginTop="133dp"
         android:textColor="#008"
+        android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true" />
 
     <CheckBox
@@ -36,4 +37,14 @@
         android:onClick="openActivity"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true" />
+
+    <fragment
+        android:layout_width="110dp"
+        android:layout_height="110dp"
+        android:name="abt.androidblacktiger.Logo_fragment"
+        android:id="@+id/fragment"
+        tools:layout="@layout/logo_fragment"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true" />
+
 </RelativeLayout>

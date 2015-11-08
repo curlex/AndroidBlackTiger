@@ -29,4 +29,9 @@
     <string name="TranslatedWord">Universidade</string>
     <string name="DoNotShowLocationCheckBox">Do not show this location again.</string>
     <string name="TakePictureButton">Take a picture</string>
+
+    <string name="new_location_notification_title_template">New location: %1$s</string>
+
+    <string name="new_location_notification_placeholder_text_template">You got a new word %1$s nearby. it\'s translation is %2$s.
+    </string>
 </resources>

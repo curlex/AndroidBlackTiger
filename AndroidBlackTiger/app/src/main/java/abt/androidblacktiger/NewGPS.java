@@ -23,8 +23,10 @@ import com.google.android.gms.location.places.PlaceLikelihood;
 import com.google.android.gms.location.places.PlaceLikelihoodBuffer;
 import com.google.android.gms.location.places.Places;
 
+import java.util.concurrent.ExecutionException;
+
 /**
- * Created by User on 01/11/2015.
+ * Created by Asma on 01/11/2015.
  */
 public class NewGPS extends Activity implements LocationListener,ConnectionCallbacks,OnConnectionFailedListener{
     // LogCat tag
@@ -33,7 +35,7 @@ public class NewGPS extends Activity implements LocationListener,ConnectionCallb
     private final static int PLAY_SERVICES_RESOLUTION_REQUEST = 1000;
 
     private Location mLastLocation;
-
+    private String p;
     // Google client to interact with Google API
     private GoogleApiClient mGoogleApiClient;
 
@@ -46,10 +48,12 @@ public class NewGPS extends Activity implements LocationListener,ConnectionCallb
     private static int UPDATE_INTERVAL = 10000; // 10 sec
     private static int FASTEST_INTERVAL = 5000; // 5 sec
     private static int DISPLACEMENT = 100; // 10 meters
-
+    LocationObject pointOfInterest;
     // UI elements
     public TextView lblLocation;
     public Button btnShowLocation, btnStartLocationUpdates;
+    private String poi = "";
+    private String translatedString = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,7 +70,7 @@ public class NewGPS extends Activity implements LocationListener,ConnectionCallb
             buildGoogleApiClient();
             createLocationRequest();
         }
-
+        pointOfInterest = new LocationObject();
         // Show location button click listener
         btnShowLocation.setOnClickListener(new View.OnClickListener() {
 
@@ -98,9 +102,7 @@ public class NewGPS extends Activity implements LocationListener,ConnectionCallb
     @Override
     protected void onResume() {
         super.onResume();
-
         checkPlayServices();
-
         // Resuming the periodic location updates
         if (mGoogleApiClient.isConnected() && mRequestingLocationUpdates) {
             startLocationUpdates();
@@ -132,7 +134,7 @@ public class NewGPS extends Activity implements LocationListener,ConnectionCallb
             double latitude = mLastLocation.getLatitude();
             double longitude = mLastLocation.getLongitude();
 
-            lblLocation.setText(latitude + ", " + longitude);
+            lblLocation.setText(latitude + ", " + longitude + "\n" + poi + "\n " + translatedString);
 
         } else {
 
@@ -225,10 +227,8 @@ public class NewGPS extends Activity implements LocationListener,ConnectionCallb
      * Starting the location updates
      * */
     protected void startLocationUpdates() {
-
         LocationServices.FusedLocationApi.requestLocationUpdates(
                 mGoogleApiClient, mLocationRequest, this);
-
     }
 
     /**
@@ -275,11 +275,10 @@ public class NewGPS extends Activity implements LocationListener,ConnectionCallb
                         Log.i(TAG, String.format("Place '%s' has likelihood: %g",
                                 placeLikelihood.getPlace().getName(),
                                 placeLikelihood.getLikelihood()));
-                        Toast.makeText(getApplicationContext(), "Location changed!"+placeLikelihood.getPlace().getName(),
+                        Toast.makeText(getApplicationContext(), "Location changed!" + placeLikelihood.getPlace().getName(),
                                 Toast.LENGTH_SHORT).show();
 
                     }
-
                     likelyPlaces.release();
                 }
             });
@@ -287,20 +286,54 @@ public class NewGPS extends Activity implements LocationListener,ConnectionCallb
         }
         return null;
     }
+
     @Override
     public void onConnectionSuspended(int arg0) {
         mGoogleApiClient.connect();
     }
 
+    /****
+     * This method defines what happens when the location changes
+     * creates a toast for now with what the types of the nearby location are
+     *
+     */
     @Override
     public void onLocationChanged(Location location) {
         // Assign the new location
         mLastLocation = location;
-        getPlaces();
+        //getPlaces();
         Toast.makeText(getApplicationContext(), "Location changed!",
                 Toast.LENGTH_SHORT).show();
+        double latitude = location.getLatitude();
+        double longitude = location.getLongitude();
+        String loc = latitude+","+longitude;
+        // calls an asynctask to get JSON data of nearby locations and its types
+        //task takes loc which is the latitude and longitude of the current location split with a comma
+        try {
+            pointOfInterest = new GetLocations().execute(loc).get();
+        } catch (InterruptedException | ExecutionException e) {
+            e.printStackTrace();
+        }
+        // gets the locatoin of the POI needed later to use to show on map
+        double poiLat = pointOfInterest.getLatitude();
+        double poilng = pointOfInterest.getLongitude();
+        if( !pointOfInterest.getTypes().isEmpty()){
+            poi = pointOfInterest.getTypes().get(0);
+            try {
+                translatedString = new Translator().execute(new TranslatorParams(getApplicationContext(), poi)).get().get(0);
+            } catch (InterruptedException | ExecutionException e) {
+                e.printStackTrace();
+            }
+            Log.v(TAG, "Translation: "+ translatedString);
+            Toast.makeText(getApplicationContext(),
+                    poi +"  " + translatedString, Toast.LENGTH_LONG)
+                    .show();
+        }
 
         // Displaying the new location on UI
+        mLastLocation.setLongitude(pointOfInterest.getLongitude());
+        mLastLocation.setLatitude(pointOfInterest.getLatitude());
         displayLocation();
+
     }
 }

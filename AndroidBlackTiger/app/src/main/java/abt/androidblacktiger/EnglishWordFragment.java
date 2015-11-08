@@ -12,10 +12,6 @@ import abt.androidblacktiger.HistoryDBHandeler;
 
 public class EnglishWordFragment extends Fragment{
 
-    //read the word from the database
-
-
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.eng_word_fragment, container, false);

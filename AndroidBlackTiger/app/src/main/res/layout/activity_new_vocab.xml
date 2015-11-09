@@ -7,33 +7,50 @@
     tools:context="abt.androidblacktiger.NewVocabActivity">
 
     <TextView
+        android:id="@id/newVocabTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="New Vocabulary"
         android:textSize="30dp"
         android:textStyle="italic"
-        android:layout_marginTop="133dp"
         android:textColor="#008"
-        android:layout_alignParentTop="true"
+        android:layout_below="@+id/fragment"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="30dp" />
+
+    <TextSwitcher
+        android:id="@id/textSwitcher"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_below="@id/newVocabTextView">
+    </TextSwitcher>
+
+    <Button
+        android:id="@id/changeWordsButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/showTranslationButton"
+        android:layout_above="@id/newVocabCheckBox"
         android:layout_centerHorizontal="true" />
 
     <CheckBox
+        android:id="@id/newVocabCheckBox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/DoNotShowLocationCheckBox"
         android:textStyle="bold"
-        android:id="@+id/checkBox"
         android:checked="false"
         android:onClick="doNotRepeatWord"
         android:layout_marginBottom="30dp"
-        android:layout_above="@+id/button"
+        android:layout_above="@+id/newVocabButton"
         android:layout_centerHorizontal="true" />
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/TakePictureButton"
-        android:id="@+id/button"
+        android:id="@+id/newVocabButton"
         android:onClick="openActivity"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true" />

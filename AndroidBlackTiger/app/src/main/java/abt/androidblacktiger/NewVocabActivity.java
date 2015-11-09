@@ -6,8 +6,20 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
+import android.widget.TextSwitcher;
+import android.widget.TextView;
+import android.widget.ViewSwitcher;
 
 public class NewVocabActivity extends AppCompatActivity {
+    HistoryDBHandeler db = new HistoryDBHandeler(getApplicationContext());
+    private String engWord = "";
+    private String translatedWord = "";
+    private String[] wordsToShow = {engWord, translatedWord};
+    private int wordsCount = wordsToShow.length;
+    private int index = 0;
+    private Button changeWordBtn;
+    private TextSwitcher mySwitcher;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,6 +40,10 @@ public class NewVocabActivity extends AppCompatActivity {
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
+
+        // get the word in English and the translated word from database.
+        engWord = HistoryDBHandeler.COLUMN_WORD;
+        translatedWord = HistoryDBHandeler.COLUMN_TRANSLATION;
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {

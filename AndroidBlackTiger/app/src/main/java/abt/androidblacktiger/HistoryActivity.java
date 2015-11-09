@@ -2,10 +2,9 @@ package abt.androidblacktiger;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.database.sqlite.SQLiteOpenHelper;
+import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -18,6 +17,8 @@ import java.util.ArrayList;
 import java.util.concurrent.ExecutionException;
 
 public class HistoryActivity extends AppCompatActivity {
+    HistoryDBHandler db;
+
 
     public String wordKey = "abt.wordkey";
 
@@ -28,7 +29,7 @@ public class HistoryActivity extends AppCompatActivity {
         SharedPreferences langPrefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         System.out.println("prefs");
         System.out.println(langPrefs.getAll());
-        HistoryDBHandeler historyDBHandeler = new HistoryDBHandeler(getApplicationContext());
+        HistoryDBHandler historyDBHandeler = new HistoryDBHandler(getApplicationContext());
 
         final ArrayList<String> words = new ArrayList<>();
         String house;
@@ -46,7 +47,16 @@ public class HistoryActivity extends AppCompatActivity {
         ArrayAdapter adapter = new ArrayAdapter<>(this, R.layout.textviewlay, words);
         ListView lv = (ListView) findViewById(R.id.history_listview);
         lv.setAdapter(adapter);
+
+        db = ABTApplication.db;
+
+
+        WordHistory test =db.findWord("college");
+
+        System.out.println(""+test.toString());
+
         final HistoryActivity historyActivity = this;
+
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {

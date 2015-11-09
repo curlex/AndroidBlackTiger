@@ -86,5 +86,9 @@ public class WordHistory  {
             return this._imagePath;
         }
 
+        public String toString(){
+            return ""+_id+" "+_word+" "+_translation+" "+_shown+" "+_location+" "+_imagePath;
+        }
+
 
 }

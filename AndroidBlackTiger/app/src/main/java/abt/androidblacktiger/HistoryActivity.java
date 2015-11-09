@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import java.util.concurrent.ExecutionException;
 
 public class HistoryActivity extends AppCompatActivity {
-
+    HistoryDBHandler db;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,6 +36,13 @@ public class HistoryActivity extends AppCompatActivity {
         ArrayAdapter adapter = new ArrayAdapter<>(this, R.layout.textviewlay, words);
         ListView lv = (ListView) findViewById(R.id.history_listview);
         lv.setAdapter(adapter);
+        db = ABTApplication.db;
+
+
+        WordHistory test =db.findWord("college");
+
+        System.out.println(""+test.toString());
+
     }
 
     @Override

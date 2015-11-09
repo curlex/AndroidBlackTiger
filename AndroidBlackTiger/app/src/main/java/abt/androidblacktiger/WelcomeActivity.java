@@ -18,6 +18,7 @@ import com.rmtheis.yandtran.language.Language;
  * Created by Maria on 14/10/2015.
  */
 public class WelcomeActivity extends Activity implements AdapterView.OnItemSelectedListener {
+    HistoryDBHandler db;
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.welcome_activity);
@@ -30,6 +31,8 @@ public class WelcomeActivity extends Activity implements AdapterView.OnItemSelec
         // Apply the adapter to the spinner
         spinner.setAdapter(adapter);
         spinner.setOnItemSelectedListener(this);
+
+        //db = ((ABTApplication)getApplication()).getDB();
 
     }
 

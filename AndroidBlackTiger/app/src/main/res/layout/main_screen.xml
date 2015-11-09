@@ -1,32 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              android:orientation="vertical"
-              android:weightSum="1">
+			  android:layout_width="match_parent"
+			  android:layout_height="match_parent"
+			  android:orientation="vertical"
+			  android:weightSum="1">
 
 <Button       android:id="@+id/word_history_button"
-              android:layout_width="wrap_content"
-              android:layout_height="wrap_content"
-              android:text="Word History"
-              android:onClick="OpenNewActivity"
-              android:layout_gravity="center_horizontal"
-              android:layout_weight="0.33"/>
+			  android:layout_width="wrap_content"
+			  android:layout_height="wrap_content"
+			  android:text="Word History"
+			  android:onClick="OpenNewActivity"
+			  android:layout_gravity="center_horizontal"
+			  android:layout_weight="0.33"/>
 
 <Button       android:id="@+id/dictionary_button"
-              android:layout_width="wrap_content"
-              android:layout_height="wrap_content"
-              android:text="Dictionary"
+			  android:layout_width="wrap_content"
+			  android:layout_height="wrap_content"
+			  android:text="Dictionary"
+			  android:onClick="OpenNewActivity"
+			  android:layout_gravity="center_horizontal"
+			  android:layout_weight="0.34"/>
+<Button       android:id="@+id/gps_button"
+			  android:layout_width="wrap_content"
+			  android:layout_height="wrap_content"
+			  android:text="Gps"
               android:onClick="OpenNewActivity"
               android:layout_gravity="center_horizontal"
               android:layout_weight="0.34"/>
 
 <ImageButton  android:id="@+id/map_discovery_button"
-              android:layout_width="100dp"
-              android:layout_height="100dp"
-              android:text="Map Discovery"
-              android:onClick="OpenNewActivity"
-              android:layout_gravity="center_horizontal"
-              android:background="@drawable/mao" />
+			  android:layout_width="100dp"
+			  android:layout_height="100dp"
+			  android:text="Map Discovery"
+			  android:onClick="OpenNewActivity"
+			  android:layout_gravity="center_horizontal"
+			  android:background="@drawable/mao" />
 
 </LinearLayout>

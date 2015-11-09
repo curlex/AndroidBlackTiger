@@ -21,9 +21,12 @@ public class MainMenuActivity extends AppCompatActivity {
 
         Button button_word_history = (Button) findViewById(R.id.word_history_button);
         Button button_dictionary = (Button) findViewById(R.id.dictionary_button);
+        Button button_Gps = (Button) findViewById(R.id.gps_button);
         ImageButton button_map_discovery = (ImageButton) findViewById(R.id.map_discovery_button);
         button_map_discovery.setBackgroundResource(R.drawable.mao); // name map gave error :P
-}
+        startService(new Intent(this, GPS.class));
+       // startService(new Intent(this, GPSTracker.class));
+    }
 
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -58,6 +61,9 @@ public class MainMenuActivity extends AppCompatActivity {
         {
             //Replace MainMenuActivity.class with the name of activity corresponding to the dictionary
             //intent = new Intent(this, MainMenuActivity.class);
+        }
+        else if(view.getId()==R.id.gps_button){
+            intent = new Intent(this, NewGPS.class);
         }
         else
         {

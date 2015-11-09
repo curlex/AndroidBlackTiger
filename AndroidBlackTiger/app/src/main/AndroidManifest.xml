@@ -2,6 +2,10 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="abt.androidblacktiger" >
 
+    <uses-sdk
+        android:minSdkVersion="8"
+        android:targetSdkVersion="21" />
+
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
@@ -12,6 +16,10 @@
     -->
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.VIBRATE" />
+
+    <android:uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <android:uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
     <application
         android:name="abt.androidblacktiger.ABTApplication"
@@ -48,14 +56,17 @@
             android:name=".HistoryActivity"
             android:label="@string/title_activity_history" >
         </activity>
+        <activity
+            android:name=".NewGPS"
+            android:label="NewGPS" >
+        </activity>
 
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
         <meta-data
             android:name="com.google.android.maps.v2.API_KEY"
-            android:value="@string/google_maps_key" />
-
+            android:value="@string/google_api_key" />
         <activity
             android:name=".MapsActivity"
             android:label="@string/title_activity_maps" >
@@ -63,13 +74,6 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="abt.androidblacktiger.MainMenuActivity" />
         </activity>
-
-        <service
-            android:name=".LocationChecker"
-            android:enabled="true"
-            android:exported="true" >
-        </service>
-
         <activity
             android:name=".SettingsActivity"
             android:label="@string/title_activity_settings" >
@@ -82,6 +86,15 @@
             android:name=".NewVocabActivity"
             android:label="@string/title_activity_new_vocab" >
         </activity>
+        <!--<service-->
+            <!--android:name=".NewGPS"-->
+            <!--android:label="NewGPS" >-->
+        <!--</service>-->
+        <service
+            android:name=".GPS"
+            android:label="GPS" >
+        </service>
+
     </application>
 
 </manifest>

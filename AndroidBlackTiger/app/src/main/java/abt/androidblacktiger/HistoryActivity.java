@@ -2,19 +2,26 @@ package abt.androidblacktiger;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.concurrent.ExecutionException;
 
 public class HistoryActivity extends AppCompatActivity {
     HistoryDBHandler db;
+
+
+    public String wordKey = "abt.wordkey";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -22,12 +29,16 @@ public class HistoryActivity extends AppCompatActivity {
         SharedPreferences langPrefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         System.out.println("prefs");
         System.out.println(langPrefs.getAll());
-        ArrayList<String> words = new ArrayList<>();
+        HistoryDBHandler historyDBHandeler = new HistoryDBHandler(getApplicationContext());
+
+        final ArrayList<String> words = new ArrayList<>();
         String house;
         try {
-            house = new Translator().execute(new TranslatorParams(getApplicationContext(), "house")).get().get(0);
+            house = new Translator().execute(new TranslatorParams(getApplicationContext(), "house"), new TranslatorParams(getApplicationContext(), "house")).get().get(0);
             words.add(house);
         } catch (InterruptedException | ExecutionException e) {
+            Toast toast = Toast.makeText(getApplicationContext(), "An error was encountered running the translation", Toast.LENGTH_SHORT);
+            toast.show();
             e.printStackTrace();
         }
         words.add("house");
@@ -36,6 +47,7 @@ public class HistoryActivity extends AppCompatActivity {
         ArrayAdapter adapter = new ArrayAdapter<>(this, R.layout.textviewlay, words);
         ListView lv = (ListView) findViewById(R.id.history_listview);
         lv.setAdapter(adapter);
+
         db = ABTApplication.db;
 
 
@@ -43,6 +55,18 @@ public class HistoryActivity extends AppCompatActivity {
 
         System.out.println(""+test.toString());
 
+        final HistoryActivity historyActivity = this;
+
+        lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent intent = new Intent(historyActivity, NewVocabActivity.class);
+                String clickedWord = words.get(position);
+                NewLocationNotification.notify(historyActivity,clickedWord, "teach1");
+                intent.putExtra(wordKey, clickedWord);
+                startActivity(intent);
+            }
+        });
     }
 
     @Override

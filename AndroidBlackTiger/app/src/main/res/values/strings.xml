@@ -9,9 +9,12 @@
     <string name="select_lang">Please select Language</string>
     <string name="default_lang_from">Flag1</string>
     <string name="title_activity_maps">Map</string>
-    <string name="google_maps_key">  AIzaSyAypiPFKmFfutdEEunf0VcZRs9htVsZpp0</string>
+    <string name="google_api_key">  AIzaSyAypiPFKmFfutdEEunf0VcZRs9htVsZpp0</string>
     <string name="hello_blank_fragment">Hello</string>
-
+    <string name="lbl_you_are_at">YOU ARE AT</string>
+    <string name="btn_get_location">GET MY LOCATION</string>
+    <string name="btn_start_location_updates">START LOCATION UPDATES</string>
+    <string name="btn_stop_location_updates">STOP LOCATION UPDATES</string>
     <string-array name="language_options">
         <item>Irish</item>
         <item>French</item>
@@ -26,4 +29,9 @@
     <string name="TranslatedWord">Universidade</string>
     <string name="DoNotShowLocationCheckBox">Do not show this location again.</string>
     <string name="TakePictureButton">Take a picture</string>
+
+    <string name="new_location_notification_title_template">New location: %1$s</string>
+
+    <string name="new_location_notification_placeholder_text_template">You got a new word %1$s nearby. it\'s translation is %2$s.
+    </string>
 </resources>

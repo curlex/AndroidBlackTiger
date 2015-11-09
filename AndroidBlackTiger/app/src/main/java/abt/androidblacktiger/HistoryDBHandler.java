@@ -97,7 +97,7 @@ public class HistoryDBHandler extends SQLiteOpenHelper {
 
 
     // Getting All Contacts
-    public List<WordHistory> getAllContacts() {
+    public List<WordHistory> getAllWords() {
         List<WordHistory> wordList = new ArrayList<WordHistory>();
         // Select All Query
         String selectQuery = "SELECT  * FROM " + TABLE_HISTORY;

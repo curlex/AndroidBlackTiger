@@ -12,7 +12,6 @@ import android.widget.TextView;
 import android.widget.ViewSwitcher;
 
 public class NewVocabActivity extends AppCompatActivity {
-    HistoryDBHandeler db = new HistoryDBHandeler(getApplicationContext());
     private String engWord = "";
     private String translatedWord = "";
     private String[] wordsToShow = {engWord, translatedWord};
@@ -40,10 +39,6 @@ public class NewVocabActivity extends AppCompatActivity {
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-
-        // get the word in English and the translated word from database.
-        engWord = HistoryDBHandeler.COLUMN_WORD;
-        translatedWord = HistoryDBHandeler.COLUMN_TRANSLATION;
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {

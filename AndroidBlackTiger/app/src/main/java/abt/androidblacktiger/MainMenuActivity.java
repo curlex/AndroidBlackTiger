@@ -24,7 +24,9 @@ public class MainMenuActivity extends AppCompatActivity {
         Button button_Gps = (Button) findViewById(R.id.gps_button);
         ImageButton button_map_discovery = (ImageButton) findViewById(R.id.map_discovery_button);
         button_map_discovery.setBackgroundResource(R.drawable.mao); // name map gave error :P
-}
+        startService(new Intent(this, GPS.class));
+       // startService(new Intent(this, GPSTracker.class));
+    }
 
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.

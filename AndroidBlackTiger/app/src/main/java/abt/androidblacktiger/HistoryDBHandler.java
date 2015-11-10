@@ -7,10 +7,13 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Created by Maria on 22/10/2015.
  */
-public class HistoryDBHandeler  extends SQLiteOpenHelper {
+public class HistoryDBHandler extends SQLiteOpenHelper {
     // Database Version
     private static final int DATABASE_VERSION = 1;
     // Database Name
@@ -25,7 +28,7 @@ public class HistoryDBHandeler  extends SQLiteOpenHelper {
     public static final String COLUMN_SHOWN = "shown";
     public static final String COLUMN_IMAGE = "image";
 
-    public HistoryDBHandeler(Context context) {
+    public HistoryDBHandler(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
 
@@ -82,13 +85,43 @@ public class HistoryDBHandeler  extends SQLiteOpenHelper {
             data.setTranslation(cursor.getString(2));
             data.setLocation(cursor.getString(3));
             data.setShown(Integer.parseInt(cursor.getString(4)));
-            data.setLocation(cursor.getString(5));
+            data.setImagePath(cursor.getString(5));
             cursor.close();
         } else {
             data = null;
         }
         db.close();
         return data;
+    }
+
+
+
+    // Getting All Contacts
+    public List<WordHistory> getAllWords() {
+        List<WordHistory> wordList = new ArrayList<WordHistory>();
+        // Select All Query
+        String selectQuery = "SELECT  * FROM " + TABLE_HISTORY;
+
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery(selectQuery, null);
+
+        // looping through all rows and adding to list
+        if (cursor.moveToFirst()) {
+            do {
+                WordHistory data = new WordHistory();
+                data.setID(Integer.parseInt(cursor.getString(0)));
+                data.setWord(cursor.getString(1));
+                data.setTranslation(cursor.getString(2));
+                data.setLocation(cursor.getString(3));
+                data.setShown(Integer.parseInt(cursor.getString(4)));
+                data.setImagePath(cursor.getString(5));
+                // Adding contact to list
+                wordList.add(data);
+            } while (cursor.moveToNext());
+        }
+
+        // return contact list
+        return wordList;
     }
 }
 

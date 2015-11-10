@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item name="lblLocation" type="id" />
+    <item name="btnShowLocation" type="id" />
+    <item name="btnLocationUpdates" type="id" />
+    <item name="placeText" type="id" />
+    <item name="btnFind" type="id" />
+</resources>

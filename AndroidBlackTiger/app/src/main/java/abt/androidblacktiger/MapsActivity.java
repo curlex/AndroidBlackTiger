@@ -15,6 +15,8 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import java.util.concurrent.ExecutionException;
+
 //import com.google.android.gms.location.LocationServices;
 
 public class MapsActivity extends FragmentActivity implements GoogleMap.OnMyLocationChangeListener,
@@ -25,7 +27,11 @@ public class MapsActivity extends FragmentActivity implements GoogleMap.OnMyLoca
     private GoogleMap mMap; // Might be null if Google Play services APK is not available.
     private double longitude;
     private double latitude;
-
+    private double poiLat;
+    private double poiLng;
+    private String translatedString ="" ;
+    Translator t;
+    GPS gps;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,12 +42,14 @@ public class MapsActivity extends FragmentActivity implements GoogleMap.OnMyLoca
                 .addOnConnectionFailedListener(this)
                 .addApi(LocationServices.API)
                 .build();
-        GPSTracker gps = new GPSTracker(this);
-        if(gps.canGetLocation()) { // gps enabled} // return boolean true/false
-            latitude = gps.getLatitude(); // returns latitude
-            longitude = gps.getLongitude(); // returns longitude
+        gps = new GPS();
+       // if(gps.canGetLocation()) { // gps enabled} // return boolean true/false
+//            latitude = gps.getLatitude(); // returns latitude
+//            longitude = gps.getLongitude(); // returns longitude
+            poiLat = gps.poiLat;
+            poiLng = gps.poilng;
             setUpMap();
-        }
+       // }
     }
 
     @Override
@@ -80,11 +88,26 @@ public class MapsActivity extends FragmentActivity implements GoogleMap.OnMyLoca
     private void setUpMap() {
         // Marker on load
         LatLng currLocation = new LatLng(latitude,longitude);
+        LatLng poiLocation = new LatLng(poiLat,poiLng);
         //Marker window with info
         Marker mylocation = mMap.addMarker(new MarkerOptions()
                 .position(currLocation)
                 .title("I am here")
                 .snippet("Je suis ici"));
+        if(gps!=null) {
+            try {
+                System.out.println(gps.poi);
+                translatedString = new Translator().execute(new TranslatorParams(getApplicationContext(), gps.poi)).get().get(0);
+            } catch (InterruptedException | ExecutionException e) {
+                e.printStackTrace();
+            }
+            Marker poilocation = mMap.addMarker(new MarkerOptions()
+                    .position(poiLocation)
+                    .title(gps.poi)
+                    .snippet(translatedString));
+
+        }
+
     }
 
     @Override
@@ -95,7 +118,7 @@ public class MapsActivity extends FragmentActivity implements GoogleMap.OnMyLoca
         LatLng latLng = new LatLng(latitude,longitude);
         MarkerOptions options = new MarkerOptions()
                 .position(latLng)
-                .title("I am here!");
+                .title("Location Changed!");
         mMap.addMarker(options);
         mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
     }
@@ -118,7 +141,7 @@ public class MapsActivity extends FragmentActivity implements GoogleMap.OnMyLoca
         LatLng latLng = new LatLng(latitude,longitude);
         MarkerOptions options = new MarkerOptions()
                 .position(latLng)
-                .title("I am here!");
+                .title("New Location!");
         mMap.addMarker(options);
         mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
     }

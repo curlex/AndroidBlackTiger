@@ -1,9 +1,7 @@
 package abt.androidblacktiger;
 
 import android.annotation.TargetApi;
-import android.app.Notification;
-import android.app.NotificationManager;
-import android.app.PendingIntent;
+import android.app.*;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
@@ -34,9 +32,9 @@ public class NewLocationNotification {
         final String text = res.getString(
                 R.string.new_location_notification_placeholder_text_template, word, translation);
         Intent intent = new Intent(context, MapsActivity.class);
-        intent.putExtra(HistoryActivity.wordKey, word);
-        intent.putExtra(HistoryActivity.transKey, translation);
-        intent.putExtra(HistoryActivity.locaKey, location);
+        intent.putExtra(ListFragment.wordKey, word);
+        intent.putExtra(ListFragment.transKey, translation);
+        intent.putExtra(ListFragment.locaKey, location);
         final NotificationCompat.Builder builder = new NotificationCompat.Builder(context)
                 // Set appropriate defaults for the notification light, sound,
                 // and vibration.

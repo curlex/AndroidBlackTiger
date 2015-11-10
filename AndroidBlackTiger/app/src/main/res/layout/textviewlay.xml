@@ -1,6 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content" >
 <TextView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent" android:layout_height="match_parent"
-        android:text="@string/hello_world"
-        android:id="@+id/history_textview">
+    android:layout_width="fill_parent"
+    android:layout_height="match_parent"
+    android:text="@string/hello_world"
+    android:id="@+id/history_textview"
+    >
 </TextView>
+
+<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:text="@string/app_name"
+    android:id="@+id/translation_textview"
+    android:gravity="right"
+    >
+</TextView>
+    </RelativeLayout>

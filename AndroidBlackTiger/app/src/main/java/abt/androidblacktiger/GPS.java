@@ -105,7 +105,6 @@ public class GPS extends Service implements LocationListener,
 //            mGoogleApiClient.connect();
 //            startLocationUpdates();
 //        }
-        NewLocationNotification.notify(getApplicationContext(), "location", "service", "xyz");
         mGoogleApiClient.connect();
         Toast.makeText(this, "IS IT CONNECTED: "+mGoogleApiClient.isConnected(), Toast.LENGTH_SHORT).show();
         return START_STICKY;
@@ -196,7 +195,7 @@ public class GPS extends Service implements LocationListener,
                     .show();
 
         }
-        NewLocationNotification.notify(getApplicationContext(),"FOUND", "INSERVICE", "xyz");
+        NewLocationNotification.notify(getApplicationContext(), poi, translatedString, loc);
         //send it to places api
         //updatePlaces();
     }

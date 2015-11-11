@@ -1,8 +1,10 @@
 package abt.androidblacktiger;
 
+import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -14,6 +16,7 @@ import android.widget.ViewSwitcher;
 public class NewVocabActivity extends AppCompatActivity {
     private String engWord = "";
     private String translatedWord = "";
+    private String location = "";
     private String[] wordsToShow = {engWord, translatedWord};
     private int wordsCount = wordsToShow.length;
     private int index = 0;
@@ -24,6 +27,12 @@ public class NewVocabActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_vocab);
+        Intent intent = getIntent();
+        engWord = intent.getStringExtra(getString(R.string.word_intent_word));
+        translatedWord = intent.getStringExtra(getString(R.string.word_intent_translation));
+        location = intent.getStringExtra(getString(R.string.word_intent_location));
+        TextView textView = (TextView) findViewById(R.id.newVocabTextView);
+        textView.setText(engWord);
     }
 
     @Override

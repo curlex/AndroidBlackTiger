@@ -10,7 +10,9 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 /**
- * Created by Diarmuid Ryan. For use with ListFragment.
+ * For use with WordListFragment. Extends {@link ArrayAdapter}.
+ * Displays an {@link ArrayList} of {@link WordHistory} in a {@link android.widget.ListView}
+ * Author: Diarmuid
  */
 public class WordArrayAdapter extends ArrayAdapter<WordHistory> {
 
@@ -23,6 +25,13 @@ public class WordArrayAdapter extends ArrayAdapter<WordHistory> {
         this.words = words;
     }
 
+    /**
+     * Gets an individual row for display in the {@link android.widget.ListView}
+     * @param position The position of the row in the ListView
+     * @param view The view in which the rwo is contained
+     * @param parent The parent view of the row
+     * @return view with the data added
+     */
     public View getView (int position, View view, ViewGroup parent) {
         if(view == null) {
             LayoutInflater inflater = (LayoutInflater) context

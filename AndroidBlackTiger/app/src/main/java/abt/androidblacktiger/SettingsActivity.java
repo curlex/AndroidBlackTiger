@@ -5,6 +5,10 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 
+/**
+ * Nothing special in this activity, just displays SettingsFragment.
+ * Author: Diarmuid
+ */
 public class SettingsActivity extends AppCompatActivity {
 
     @Override

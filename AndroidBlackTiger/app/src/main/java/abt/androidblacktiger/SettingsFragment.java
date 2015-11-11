@@ -1,10 +1,12 @@
 package abt.androidblacktiger;
 
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceFragment;
-import android.widget.Toast;
 
+/**
+ * Nothing special here, just displays the settings from res/xml/pref_general.xml
+ * Author: Diarmuid
+ */
 public class SettingsFragment extends PreferenceFragment{
     @Override
     public void onCreate(Bundle savedInstanceState) {

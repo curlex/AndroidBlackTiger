@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,14 +13,12 @@ import java.util.ArrayList;
 
 
 /**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link ListFragment.OnFragmentInteractionListener} interface
- * to handle interaction events.
- * Use the {@link ListFragment#newInstance} factory method to
- * create an instance of this fragment.
+ * An {@link android.app.ListFragment} subclass.
+ * Displays all words in the database for this app using the getAllWords() function in
+ * {@link HistoryDBHandler}.
+ * Author: Diarmuid
  */
-public class ListFragment extends android.app.ListFragment {
+public class WordListFragment extends android.app.ListFragment {
 
     private ArrayList<WordHistory> words;
 
@@ -30,16 +27,21 @@ public class ListFragment extends android.app.ListFragment {
     /**
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
-     * @return A new instance of fragment ListFragment.
+     * @return A new instance of fragment WordListFragment.
      */
-    public static ListFragment newInstance() {
-        return new ListFragment();
+    public static WordListFragment newInstance() {
+        return new WordListFragment();
     }
 
-    public ListFragment() {
+    public WordListFragment() {
         // Required empty public constructor
     }
 
+
+    /**
+     * Gets the words from the database and displays them using a {@link WordArrayAdapter}
+     * @param savedInstanceState for the superclass
+     */
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,13 +50,18 @@ public class ListFragment extends android.app.ListFragment {
         setListAdapter(adapter);
     }
 
+
+    /**
+     * Handles clicks on items in the generated ListView. Opens {@link NewVocabActivity} with extras
+     * set for the word selected.
+     * @param l the listview
+     * @param v some view
+     * @param position the position in the list of the item clicked
+     * @param id The row id of the item that was clicked
+     */
     public void onListItemClick(ListView l, View v, int position, long id) {
+        super.onListItemClick(l,v,position,id);
         WordHistory clickedWord = words.get(position);
-        NewLocationNotification.notify(
-                getActivity().getApplicationContext(),
-                clickedWord.getWord(),
-                clickedWord.getTranslation(),
-                clickedWord.getLocation());
         Intent intent = new Intent(getActivity().getApplicationContext(), NewVocabActivity.class);
         intent.putExtra(getString(R.string.word_intent_word), clickedWord.getWord());
         intent.putExtra(getString(R.string.word_intent_translation), clickedWord.getTranslation());

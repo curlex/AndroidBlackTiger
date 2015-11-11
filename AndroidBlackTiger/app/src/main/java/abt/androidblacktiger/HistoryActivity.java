@@ -1,21 +1,18 @@
 package abt.androidblacktiger;
 
-import android.app.ListActivity;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ListView;
 
-import java.util.ArrayList;
-
-public class HistoryActivity extends AppCompatActivity implements ListFragment.OnFragmentInteractionListener {
+/**
+ * This activity doesn't do very much other than contribute the ActionBar.
+ * It's basically a placeholder for a WordListFragment.
+ * Author: Diarmuid
+ */
+public class HistoryActivity extends AppCompatActivity implements WordListFragment.OnFragmentInteractionListener {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,6 +27,11 @@ public class HistoryActivity extends AppCompatActivity implements ListFragment.O
         return true;
     }
 
+    /**
+     * Handles clicks in the menu.
+     * @param item The menu item that was clicked
+     * @return true if the click is handled in this method or the return of the superclass otherwise
+     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
@@ -47,6 +49,9 @@ public class HistoryActivity extends AppCompatActivity implements ListFragment.O
         return super.onOptionsItemSelected(item);
     }
 
+    /**
+     * Just a callback for the list fragment, doesn't do anything
+     */
     @Override
     public void onFragmentInteraction(Uri uri) {
         System.out.println(uri.toString());

@@ -24,9 +24,9 @@ public class WordArrayAdapter extends ArrayAdapter<WordHistory> {
     }
 
     public View getView (int position, View view, ViewGroup parent) {
-        LayoutInflater inflater = (LayoutInflater) context
-                .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         if(view == null) {
+            LayoutInflater inflater = (LayoutInflater) context
+                    .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             int resource = R.layout.textviewlay;
             view = inflater.inflate(resource, parent, false);
         }

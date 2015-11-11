@@ -32,9 +32,9 @@ public class NewLocationNotification {
         final String text = res.getString(
                 R.string.new_location_notification_placeholder_text_template, word, translation);
         Intent intent = new Intent(context, MapsActivity.class);
-        intent.putExtra(ListFragment.wordKey, word);
-        intent.putExtra(ListFragment.transKey, translation);
-        intent.putExtra(ListFragment.locaKey, location);
+        intent.putExtra(context.getString(R.string.word_intent_word), word);
+        intent.putExtra(context.getString(R.string.word_intent_translation), translation);
+        intent.putExtra(context.getString(R.string.word_intent_location), location);
         final NotificationCompat.Builder builder = new NotificationCompat.Builder(context)
                 // Set appropriate defaults for the notification light, sound,
                 // and vibration.

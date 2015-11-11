@@ -23,9 +23,6 @@ import java.util.ArrayList;
  */
 public class ListFragment extends android.app.ListFragment {
 
-    public static final String wordKey = "abt.wordkey";
-    public static final String transKey = "abt.transkey";
-    public static final String locaKey = "abt.locakey";
     private ArrayList<WordHistory> words;
 
     private OnFragmentInteractionListener mListener;
@@ -59,9 +56,9 @@ public class ListFragment extends android.app.ListFragment {
                 clickedWord.getTranslation(),
                 clickedWord.getLocation());
         Intent intent = new Intent(getActivity().getApplicationContext(), NewVocabActivity.class);
-        intent.putExtra(wordKey, clickedWord.getWord());
-        intent.putExtra(transKey, clickedWord.getTranslation());
-        intent.putExtra(locaKey, clickedWord.getLocation());
+        intent.putExtra(getString(R.string.word_intent_word), clickedWord.getWord());
+        intent.putExtra(getString(R.string.word_intent_translation), clickedWord.getTranslation());
+        intent.putExtra(getString(R.string.word_intent_location), clickedWord.getLocation());
         startActivity(intent);
     }
 

@@ -27,7 +27,7 @@ public class NewLocationNotification {
     public static void notify(final Context context, final String word, final String translation, final String location) {
         final Resources res = context.getResources();
         // This image is used as the notification's large icon (thumbnail).
-        final Bitmap picture = BitmapFactory.decodeResource(res, R.drawable.example_picture);
+        final Bitmap picture = BitmapFactory.decodeResource(res, R.drawable.mao);
         final String title = res.getString(R.string.new_location_notification_title_template, word);
         final String text = res.getString(
                 R.string.new_location_notification_placeholder_text_template, word, translation);

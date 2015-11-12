@@ -16,7 +16,7 @@
 <Button       android:id="@+id/dictionary_button"
 			  android:layout_width="wrap_content"
 			  android:layout_height="wrap_content"
-			  android:text="Dictionary"
+			  android:text="Test Camera"
 			  android:onClick="OpenNewActivity"
 			  android:layout_gravity="center_horizontal"
 			  android:layout_weight="0.34"/>

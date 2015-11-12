@@ -7,7 +7,7 @@
     tools:context="abt.androidblacktiger.NewVocabActivity">
 
     <TextView
-        android:id="@id/newVocabTextView"
+        android:id="@+id/newVocabTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="New Vocabulary"
@@ -19,7 +19,7 @@
         android:layout_marginTop="30dp" />
 
     <TextSwitcher
-        android:id="@id/textSwitcher"
+        android:id="@+id/textSwitcher"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
@@ -27,15 +27,16 @@
     </TextSwitcher>
 
     <Button
-        android:id="@id/changeWordsButton"
+        android:id="@+id/changeWordsButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/showTranslationButton"
-        android:layout_above="@id/newVocabCheckBox"
         android:layout_centerHorizontal="true" />
 
+    <!--android:layout_above="@id/newVocabCheckBox"-->
+
     <CheckBox
-        android:id="@id/newVocabCheckBox"
+        android:id="@+id/newVocabCheckBox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/DoNotShowLocationCheckBox"

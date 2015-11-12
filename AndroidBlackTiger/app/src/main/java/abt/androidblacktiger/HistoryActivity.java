@@ -1,72 +1,23 @@
 package abt.androidblacktiger;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
-import android.widget.Toast;
 
-import java.util.ArrayList;
-import java.util.concurrent.ExecutionException;
-
-public class HistoryActivity extends AppCompatActivity {
-    HistoryDBHandler db;
-
-
-    public String wordKey = "abt.wordkey";
+/**
+ * This activity doesn't do very much other than contribute the ActionBar.
+ * It's basically a placeholder for a WordListFragment.
+ * Author: Diarmuid
+ */
+public class HistoryActivity extends AppCompatActivity implements WordListFragment.OnFragmentInteractionListener {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_history);
-        SharedPreferences langPrefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-        System.out.println("prefs");
-        System.out.println(langPrefs.getAll());
-        HistoryDBHandler historyDBHandeler = new HistoryDBHandler(getApplicationContext());
-
-        final ArrayList<String> words = new ArrayList<>();
-        String house;
-        try {
-            house = new Translator().execute(new TranslatorParams(getApplicationContext(), "house"), new TranslatorParams(getApplicationContext(), "house")).get().get(0);
-            words.add(house);
-        } catch (InterruptedException | ExecutionException e) {
-            Toast toast = Toast.makeText(getApplicationContext(), "An error was encountered running the translation", Toast.LENGTH_SHORT);
-            toast.show();
-            e.printStackTrace();
-        }
-        words.add("house");
-        words.add("car");
-        words.add("field");
-        ArrayAdapter adapter = new ArrayAdapter<>(this, R.layout.textviewlay, words);
-        ListView lv = (ListView) findViewById(R.id.history_listview);
-        lv.setAdapter(adapter);
-
-        db = ABTApplication.db;
-
-
-        WordHistory test =db.findWord("college");
-
-        System.out.println(""+test.toString());
-
-        final HistoryActivity historyActivity = this;
-
-        lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent intent = new Intent(historyActivity, NewVocabActivity.class);
-                String clickedWord = words.get(position);
-                NewLocationNotification.notify(historyActivity,clickedWord, "teach1");
-                intent.putExtra(wordKey, clickedWord);
-                startActivity(intent);
-            }
-        });
     }
 
     @Override
@@ -76,6 +27,11 @@ public class HistoryActivity extends AppCompatActivity {
         return true;
     }
 
+    /**
+     * Handles clicks in the menu.
+     * @param item The menu item that was clicked
+     * @return true if the click is handled in this method or the return of the superclass otherwise
+     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
@@ -91,5 +47,13 @@ public class HistoryActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    /**
+     * Just a callback for the list fragment, doesn't do anything
+     */
+    @Override
+    public void onFragmentInteraction(Uri uri) {
+        System.out.println(uri.toString());
     }
 }

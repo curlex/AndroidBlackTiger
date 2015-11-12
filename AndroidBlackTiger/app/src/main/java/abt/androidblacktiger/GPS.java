@@ -25,7 +25,7 @@ public class GPS extends Service implements LocationListener,
     private static final String TAG = MainActivity.class.getSimpleName();
     private static int UPDATE_INTERVAL = 10000; // 10 sec
     private static int FASTEST_INTERVAL = 5000; // 5 sec
-    private static int DISPLACEMENT = 100; // 10 meters
+    private static int DISPLACEMENT = 100; // 100 meters
     private final static int PLAY_SERVICES_RESOLUTION_REQUEST = 1000;
     private LocationRequest mLocationRequest;
     public static GoogleApiClient mGoogleApiClient;
@@ -105,9 +105,9 @@ public class GPS extends Service implements LocationListener,
 //            mGoogleApiClient.connect();
 //            startLocationUpdates();
 //        }
-        NewLocationNotification.notify(getApplicationContext(),"location", "service");
-
-        return START_NOT_STICKY;
+        mGoogleApiClient.connect();
+        Toast.makeText(this, "IS IT CONNECTED: "+mGoogleApiClient.isConnected(), Toast.LENGTH_SHORT).show();
+        return START_STICKY;
     }
     /**
      * Starting the location updates
@@ -195,7 +195,7 @@ public class GPS extends Service implements LocationListener,
                     .show();
 
         }
-
+        NewLocationNotification.notify(getApplicationContext(), poi, translatedString, loc);
         //send it to places api
         //updatePlaces();
     }

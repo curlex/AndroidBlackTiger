@@ -1,9 +1,7 @@
 package abt.androidblacktiger;
 
 import android.annotation.TargetApi;
-import android.app.Notification;
-import android.app.NotificationManager;
-import android.app.PendingIntent;
+import android.app.*;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
@@ -14,11 +12,8 @@ import android.os.Build;
 import android.support.v4.app.NotificationCompat;
 
 /**
- * Helper class for showing and canceling new location
- * notifications.
- * <p/>
- * This class makes heavy use of the {@link NotificationCompat.Builder} helper
- * class to create notifications in a backward-compatible way.
+ * Provides methods for notifications for the Android Black Tiger App.
+ * Author: Diarmuid
  */
 public class NewLocationNotification {
     /**
@@ -26,13 +21,27 @@ public class NewLocationNotification {
      */
     private static final String NOTIFICATION_TAG = "NewLocation";
 
-    public static void notify(final Context context, final String word, final String translation) {
+    /**
+     * Displays a notification to show a new location that has been found.
+     * When the notification is clicked, it opens Maps Activity with the same extras as the args
+     * passed to the notification.
+     * @param context A context for the app displaying the notification
+     * @param word The english word to be displayed
+     * @param translation The translated word to be displayed
+     * @param location A string representation of the lat/lon coordinates to be passed to MapsActivity.
+     * Author: Diarmuid
+     */
+    public static void notify(final Context context, final String word, final String translation, final String location) {
         final Resources res = context.getResources();
         // This image is used as the notification's large icon (thumbnail).
-        final Bitmap picture = BitmapFactory.decodeResource(res, R.drawable.example_picture);
+        final Bitmap picture = BitmapFactory.decodeResource(res, R.drawable.mao);
         final String title = res.getString(R.string.new_location_notification_title_template, word);
         final String text = res.getString(
                 R.string.new_location_notification_placeholder_text_template, word, translation);
+        Intent intent = new Intent(context, MapsActivity.class);
+        intent.putExtra(context.getString(R.string.word_intent_word), word);
+        intent.putExtra(context.getString(R.string.word_intent_translation), translation);
+        intent.putExtra(context.getString(R.string.word_intent_location), location);
         final NotificationCompat.Builder builder = new NotificationCompat.Builder(context)
                 // Set appropriate defaults for the notification light, sound,
                 // and vibration.
@@ -53,22 +62,13 @@ public class NewLocationNotification {
                         // Set ticker text (preview) information for this notification.
                 .setTicker(word)
 
-                        // If this notification relates to a past or upcoming event, you
-                        // should set the relevant time information using the setWhen
-                        // method below. If this call is omitted, the notification's
-                        // timestamp will by set to the time at which it was shown.
-                        // TODO: Call setWhen if this notification relates to a past or
-                        // upcoming event. The sole argument to this method should be
-                        // the notification timestamp in milliseconds.
-                        //.setWhen(...)
-
                         // Set the pending intent to be initiated when the user touches
                         // the notification.
                 .setContentIntent(
                         PendingIntent.getActivity(
                                 context,
                                 0,
-                                new Intent(context, MapsActivity.class),
+                                intent,
                                 PendingIntent.FLAG_UPDATE_CURRENT))
 
                         // Show expanded text content on devices running Android 4.1 or
@@ -97,7 +97,7 @@ public class NewLocationNotification {
 
     /**
      * Cancels any notifications of this type previously shown using
-     * {@link #notify(Context, String, String)}.
+     * {@link #notify(Context, String, String, String)}.
      */
     @TargetApi(Build.VERSION_CODES.ECLAIR)
     public static void cancel(final Context context) {

@@ -16,7 +16,7 @@
         android:textColor="#008"
         android:layout_below="@+id/fragment"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="30dp" />
+        android:layout_marginTop="20dp" />
 
     <TextSwitcher
         android:id="@+id/textSwitcher"

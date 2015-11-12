@@ -34,7 +34,7 @@
 
     <string name="new_location_notification_placeholder_text_template">You got a new word %1$s nearby. it\'s translation is %2$s.
     </string>
-    <string name="showTranslationButton">Swap Word</string>
+    <string name="showTranslationButton">Check the word and translation</string>
     <string name="title_activity_memorable">MemorableActivity</string>
 
     <!-- KEYS FOR INTENT EXTRAS -->

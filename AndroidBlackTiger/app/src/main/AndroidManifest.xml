@@ -86,6 +86,10 @@
                 android:value="abt.androidblacktiger.MainMenuActivity" />
         </activity>
         <activity
+            android:name=".DiscoverMap"
+            android:label="@string/title_activity_discover_map" >
+        </activity>
+        <activity
             android:name=".SettingsActivity"
             android:label="@string/title_activity_settings" >
         </activity>

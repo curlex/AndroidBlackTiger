@@ -20,14 +20,14 @@ import java.util.ArrayList;
  * Created by Asma on 02/11/2015.
  */
 // must be created inside an activity
-public class GetLocations extends AsyncTask<String,Void,LocationObject> {
+public class GetLocations extends AsyncTask<String,Void,ArrayList<LocationObject>> {
     private final static String LOG_TAG = GetLocations.class.getSimpleName();
     @Override
     protected void onPreExecute(){
         CharSequence message = "";
 
     }
-    protected LocationObject doInBackground(String... params) {
+    protected ArrayList<LocationObject> doInBackground(String... params) {
         // If there's no geometry, there's nothing to look up.  Verify size of params.
         if (params.length == 0) {
             return null;
@@ -38,19 +38,22 @@ public class GetLocations extends AsyncTask<String,Void,LocationObject> {
         String nearbyPlacesJsonStr = null;
         // new server key to be able to use Google Places Web Service API
         String key = "AIzaSyD50RlH8xh80ouLULgvNCiMntFVnFTxjuI";
-        String distance = "500";  //in meters
+        String distance = "100";  //in meters
         String type = "school";
+        String d = "distance";
         try {
             // Construct the URL
             final String GOOGLE_NEARBY_SEARCH_URL = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?";
             final String LOCATION_PARAM = "location"; // latitude longitude
             final String RADIUS_PARAM = "radius";
+            final String RANKBY_PARAM = "rankby";
             final String TYPE_PARAM= "type"; // list type|type|
             final String KEY_PARAM = "key";
             String[] location = params[0].split(",");
             Uri builtUri = Uri.parse(GOOGLE_NEARBY_SEARCH_URL).buildUpon()
                     .appendQueryParameter(LOCATION_PARAM,location[0]+","+location[1])
                     .appendQueryParameter(RADIUS_PARAM, distance)
+                    //.appendQueryParameter(RANKBY_PARAM, d)
                     .appendQueryParameter(TYPE_PARAM, type)
                     .appendQueryParameter(KEY_PARAM, key)
                     .build();
@@ -100,10 +103,9 @@ public class GetLocations extends AsyncTask<String,Void,LocationObject> {
      * Take the String representing the nearby in JSON Format and
      * pull out the data we need to construct the Strings needed for the displaying i.e tpye.
      */
-    private static LocationObject getTypesFromJson(String nearbyPlaces)throws JSONException {
+    private static ArrayList<LocationObject> getTypesFromJson(String nearbyPlaces)throws JSONException {
         ArrayList<LocationObject> types = new ArrayList<LocationObject>();
         StringBuilder sb = new StringBuilder();
-
         try{
             Log.v(LOG_TAG, "The JSON response: " + nearbyPlaces);
             JSONObject jsonObject= new JSONObject( nearbyPlaces );
@@ -115,6 +117,7 @@ public class GetLocations extends AsyncTask<String,Void,LocationObject> {
                     if(jsonArray.getJSONObject(i).has("name")){
                         if (jsonArray.getJSONObject(i).has("types") && jsonArray.getJSONObject(i).has("geometry")) {
                             types.add(new LocationObject());
+                            types.get(i).setName(jsonArray.getJSONObject(i).get("name").toString());
                             JSONArray typesArray = jsonArray.getJSONObject(i).getJSONArray("types");
                             for (int j = 0; j < typesArray.length(); j++) {
                                 types.get(i).addType(typesArray.getString(j));
@@ -122,7 +125,7 @@ public class GetLocations extends AsyncTask<String,Void,LocationObject> {
                             }
                             String lat = jsonArray.getJSONObject(i).getJSONObject("geometry").getJSONObject("location").get("lat").toString();
                             String lng = jsonArray.getJSONObject(i).getJSONObject("geometry").getJSONObject("location").get("lng").toString();
-                            types.get(i).setLat(lat);
+                            types.get(i).setLatitude(lat);
                             types.get(i).setLongitude(lng);
                             Log.v(LOG_TAG, "Parsing Geometry: " + lat + " "+lng);
                         }
@@ -131,9 +134,9 @@ public class GetLocations extends AsyncTask<String,Void,LocationObject> {
             }
         } catch (Exception e) {
             e.printStackTrace();
-            return new LocationObject();
+            return new ArrayList<LocationObject>();
         }
-        return types.get(0);
+        return types;
     }
 
     /**return the data from website as a string in the correct JSON format

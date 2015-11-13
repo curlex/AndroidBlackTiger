@@ -33,12 +33,12 @@ public class GPS extends Service implements LocationListener,
     private LocationRequest mLocationRequest;
     public static GoogleApiClient mGoogleApiClient;
     Location location; // location
-    public static double latitude; // latitude
-    public static double longitude; // longitude
-    public static double poiLat = 0;
-    public static double poilng= 0;
-    public static String poi ="house"; //
-    public static ArrayList <LocationObject> pointOfInterest ;
+    double latitude; // latitude
+    double longitude; // longitude
+    double poiLat = 0;
+    double poilng= 0;
+    String poi ="house"; //
+    ArrayList <LocationObject> pointOfInterest ;
     private String translatedString;
 
     private SharedPreferences.OnSharedPreferenceChangeListener changeListener;

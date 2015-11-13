@@ -18,6 +18,7 @@ import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.location.places.Places;
 
+import java.util.ArrayList;
 import java.util.concurrent.ExecutionException;
 
 public class GPS extends Service implements LocationListener,
@@ -27,17 +28,17 @@ public class GPS extends Service implements LocationListener,
     private static final String TAG = MainActivity.class.getSimpleName();
     private static int UPDATE_INTERVAL = 10000; // 10 sec
     private static int FASTEST_INTERVAL = 5000; // 5 sec
-    private static int DISPLACEMENT = 100; // 100 meters
+    private static int DISPLACEMENT = 10; // 100 meters
     private final static int PLAY_SERVICES_RESOLUTION_REQUEST = 1000;
     private LocationRequest mLocationRequest;
     public static GoogleApiClient mGoogleApiClient;
     Location location; // location
-    double latitude; // latitude
-    double longitude; // longitude
-    double poiLat = 0;
-    double poilng= 0;
-    String poi ="house"; //
-    LocationObject pointOfInterest;
+    public static double latitude; // latitude
+    public static double longitude; // longitude
+    public static double poiLat = 0;
+    public static double poilng= 0;
+    public static String poi ="house"; //
+    public static ArrayList <LocationObject> pointOfInterest ;
     private String translatedString;
 
     private SharedPreferences.OnSharedPreferenceChangeListener changeListener;
@@ -61,10 +62,10 @@ public class GPS extends Service implements LocationListener,
             }
         };
         preferences.registerOnSharedPreferenceChangeListener(changeListener);
-                //  if (checkPlayServices()) {
-            buildGoogleApiClient();
-            createLocationRequest();
-       // }
+        //  if (checkPlayServices()) {
+        buildGoogleApiClient();
+        createLocationRequest();
+        // }
     }
 
     private void checkGPSSettings(SharedPreferences prefs) {
@@ -122,14 +123,13 @@ public class GPS extends Service implements LocationListener,
 
     public int onStartCommand(Intent intent, int flags, int startId) {
         super.onStartCommand(intent, flags, startId);
-        Toast.makeText(this, "service starting", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "Service starting", Toast.LENGTH_SHORT).show();
 //        // If we get killed, after returning from here, restart
 //        // Building the GoogleApi client
-//        if (mGoogleApiClient != null) {
-//            mGoogleApiClient.connect();
-//            startLocationUpdates();
-//        }
-        mGoogleApiClient.connect();
+        if (mGoogleApiClient != null) {
+            mGoogleApiClient.connect();
+        }
+        else mGoogleApiClient.connect();
         Toast.makeText(this, "IS IT CONNECTED: "+mGoogleApiClient.isConnected(), Toast.LENGTH_SHORT).show();
         return START_STICKY;
     }
@@ -200,13 +200,16 @@ public class GPS extends Service implements LocationListener,
         String loc = latitude+","+longitude;
         try {
             pointOfInterest = new GetLocations().execute(loc).get();
-        } catch (InterruptedException | ExecutionException e) {
+            poiLat = pointOfInterest.get(0).getLatitude();
+            poilng = pointOfInterest.get(0).getLongitude();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
             e.printStackTrace();
         }
-        poiLat = pointOfInterest.getLatitude() ;
-        poilng = pointOfInterest.getLongitude();
-        if( !pointOfInterest.getTypes().isEmpty()){
-            poi = pointOfInterest.getTypes().get(0);
+
+        if( !pointOfInterest.get(0).getTypes().isEmpty()){
+            poi = pointOfInterest.get(0).getTypes().get(0);
             Translator translator = new Translator(getApplicationContext());
             try {
                 translatedString = translator.execute(poi).get().get(0);
@@ -219,7 +222,7 @@ public class GPS extends Service implements LocationListener,
                     .show();
 
         }
-        NewLocationNotification.notify(getApplicationContext(), poi, translatedString, loc);
+        NewLocationNotification.notify(getApplicationContext(),pointOfInterest.get(0).getName()+" "+ poi, translatedString, poiLat,poilng);
         //send it to places api
         //updatePlaces();
     }
@@ -242,6 +245,7 @@ public class GPS extends Service implements LocationListener,
     @Override
     public void onDestroy() {
         Log.i("info", "Service is destroyed");
+        Toast.makeText(this, "service stopping", Toast.LENGTH_LONG).show();
         stopLocationUpdates();
         super.onDestroy();
     }

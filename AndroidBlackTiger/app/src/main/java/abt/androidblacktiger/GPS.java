@@ -2,9 +2,11 @@ package abt.androidblacktiger;
 
 import android.app.Service;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.location.Location;
 import android.os.Bundle;
 import android.os.IBinder;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -38,6 +40,8 @@ public class GPS extends Service implements LocationListener,
     LocationObject pointOfInterest;
     private String translatedString;
 
+    private SharedPreferences.OnSharedPreferenceChangeListener changeListener;
+
     public GPS() {
 
     }
@@ -47,7 +51,23 @@ public class GPS extends Service implements LocationListener,
     */
     @Override
     public void onCreate() {
-      //  if (checkPlayServices()) {
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        preferences.getBoolean(getString(R.string.preference_gps), true);
+        changeListener = new SharedPreferences.OnSharedPreferenceChangeListener() {
+            @Override
+            public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+                if (key.equals(getString(R.string.preference_gps))) {
+                    boolean gpsOn = sharedPreferences.getBoolean(key, true);
+                    if (gpsOn) {
+                        startLocationUpdates();
+                    } else {
+                        stopLocationUpdates();
+                    }
+                }
+            }
+        };
+        preferences.registerOnSharedPreferenceChangeListener(changeListener);
+                //  if (checkPlayServices()) {
             buildGoogleApiClient();
             createLocationRequest();
        // }
@@ -121,6 +141,7 @@ public class GPS extends Service implements LocationListener,
      * Stopping location updates
      */
     protected void stopLocationUpdates() {
+        Toast.makeText(this, "updates stopping", Toast.LENGTH_SHORT).show();
         LocationServices.FusedLocationApi.removeLocationUpdates(
                 mGoogleApiClient, this);
     }
@@ -175,9 +196,7 @@ public class GPS extends Service implements LocationListener,
         String loc = latitude+","+longitude;
         try {
             pointOfInterest = new GetLocations().execute(loc).get();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (ExecutionException e) {
+        } catch (InterruptedException | ExecutionException e) {
             e.printStackTrace();
         }
         poiLat = pointOfInterest.getLatitude() ;
@@ -209,11 +228,7 @@ public class GPS extends Service implements LocationListener,
         int resultCode = GooglePlayServicesUtil.isGooglePlayServicesAvailable(GPS.this);
 
         // If Google Play services is available
-        if (ConnectionResult.SUCCESS == resultCode) {
-            return true;
-        } else {
-            return false;
-        }
+        return ConnectionResult.SUCCESS == resultCode;
     }
     /*
      Called when Sevice running in backgroung is stopped.

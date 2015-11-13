@@ -40,7 +40,8 @@
     <!-- KEYS FOR INTENT EXTRAS -->
     <string name="word_intent_word">abt.word_intent.word</string>
     <string name="word_intent_translation">abt.word_intent.translation</string>
-    <string name="word_intent_location">abt.word_intent.location</string>
+    <string name="word_intent_Longitude">abt.word_intent.Longitude</string>
+    <string name="word_intent_Latitude">abt.word_intent.Latitude</string>
 
     <!-- KEYS FOR PREFERENCES -->
     <string name="preference_gps">track_setting</string>

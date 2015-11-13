@@ -31,7 +31,7 @@ public class NewLocationNotification {
      * @param location A string representation of the lat/lon coordinates to be passed to MapsActivity.
      * Author: Diarmuid
      */
-    public static void notify(final Context context, final String word, final String translation, final String location) {
+    public static void notify(final Context context, final String word, final String translation, final double lat,final double lng) {
         final Resources res = context.getResources();
         // This image is used as the notification's large icon (thumbnail).
         final Bitmap picture = BitmapFactory.decodeResource(res, R.drawable.mao);
@@ -41,8 +41,8 @@ public class NewLocationNotification {
         Intent intent = new Intent(context, MapsActivity.class);
         intent.putExtra(context.getString(R.string.word_intent_word), word);
         intent.putExtra(context.getString(R.string.word_intent_translation), translation);
-        intent.putExtra(context.getString(R.string.word_intent_location), location);
-        Intent settingsIntent = new Intent(context,SettingsActivity.class);
+        intent.putExtra(context.getString(R.string.word_intent_Latitude), lat);
+        intent.putExtra(context.getString(R.string.word_intent_Longitude), lng);
         PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, settingsIntent,Intent.FILL_IN_ACTION);
         final NotificationCompat.Builder builder = new NotificationCompat.Builder(context)
                 // Set appropriate defaults for the notification light, sound,

@@ -88,8 +88,7 @@ public class DiscoverMap extends FragmentActivity implements LocationListener,
                                 // to accomodate this but now I realist that's pointless as they
                                 // still have to be added to nearbyLocations in the for loop?
                                 Translator translator = new Translator(getApplicationContext());
-                                String[] toTranslate = (String[]) nearbyLocations.get(i).getTypes().toArray();
-                                ArrayList<String> translatedWords = translator.execute(toTranslate).get();
+                                ArrayList<String> translatedWords = translator.execute(nearbyLocations.get(i).getTypes()).get();
 //                                Maybe we could use an
                                 for (int j = 0; j < nearbyLocations.get(i).getTypes().size(); j++) {
                                     nearbyLocations.get(i).setTranslatedWord(nearbyLocations.get(i).getTypes().get(j), translatedWords.get(i));

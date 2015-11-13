@@ -28,7 +28,6 @@ public class NewLocationNotification {
      * @param context A context for the app displaying the notification
      * @param word The english word to be displayed
      * @param translation The translated word to be displayed
-     * @param location A string representation of the lat/lon coordinates to be passed to MapsActivity.
      * Author: Diarmuid
      */
     public static void notify(final Context context, final String word, final String translation, final double lat,final double lng) {
@@ -43,6 +42,7 @@ public class NewLocationNotification {
         intent.putExtra(context.getString(R.string.word_intent_translation), translation);
         intent.putExtra(context.getString(R.string.word_intent_Latitude), lat);
         intent.putExtra(context.getString(R.string.word_intent_Longitude), lng);
+        Intent settingsIntent = new Intent(context, SettingsActivity.class);
         PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, settingsIntent,Intent.FILL_IN_ACTION);
         final NotificationCompat.Builder builder = new NotificationCompat.Builder(context)
                 // Set appropriate defaults for the notification light, sound,
@@ -100,7 +100,6 @@ public class NewLocationNotification {
 
     /**
      * Cancels any notifications of this type previously shown using
-     * {@link #notify(Context, String, String, String)}.
      */
     @TargetApi(Build.VERSION_CODES.ECLAIR)
     public static void cancel(final Context context) {

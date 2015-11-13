@@ -23,6 +23,7 @@ import com.google.android.gms.location.places.PlaceLikelihood;
 import com.google.android.gms.location.places.PlaceLikelihoodBuffer;
 import com.google.android.gms.location.places.Places;
 
+import java.util.ArrayList;
 import java.util.concurrent.ExecutionException;
 
 /**
@@ -320,8 +321,10 @@ public class NewGPS extends Activity implements LocationListener,ConnectionCallb
         if( !pointOfInterest.getTypes().isEmpty()){
             poi = pointOfInterest.getTypes().get(0);
             Translator translator = new Translator(getApplicationContext());
+            ArrayList<String> strings = new ArrayList<String>();
+            strings.add(poi);
             try {
-                translatedString = translator.execute(poi).get().get(0);
+                translatedString = translator.execute(strings).get().get(0);
             } catch (InterruptedException | ExecutionException e) {
                 e.printStackTrace();
             }

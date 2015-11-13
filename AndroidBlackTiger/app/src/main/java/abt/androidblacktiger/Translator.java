@@ -16,7 +16,7 @@ import java.util.ArrayList;
  * Should be called as Translator.execute()
  * Author: Diarmuid
  */
-public class Translator extends AsyncTask<String, Void, ArrayList<String>> {
+public class Translator extends AsyncTask<ArrayList<String>, Void, ArrayList<String>> {
 
     private Context context;
 
@@ -25,7 +25,8 @@ public class Translator extends AsyncTask<String, Void, ArrayList<String>> {
     }
 
     @Override
-    protected ArrayList<String> doInBackground(String... englishWords) {
+    protected ArrayList<String> doInBackground(ArrayList<String>... toTranslate) {
+        ArrayList<String> englishWords = toTranslate[0];
         ArrayList<String> words = new ArrayList<>();
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context.getApplicationContext());
         Translate.setKey(ApiKeys.YANDEX_API_KEY);

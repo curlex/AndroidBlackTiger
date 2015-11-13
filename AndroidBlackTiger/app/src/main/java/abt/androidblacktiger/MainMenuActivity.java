@@ -68,7 +68,7 @@ public class MainMenuActivity extends AppCompatActivity {
         else
         {
             //Replace MainMenuActivity.class with the name of activity corresponding to Map
-            intent = new Intent(this, MapsActivity.class);
+            intent = new Intent(this, DiscoverMap.class);
         }
         if(intent != null) {
             startActivity(intent);

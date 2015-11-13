@@ -310,7 +310,7 @@ public class NewGPS extends Activity implements LocationListener,ConnectionCallb
         // calls an asynctask to get JSON data of nearby locations and its types
         //task takes loc which is the latitude and longitude of the current location split with a comma
         try {
-            pointOfInterest = new GetLocations().execute(loc).get();
+            pointOfInterest = new GetLocations().execute(loc).get().get(0);
         } catch (InterruptedException | ExecutionException e) {
             e.printStackTrace();
         }

@@ -52,17 +52,11 @@ public class GPS extends Service implements LocationListener,
     @Override
     public void onCreate() {
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-        preferences.getBoolean(getString(R.string.preference_gps), true);
         changeListener = new SharedPreferences.OnSharedPreferenceChangeListener() {
             @Override
             public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
                 if (key.equals(getString(R.string.preference_gps))) {
-                    boolean gpsOn = sharedPreferences.getBoolean(key, true);
-                    if (gpsOn) {
-                        startLocationUpdates();
-                    } else {
-                        stopLocationUpdates();
-                    }
+                    checkGPSSettings(sharedPreferences);
                 }
             }
         };
@@ -72,6 +66,16 @@ public class GPS extends Service implements LocationListener,
             createLocationRequest();
        // }
     }
+
+    private void checkGPSSettings(SharedPreferences prefs) {
+        boolean gpsOn = prefs.getBoolean(getString(R.string.preference_gps), true);
+        if (gpsOn) {
+            startLocationUpdates();
+        } else {
+            stopLocationUpdates();
+        }
+    }
+
     /**
      * Method to verify google play services on the device
      * */
@@ -171,7 +175,7 @@ public class GPS extends Service implements LocationListener,
     @Override
     public void onConnected(Bundle arg0) {
         Log.i("info", "Location Client is Connected");
-        startLocationUpdates();
+        checkGPSSettings(PreferenceManager.getDefaultSharedPreferences(getApplicationContext()));
         Log.i("info", "Service Connect status :: " + isServicesConnected());
         Log.v("GPS", "Service Connect status :: " + isServicesConnected());
     }

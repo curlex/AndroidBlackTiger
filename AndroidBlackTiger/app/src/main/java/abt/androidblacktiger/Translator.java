@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.preference.PreferenceManager;
-import android.widget.Toast;
 
 import com.rmtheis.yandtran.ApiKeys;
 import com.rmtheis.yandtran.language.Language;

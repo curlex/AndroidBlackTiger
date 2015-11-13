@@ -84,11 +84,15 @@ public class DiscoverMap extends FragmentActivity implements LocationListener,
 
                             for (int i = 0; i < nearbyLocations.size(); i++) {
                                 translatedStrings.add(i, nearbyLocations.get(i).getName());
+                                // Changed this to accommadate changes to Translator that were made
+                                // to accomodate this but now I realist that's pointless as they
+                                // still have to be added to nearbyLocations in the for loop?
                                 Translator translator = new Translator(getApplicationContext());
-                                String [] strings = {"thing1", "thing2"};
-                                ArrayList<String> translatedWords = translator.execute(strings).get();
+                                String[] toTranslate = (String[]) nearbyLocations.get(i).getTypes().toArray();
+                                ArrayList<String> translatedWords = translator.execute(toTranslate).get();
+//                                Maybe we could use an
                                 for (int j = 0; j < nearbyLocations.get(i).getTypes().size(); j++) {
-                                    nearbyLocations.get(i).setTranslatedWord(nearbyLocations.get(i).getTypes().get(j), translator.execute(translatedStrings.get(i)).get().get(0));
+                                    nearbyLocations.get(i).setTranslatedWord(nearbyLocations.get(i).getTypes().get(j), translatedWords.get(i));
                                 }
 
                                 addMarkers();

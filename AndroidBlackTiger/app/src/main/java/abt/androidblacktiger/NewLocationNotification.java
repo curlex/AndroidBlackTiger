@@ -42,6 +42,8 @@ public class NewLocationNotification {
         intent.putExtra(context.getString(R.string.word_intent_word), word);
         intent.putExtra(context.getString(R.string.word_intent_translation), translation);
         intent.putExtra(context.getString(R.string.word_intent_location), location);
+        Intent settingsIntent = new Intent(context,SettingsActivity.class);
+        PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, settingsIntent,Intent.FILL_IN_ACTION);
         final NotificationCompat.Builder builder = new NotificationCompat.Builder(context)
                 // Set appropriate defaults for the notification light, sound,
                 // and vibration.
@@ -79,7 +81,8 @@ public class NewLocationNotification {
                         .setSummaryText("You have a new word to learn!"))
 
                         // Automatically dismiss the notification when it is touched.
-                .setAutoCancel(true);
+                .setAutoCancel(true)
+                .addAction(R.drawable.mao_notif, "Stop Notifications", pendingIntent);
 
         notify(context, builder.build());
     }

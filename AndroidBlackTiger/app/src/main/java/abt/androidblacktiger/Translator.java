@@ -17,49 +17,29 @@ import java.util.ArrayList;
  * Should be called as Translator.execute()
  * Author: Diarmuid
  */
-public class Translator extends AsyncTask<TranslatorParams, Void, ArrayList<String>> {
+public class Translator extends AsyncTask<String, Void, ArrayList<String>> {
 
-    private static String translate(Context context, String word) {
+    private Context context;
+
+    public Translator(Context context) {
+        this.context = context;
+    }
+
+    @Override
+    protected ArrayList<String> doInBackground(String... englishWords) {
+        ArrayList<String> words = new ArrayList<>();
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context.getApplicationContext());
         Translate.setKey(ApiKeys.YANDEX_API_KEY);
         Language srcLang = Language.ENGLISH;
         Language destLang = Language.fromString(prefs.getString(SettingsListener.DESTINATION_LANGUAGE, "en"));
-        try {
-            return Translate.execute(word, srcLang, destLang);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return "";
-        }
-    }
-
-    @Override
-    protected ArrayList<String> doInBackground(TranslatorParams... params) {
-        ArrayList<String> words = new ArrayList<>();
-        for (TranslatorParams param : params) {
-            words.add(translate(param.getContext(), param.getWord()));
+        for (String param : englishWords) {
+            try {
+                words.add(Translate.execute(param, srcLang, destLang));
+            } catch (Exception e) {
+                e.printStackTrace();
+                words.add("---Error Translating---");
+            }
         }
         return words;
-    }
-}
-
-/**
- * A class for storing parameters for the Translator
- */
-class TranslatorParams {
-    private final Context context;
-    private final String word;
-
-    public TranslatorParams(Context context, String word) {
-
-        this.context = context;
-        this.word = word;
-    }
-
-    public Context getContext() {
-        return context;
-    }
-
-    public String getWord() {
-        return word;
     }
 }

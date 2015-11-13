@@ -207,8 +207,9 @@ public class GPS extends Service implements LocationListener,
         poilng = pointOfInterest.getLongitude();
         if( !pointOfInterest.getTypes().isEmpty()){
             poi = pointOfInterest.getTypes().get(0);
+            Translator translator = new Translator(getApplicationContext());
             try {
-                translatedString = new Translator().execute(new TranslatorParams(getApplicationContext(), poi)).get().get(0);
+                translatedString = translator.execute(poi).get().get(0);
             } catch (InterruptedException | ExecutionException e) {
                 e.printStackTrace();
             }

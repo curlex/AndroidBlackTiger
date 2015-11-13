@@ -95,9 +95,10 @@ public class MapsActivity extends FragmentActivity implements GoogleMap.OnMyLoca
                 .title("I am here")
                 .snippet("Je suis ici"));
         if(gps!=null) {
+            Translator translator = new Translator(getApplicationContext());
             try {
                 System.out.println(gps.poi);
-                translatedString = new Translator().execute(new TranslatorParams(getApplicationContext(), gps.poi)).get().get(0);
+                translatedString = translator.execute(gps.poi).get().get(0);
             } catch (InterruptedException | ExecutionException e) {
                 e.printStackTrace();
             }

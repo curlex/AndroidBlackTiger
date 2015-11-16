@@ -12,15 +12,17 @@ import java.util.List;
  */
 public class ABTApplication extends Application {
     public static HistoryDBHandler db;
+    private boolean activeDB = false;
 
     @Override
     public void onCreate()
     {
         super.onCreate();
-        db = new HistoryDBHandler(this.getApplicationContext());
-        initDB();
-        // Initialize the singletons so their instances
-        // are bound to the application process.
+        if(!activeDB) {
+            db = new HistoryDBHandler(this.getApplicationContext());
+            initDB();
+            activeDB = false;
+        }
 
     }
 

@@ -15,6 +15,7 @@ import java.util.List;
  * Created by Maria on 22/10/2015.
  */
 public class HistoryDBHandler extends SQLiteOpenHelper {
+    private static HistoryDBHandler db;
     // Database Version
     private static final int DATABASE_VERSION = 1;
     // Database Name
@@ -38,6 +39,7 @@ public class HistoryDBHandler extends SQLiteOpenHelper {
 
     public HistoryDBHandler(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
+
     }
 
     @Override

@@ -57,9 +57,9 @@ public class NewVocabActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    public void openActivity(View view) {
-        startActivity(new Intent(NewVocabActivity.this, CameraActivity.class));
-    }
+    /*public void openActivity(View view) {
+        //startActivity(new Intent(NewVocabActivity.this, CameraActivity.class));
+    }*/
 
     public void doNotRepeatWord(View view) {
         // if the word is prompted and the checkbox is marked don't display the word

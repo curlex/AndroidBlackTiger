@@ -1,58 +1,72 @@
 package abt.androidblacktiger;
 
-/**
- * Created by Ciarán on 28/10/2015.
- */
-
-import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
-import android.widget.Toast;
+import android.util.Log;
 
 import java.io.File;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+/**
+ * Created by Ciarán on 28/10/2015.
+ */
 public class CameraActivity extends AppCompatActivity
 {
-    private static final int IMAGE_REQUEST_CODE = 1;
+    public static final int MEDIA_TYPE_IMAGE = 1;
+    private static String TAG = "CameraError";
+    String mCurrentPhotoPath;
 
-    @Override
-    public void onCreate(Bundle savedInstanceState)
+    protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.camera_screen);
-        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-        String image_name = "IMG_"+ timeStamp + ".jpg";
-        File imagePath = new File(getFilesDir(), "images");
-        if (!(imagePath.exists()))
-        {
-            imagePath.mkdirs();
-        }
-        File newFile = new File(imagePath, image_name);
-        Uri imageUri = FileProvider.getUriForFile(this, "com.mydomain.fileprovider", newFile);
-        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        intent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
-        startActivityForResult(intent, IMAGE_REQUEST_CODE);
+        dispatchTakePictureIntent();
+        galleryAddPic();
     }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == IMAGE_REQUEST_CODE) {
-            if (resultCode == RESULT_OK) {
-                // Image captured and saved to fileUri specified in the Intent
-                Toast.makeText(this, "Image saved to:\n" +
-                        data.getData(), Toast.LENGTH_LONG).show();
-            } else if (resultCode == RESULT_CANCELED) {
-                // User cancelled the image capture
-            } else {
-                // Image capture failed, advise user
+    public void dispatchTakePictureIntent()
+    {
+        Intent TakePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        if(TakePictureIntent.resolveActivity(getPackageManager())!=null)
+        {
+            File photofile = null;
+            try
+            {
+                photofile =  createImageFile();
+            }
+            catch(IOException e)
+            {
+                Log.d(TAG, "Error occurred creating file");
+            }
+            if (photofile!=null)
+            {
+                TakePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(photofile));
+                startActivityForResult(TakePictureIntent, MEDIA_TYPE_IMAGE);
             }
         }
+    }
+
+    private File createImageFile() throws IOException
+    {
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+        String imageFileName = "JPEG_" + timeStamp + "_";
+        File StorageDir = getFilesDir();
+        File image = File.createTempFile(imageFileName, ".jpg", StorageDir);
+        mCurrentPhotoPath = "file:" + image.getAbsolutePath();
+        return image;
+    }
+
+    public void galleryAddPic()
+    {
+        Intent mediaScanIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
+        File f = new File(mCurrentPhotoPath);
+        Uri contentUri = Uri.fromFile(f);
+        mediaScanIntent.setData(contentUri);
+        this.sendBroadcast(mediaScanIntent);
     }
 }
 

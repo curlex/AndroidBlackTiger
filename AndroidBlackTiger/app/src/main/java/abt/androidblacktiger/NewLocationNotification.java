@@ -41,7 +41,8 @@ public class NewLocationNotification {
         Intent intent = new Intent(context, MapsActivity.class);
         intent.putExtra(context.getString(R.string.word_intent_word), word);
         intent.putExtra(context.getString(R.string.word_intent_translation), translation);
-        intent.putExtra(context.getString(R.string.word_intent_location), location);
+        intent.putExtra(context.getString(R.string.word_intent_Latitude), location);
+        intent.putExtra(context.getString(R.string.word_intent_Longitude), location);
         final NotificationCompat.Builder builder = new NotificationCompat.Builder(context)
                 // Set appropriate defaults for the notification light, sound,
                 // and vibration.

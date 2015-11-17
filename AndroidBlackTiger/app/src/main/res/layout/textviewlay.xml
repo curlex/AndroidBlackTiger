@@ -1,7 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <GridLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content" >
+    android:layout_height="wrap_content"
+    android:columnCount="3"
+    android:rowCount="1"
+    >
+
+    <TextView xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/history_colour"
+        android:layout_column="0"
+        android:textSize="30sp"
+        android:text="  "
+        >
+    </TextView>
 
     <TextView xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_height="match_parent"
@@ -10,7 +21,9 @@
         android:textSize="30sp"
         android:paddingLeft="8dp"
         android:paddingRight="8dp"
+        android:layout_column="1"
         >
+
     </TextView>
 
     <TextView xmlns:android="http://schemas.android.com/apk/res/android"
@@ -20,6 +33,7 @@
         android:gravity="end"
         android:paddingLeft="8dp"
         android:paddingRight="8dp"
+        android:layout_column="2"
         >
     </TextView>
 </GridLayout>

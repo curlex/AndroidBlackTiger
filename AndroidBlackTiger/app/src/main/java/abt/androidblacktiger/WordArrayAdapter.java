@@ -1,6 +1,7 @@
 package abt.androidblacktiger;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,6 +9,7 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 /**
  * For use with WordListFragment. Extends {@link ArrayAdapter}.
@@ -18,11 +20,13 @@ public class WordArrayAdapter extends ArrayAdapter<WordHistory> {
 
     private final Context context;
     private final ArrayList<WordHistory> words;
+    private Random random;
 
     public WordArrayAdapter(Context context, ArrayList<WordHistory> words) {
         super(context, R.layout.textviewlay);
         this.context = context;
         this.words = words;
+        random = new Random();
     }
 
     /**
@@ -48,6 +52,12 @@ public class WordArrayAdapter extends ArrayAdapter<WordHistory> {
         int transView = R.id.translation_textview;
         TextView translatedView = (TextView) view.findViewById(transView);
         translatedView.setText(translation);
+        int r = random.nextInt(255);
+        int g = random.nextInt(255);
+        int b = random.nextInt(255);
+        int randomCol = Color.rgb(r,g,b);
+        TextView colour = (TextView) view.findViewById(R.id.history_colour);
+        colour.setBackgroundColor(randomCol);
         return view;
     }
 

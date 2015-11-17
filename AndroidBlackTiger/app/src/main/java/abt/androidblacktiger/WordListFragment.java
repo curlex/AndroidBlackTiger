@@ -46,6 +46,7 @@ public class WordListFragment extends android.app.ListFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         words = (ArrayList<WordHistory>) ABTApplication.db.getAllWords();
+        System.out.println(words);
         WordArrayAdapter adapter = new WordArrayAdapter(getActivity(), words);
         setListAdapter(adapter);
     }
@@ -65,7 +66,8 @@ public class WordListFragment extends android.app.ListFragment {
         Intent intent = new Intent(getActivity().getApplicationContext(), NewVocabActivity.class);
         intent.putExtra(getString(R.string.word_intent_word), clickedWord.getWord());
         intent.putExtra(getString(R.string.word_intent_translation), clickedWord.getTranslation());
-        intent.putExtra(getString(R.string.word_intent_location), clickedWord.getLocations().get(0).getLat());
+        intent.putExtra(getString(R.string.word_intent_Latitude), clickedWord.getLocations().get(0).getLat());
+        intent.putExtra(getString(R.string.word_intent_Longitude), clickedWord.getLocations().get(0).getLng());
         startActivity(intent);
     }
 

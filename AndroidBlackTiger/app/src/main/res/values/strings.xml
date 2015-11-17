@@ -43,6 +43,7 @@
     <string name="word_intent_translation">abt.word_intent.translation</string>
     <string name="word_intent_Longitude">abt.word_intent.Longitude</string>
     <string name="word_intent_Latitude">abt.word_intent.Latitude</string>
+    <string name="word_intent_image">abt.word_intent.Image</string>
 
     <!-- KEYS FOR PREFERENCES -->
     <string name="preference_gps">track_setting</string>
@@ -50,4 +51,6 @@
     <string name="preference_language">lang_setting</string>
     <string name="preference_ringtone">pref_tone</string>
     <string name="preference_frequency">freq_setting</string>
+
+    <!-- OTHER THINGS? -->
 </resources>

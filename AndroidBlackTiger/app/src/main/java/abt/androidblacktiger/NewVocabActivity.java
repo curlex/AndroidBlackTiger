@@ -30,7 +30,7 @@ public class NewVocabActivity extends AppCompatActivity {
         Intent intent = getIntent();
         engWord = intent.getStringExtra(getString(R.string.word_intent_word));
         translatedWord = intent.getStringExtra(getString(R.string.word_intent_translation));
-        location = intent.getStringExtra(getString(R.string.word_intent_location));
+        location = intent.getStringExtra(getString(R.string.word_intent_Latitude));
         TextView textView = (TextView) findViewById(R.id.newVocabTextView);
         textView.setText(engWord);
     }

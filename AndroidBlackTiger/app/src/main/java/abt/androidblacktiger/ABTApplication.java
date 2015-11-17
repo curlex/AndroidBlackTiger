@@ -40,9 +40,9 @@ public class ABTApplication extends Application {
         System.out.print("\n\n\n\n\n\n\n\n");
         db.addWordHistory(mock1);
         System.out.println("initDB try add mock data 2");
-        //db.addWordHistory(mock2);
+        db.addWordHistory(mock2);
         System.out.println("initDB try add mock data 3");
-        //db.addWordHistory(mock3);
+        db.addWordHistory(mock3);
         System.out.println("initDB after mock data");
 
         db.close();

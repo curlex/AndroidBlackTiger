@@ -80,7 +80,8 @@ public class HistoryDBHandler extends SQLiteOpenHelper {
     public void addWordHistory(WordHistory wordData) {
         System.out.println("Add word history");
         addWord(wordData);
-        //addLocations(wordData.getWord(),wordData.getLocations());
+        System.out.println("Add locations");
+        addLocations(wordData.getWord(), wordData.getLocations());
     }
 
 
@@ -90,7 +91,7 @@ public class HistoryDBHandler extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
         if (db == null)  System.out.println("DB is null");
         System.out.println("Got writeable db");
-        /*try{
+        try{
 
             ContentValues values = new ContentValues();
             values.put(COLUMN_WORD, wordData.getWord());
@@ -99,7 +100,7 @@ public class HistoryDBHandler extends SQLiteOpenHelper {
                     new String[] {((Integer) (findWord(wordData.getWord(),wordData.getLang()).getShown()+1)).toString()});
             System.out.println("Update Word in DB");
         }
-        catch (Exception e) {*/
+        catch (Exception e) {
             ContentValues values = new ContentValues();
             values.put(COLUMN_WORD, wordData.getWord());
             values.put(COLUMN_LANG, wordData.getLang());
@@ -115,11 +116,11 @@ public class HistoryDBHandler extends SQLiteOpenHelper {
 
             db.insert(TABLE_HISTORY, null, values);
             System.out.print("close");
+
+        }
+        finally {
             db.close();
-       // }
-        /*finally {
-            //db.close();
-        }*/
+        }
     }
 
     private void addLocations(String word, List<CoOrdinates> locations){
@@ -131,7 +132,6 @@ public class HistoryDBHandler extends SQLiteOpenHelper {
                 values.put(COLUMN_WORD, word);
                 values.put(COLUMN_LOCATION_X, loc.getLat());
                 values.put(COLUMN_LOCATION_Y, loc.getLng());
-
                 db.insert(TABLE_LOCATIONS, null, values);
 
             }
@@ -139,7 +139,7 @@ public class HistoryDBHandler extends SQLiteOpenHelper {
                 System.out.println("Location already in DB");
             }
             finally {
-                //db.close();
+                db.close();
             }
 
         }
@@ -148,7 +148,7 @@ public class HistoryDBHandler extends SQLiteOpenHelper {
     public WordHistory findWord(String word, String lang) {
         WordHistory result = queryWord(word, lang);
         List<CoOrdinates> locations = queryLoc(word);
-        //result.setLocations(locations);
+        result.setLocations(locations);
         return result;
     }
 
@@ -178,8 +178,8 @@ public class HistoryDBHandler extends SQLiteOpenHelper {
         }
         cursor.close();
         db.close();
-        //List<CoOrdinates> loc = queryLoc(word);
-        //data.setLocations(loc);
+        List<CoOrdinates> loc = queryLoc(word);
+        data.setLocations(loc);
         return data;
     }
 

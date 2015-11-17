@@ -200,33 +200,37 @@ public class GPS extends Service implements LocationListener,
         String loc = latitude+","+longitude;
         try {
             pointOfInterest = new GetLocations().execute(loc).get();
-            poiLat = pointOfInterest.get(0).getLatitude();
-            poilng = pointOfInterest.get(0).getLongitude();
+            //if list of nearby places is not empty
+            if(pointOfInterest.size()>0) {
+                poiLat = pointOfInterest.get(0).getLatitude();
+                poilng = pointOfInterest.get(0).getLongitude();
+                //if types is not empty which should never happen :P
+                if( !pointOfInterest.get(0).getTypes().isEmpty()){
+                    // first type which should be of significance is used
+                    poi = pointOfInterest.get(0).getTypes().get(0);
+                    Translator translator = new Translator(getApplicationContext());
+                    ArrayList<String> strings = new ArrayList<String>();
+                    strings.add(poi);
+                    try {
+                        translatedString = translator.execute(strings).get().get(0);
+                    } catch (InterruptedException | ExecutionException e) {
+                        e.printStackTrace();
+                    }
+                    Log.v(TAG, "Translation: "+ translatedString);
+                    Toast.makeText(getApplicationContext(),
+                            poi +"  " + translatedString, Toast.LENGTH_LONG)
+                            .show();
+
+                }
+                NewLocationNotification.notify(getApplicationContext(),pointOfInterest.get(0).getName()+" "+ poi, translatedString, poiLat,poilng);
+            }
+
         } catch (InterruptedException e) {
             e.printStackTrace();
         } catch (ExecutionException e) {
             e.printStackTrace();
         }
 
-        if( !pointOfInterest.get(0).getTypes().isEmpty()){
-            poi = pointOfInterest.get(0).getTypes().get(0);
-            Translator translator = new Translator(getApplicationContext());
-            ArrayList<String> strings = new ArrayList<String>();
-            strings.add(poi);
-            try {
-                translatedString = translator.execute(strings).get().get(0);
-            } catch (InterruptedException | ExecutionException e) {
-                e.printStackTrace();
-            }
-            Log.v(TAG, "Translation: "+ translatedString);
-            Toast.makeText(getApplicationContext(),
-                    poi +"  " + translatedString, Toast.LENGTH_LONG)
-                    .show();
-
-        }
-        NewLocationNotification.notify(getApplicationContext(),pointOfInterest.get(0).getName()+" "+ poi, translatedString, poiLat,poilng);
-        //send it to places api
-        //updatePlaces();
     }
 
     /**

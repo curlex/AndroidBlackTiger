@@ -46,6 +46,7 @@ public class CameraActivity extends AppCompatActivity
             {
                 TakePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(photofile));
                 startActivityForResult(TakePictureIntent, MEDIA_TYPE_IMAGE);
+                Log.d(TAG, mCurrentPhotoPath);
             }
         }
     }

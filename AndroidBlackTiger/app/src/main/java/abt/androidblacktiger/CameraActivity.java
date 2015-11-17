@@ -9,8 +9,10 @@ import android.support.v7.app.AppCompatActivity;
 
 import java.io.File;
 import java.io.IOException;
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 
 /**
  * Created by Diarmuid.
@@ -22,7 +24,8 @@ public class CameraActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        String time = SimpleDateFormat.getDateTimeInstance().format(new Date());
+        String time = SimpleDateFormat.getDateTimeInstance(DateFormat.SHORT, DateFormat.SHORT).format(new Date());
+        time = android.net.Uri.encode(time);
         File imageDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
         File imagefile = new File(imageDir,time+".jpg");
         imagePath = android.net.Uri.fromFile(imagefile);

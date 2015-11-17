@@ -91,7 +91,9 @@ public class DiscoverMap extends FragmentActivity implements LocationListener,
                                 ArrayList<String> translatedWords = translator.execute(nearbyLocations.get(i).getTypes()).get();
 //                                Maybe we could use an
                                 for (int j = 0; j < nearbyLocations.get(i).getTypes().size(); j++) {
-                                    nearbyLocations.get(i).setTranslatedWord(nearbyLocations.get(i).getTypes().get(j), translatedWords.get(i));
+                                    Log.v("i: ",i+"");
+                                    nearbyLocations.get(i).setTranslatedWord(nearbyLocations.get(i).getTypes().get(j), translatedWords.get(j));
+
                                 }
 
                                 addMarkers();
@@ -154,10 +156,11 @@ public class DiscoverMap extends FragmentActivity implements LocationListener,
                 double lng = googlePlace.getLongitude();
                 String placeName = googlePlace.getName();
                 String types = googlePlace.getPairsSet();
+                String word = googlePlace.getTypes().get(0);
                 LatLng latLng = new LatLng(lat, lng);
                 markerOptions.position(latLng);
                 markerOptions.title(placeName);
-                markerOptions.snippet(types);
+                markerOptions.snippet(types+ "\n"+ word);
                 markers[i] = mMap.addMarker(markerOptions);
             }
             mMap.setInfoWindowAdapter(new PopupAdapter(getLayoutInflater()));

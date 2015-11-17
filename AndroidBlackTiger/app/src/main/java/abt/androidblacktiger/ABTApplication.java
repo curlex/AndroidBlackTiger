@@ -33,9 +33,9 @@ public class ABTApplication extends Application {
         System.out.println("initDB start ABTapp");
         List<CoOrdinates> mockLoc = new LinkedList<CoOrdinates>();
         mockLoc.add(new CoOrdinates(0,0));
-        WordHistory mock1 = new WordHistory("bus stop","Irish","staid an mbus", mockLoc,1 ,true, "image path1");
-        WordHistory mock2 = new WordHistory("college","Irish", "ullscoil", mockLoc,2 ,true, "image path2");
-        WordHistory mock3 = new WordHistory("shop","Irish", "siopa", mockLoc, 3 , true, "image path3");
+        WordHistory mock1 = new WordHistory("bus stop","Irish","staid an mbus", mockLoc,1 ,true, "imagepath1");
+        WordHistory mock2 = new WordHistory("college","Irish", "ullscoil", mockLoc,2 ,true, "imagepath2");
+        WordHistory mock3 = new WordHistory("shop","Irish", "siopa", mockLoc, 3 , true, "imagepath3");
         System.out.println("initDB try add mock data 1");
         System.out.print("\n\n\n\n\n\n\n\n");
         db.addWordHistory(mock1);
@@ -45,7 +45,11 @@ public class ABTApplication extends Application {
         db.addWordHistory(mock3);
         System.out.println("initDB after mock data");
 
-        db.close();
+        //db.close();
+
+        WordHistory result = db.findWord("college", "Irish");
+        if(result == null) System.out.println("null look up db");
+        else System.out.println("Look up succeeded");
     }
 
      public HistoryDBHandler getDB() {

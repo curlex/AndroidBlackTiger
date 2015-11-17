@@ -39,11 +39,12 @@ public class HistoryDBHandler extends SQLiteOpenHelper {
 
     public HistoryDBHandler(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
-
+        System.out.println("Constructor  db handler");
     }
 
     @Override
     public void onCreate(SQLiteDatabase db) {
+        System.out.println("Creating DB in onCreate");
         String CREATE_TABLE_HISTORY = "CREATE TABLE " +
                 TABLE_HISTORY + "("
                 + COLUMN_WORD + " TEXT,"
@@ -77,14 +78,18 @@ public class HistoryDBHandler extends SQLiteOpenHelper {
     }
 
     public void addWordHistory(WordHistory wordData) {
-        addWordHistory(wordData);
+        System.out.println("Add word history");
+        addWord(wordData);
         //addLocations(wordData.getWord(),wordData.getLocations());
     }
 
 
 
     private void addWord(WordHistory wordData){
+        System.out.println("In addWord");
         SQLiteDatabase db = this.getWritableDatabase();
+        if (db == null)  System.out.println("DB is null");
+        System.out.println("Got writeable db");
         /*try{
 
             ContentValues values = new ContentValues();
@@ -109,6 +114,7 @@ public class HistoryDBHandler extends SQLiteOpenHelper {
 
 
             db.insert(TABLE_HISTORY, null, values);
+            System.out.print("close");
             db.close();
        // }
         /*finally {

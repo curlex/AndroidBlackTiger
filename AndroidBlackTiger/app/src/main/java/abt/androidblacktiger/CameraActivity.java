@@ -24,13 +24,16 @@ public class CameraActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         String time = SimpleDateFormat.getDateTimeInstance().format(new Date());
         File imageDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
-        imagePath = null;
-        try {
-            imagePath = android.net.Uri.fromFile(File.createTempFile(time, ".jpg", imageDir));
-        } catch (IOException e) {
-            e.printStackTrace();
+        File imagefile = new File(imageDir,time+".jpg");
+        imagePath = android.net.Uri.fromFile(imagefile);
+        if(!imagefile.exists()){
+            try {
+                imagefile.createNewFile();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
-        if(imagePath != null) {
+        if(imagefile.isFile()) {
             Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
             intent.putExtra(MediaStore.EXTRA_OUTPUT, imagePath);
             startActivityForResult(intent, CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE);

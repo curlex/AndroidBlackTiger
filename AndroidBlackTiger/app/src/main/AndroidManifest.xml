@@ -19,7 +19,9 @@
     <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-feature android:name="android.hardware.camera"
+                    android:required="true"/>
+
 
     <application
         android:name=".ABTApplication"
@@ -27,15 +29,18 @@
         android:icon="@drawable/mao"
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
-        <provider
-            android:name="android.support.v4.content.FileProvider"
-            android:authorities="com.mydomain.fileprovider"
-            android:exported="false"
-            android:grantUriPermissions="true" >
-            <meta-data
-                android:name="android.support.FILE_PROVIDER_PATHS"
-                android:resource="@xml/image_path" />
-        </provider>
+
+        <activity android:name=".CameraActivity"
+                  android:label="@string/app_name"
+
+                  android:screenOrientation="portrait">
+            <!-- configure this activity to use landscape orientation -->
+
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
 
         <activity
             android:name=".MainActivity"
@@ -93,10 +98,7 @@
             android:name=".SettingsActivity"
             android:label="@string/title_activity_settings" >
         </activity>
-        <activity
-            android:name=".CameraActivity"
-            android:label="mCamera" >
-        </activity>
+
         <activity
             android:name=".NewVocabActivity"
             android:label="@string/title_activity_new_vocab" >

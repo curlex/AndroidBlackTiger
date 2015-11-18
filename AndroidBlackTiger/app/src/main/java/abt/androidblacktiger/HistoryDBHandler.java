@@ -217,10 +217,11 @@ public class HistoryDBHandler extends SQLiteOpenHelper {
     }
 
     // Getting All Contacts
-    public List<WordHistory> getAllWords() {
+    public List<WordHistory> getAllWords(String lang) {
         List<WordHistory> wordList = new ArrayList<WordHistory>();
         // Select All Query
-        String selectQuery = "SELECT  * FROM " + TABLE_HISTORY;
+        String selectQuery = "SELECT  * FROM " + TABLE_HISTORY +" WHERE "
+                + COLUMN_LANG + " =  \"" + lang + "\"";
 
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery(selectQuery, null);

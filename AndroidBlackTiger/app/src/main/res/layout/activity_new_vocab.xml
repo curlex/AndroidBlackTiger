@@ -14,7 +14,6 @@
         android:textSize="30dp"
         android:textStyle="italic"
         android:textColor="#008"
-        android:layout_below="@+id/fragment"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="20dp" />
 
@@ -55,13 +54,12 @@
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true" />
 
-    <fragment
-        android:layout_width="110dp"
-        android:layout_height="110dp"
-        android:name="abt.androidblacktiger.Logo_fragment"
-        android:id="@+id/fragment"
-        tools:layout="@layout/logo_fragment"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true" />
+    <ImageView
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:id="@+id/photo"
+        android:layout_marginTop="20dp"
+
+        />
 
 </RelativeLayout>

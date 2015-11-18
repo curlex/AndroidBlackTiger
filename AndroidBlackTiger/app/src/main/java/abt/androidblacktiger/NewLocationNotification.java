@@ -37,7 +37,8 @@ public class NewLocationNotification {
         final String title = res.getString(R.string.new_location_notification_title_template, word);
         final String text = res.getString(
                 R.string.new_location_notification_placeholder_text_template, word, translation);
-        Intent intent = new Intent(context, MapsActivity.class);
+//        Intent intent = new Intent(context, MapsActivity.class);
+        Intent intent = new Intent(context, NewVocabActivity.class);
         intent.putExtra(context.getString(R.string.word_intent_word), word);
         intent.putExtra(context.getString(R.string.word_intent_translation), translation);
         intent.putExtra(context.getString(R.string.word_intent_Latitude), lat);

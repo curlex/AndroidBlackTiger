@@ -16,6 +16,8 @@ import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.ImageView;
 import android.widget.TextSwitcher;
 import android.widget.TextView;
 import android.widget.ViewSwitcher;
@@ -24,18 +26,30 @@ import java.io.File;
 import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.Date;
+import java.util.LinkedList;
+import java.util.List;
 
 public class NewVocabActivity extends AppCompatActivity {
     private String engWord = "";
+    private String language = "";
     private String translatedWord = "";
-    private String location = "";
+    private Double locationLat;
+    private Double locationLong;
+    private int shown;
+    private Boolean again;
+    private String image = "";
     private String[] wordsToShow = {"", ""};
     private int wordsCount = wordsToShow.length;
     private int currentIndex = -1;
     private Button changeWordBtn;
     private TextSwitcher mySwitcher;
     Uri imagePath;
+    HistoryDBHandler db;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,8 +58,11 @@ public class NewVocabActivity extends AppCompatActivity {
         Intent intent = getIntent();
         engWord = intent.getStringExtra(getString(R.string.word_intent_word));
         translatedWord = intent.getStringExtra(getString(R.string.word_intent_translation));
-        location = intent.getStringExtra(getString(R.string.word_intent_Latitude));
-        location = intent.getStringExtra(getString(R.string.word_intent_Longitude));
+        language = intent.getStringExtra(getString(R.string.word_intent_language));
+        locationLat = intent.getDoubleExtra(getString(R.string.word_intent_Latitude), 0);
+        locationLong = intent.getDoubleExtra(getString(R.string.word_intent_Longitude), 0);
+        shown = intent.getIntExtra(getString(R.string.word_intent_shown), 0);
+        again = intent.getBooleanExtra(getString(R.string.word_intent_again), true);
 
         wordsToShow[0] = engWord;
         wordsToShow[1] = translatedWord;
@@ -83,6 +100,10 @@ public class NewVocabActivity extends AppCompatActivity {
                 mySwitcher.setText(wordsToShow[currentIndex]);
             }
         });
+
+//        View view = inflater.inflate(R.layout.activity_new_vocab, container, false);
+//        ImageView imageView = (ImageView) view.findViewById(R.id.photo);
+//        imageView.setImageURI(imagePath);
     }
 
     @Override
@@ -101,7 +122,8 @@ public class NewVocabActivity extends AppCompatActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
-            return true;
+            Intent intent = new Intent(getApplicationContext(), SettingsActivity.class);
+            startActivity(intent);
         }
 
         return super.onOptionsItemSelected(item);
@@ -127,6 +149,8 @@ public class NewVocabActivity extends AppCompatActivity {
             intent.putExtra(MediaStore.EXTRA_OUTPUT, imagePath);
             startActivityForResult(intent, CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE);
         }
+
+        image = imagePath.toString();
     }
 
     @Override
@@ -138,6 +162,16 @@ public class NewVocabActivity extends AppCompatActivity {
     }
 
     public void doNotRepeatWord(View view) {
-        // if the word is prompted and the checkbox is marked don't display the word
+        boolean checked = ((CheckBox) view).isChecked();
+        db = ABTApplication.db;
+        CoOrdinates loc = new CoOrdinates(locationLat, locationLong);
+
+        WordHistory data;
+
+        if(checked) {
+            again = false;
+            data = new WordHistory(engWord,language,translatedWord, loc, shown, again, image);
+            db.addWordHistory(data);
+        }
     }
 }

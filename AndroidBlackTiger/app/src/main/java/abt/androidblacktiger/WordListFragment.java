@@ -48,10 +48,13 @@ public class WordListFragment extends android.app.ListFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        loadListView();
+    }
+
+    private void loadListView() {
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getActivity().getApplicationContext());
         String language = preferences.getString(getString(R.string.preference_language), "en");
         words = (ArrayList<WordHistory>) ABTApplication.db.getAllWords(language);
-        System.out.println(words);
         WordArrayAdapter adapter = new WordArrayAdapter(getActivity(), words);
         setListAdapter(adapter);
     }
@@ -64,6 +67,7 @@ public class WordListFragment extends android.app.ListFragment {
 
     public void onResume() {
         super.onResume();
+        loadListView();
         ListView listView = getListView();
         listView.setSelection(currentPosition);
     }

@@ -21,8 +21,8 @@ import java.util.ArrayList;
 public class WordListFragment extends android.app.ListFragment {
 
     private ArrayList<WordHistory> words;
-
     private OnFragmentInteractionListener mListener;
+    private int currentPosition = 0;
 
     /**
      * Use this factory method to create a new instance of
@@ -49,6 +49,18 @@ public class WordListFragment extends android.app.ListFragment {
         System.out.println(words);
         WordArrayAdapter adapter = new WordArrayAdapter(getActivity(), words);
         setListAdapter(adapter);
+    }
+
+    public void onPause() {
+        super.onPause();
+        ListView listView = getListView();
+        currentPosition = listView.getFirstVisiblePosition();
+    }
+
+    public void onResume() {
+        super.onResume();
+        ListView listView = getListView();
+        listView.setSelection(currentPosition);
     }
 
 

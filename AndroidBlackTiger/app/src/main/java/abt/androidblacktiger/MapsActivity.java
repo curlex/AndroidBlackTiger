@@ -143,9 +143,10 @@ public class MapsActivity extends FragmentActivity implements GoogleMap.OnMyLoca
     public void onInfoWindowClick(Marker marker) {
         Toast.makeText(this, marker.getTitle(), Toast.LENGTH_LONG).show();
         Intent intent = new Intent(this,NewVocabActivity.class);
-        intent.putExtra("word",marker.getTitle());
-        intent.putExtra("translated",marker.getSnippet());
-        intent.putExtra("locationa", marker.getPosition().latitude + marker.getPosition().longitude);
+        intent.putExtra(getString(R.string.word_intent_word),marker.getTitle());
+        intent.putExtra(getString(R.string.word_intent_translation),marker.getSnippet());
+        intent.putExtra(getString(R.string.word_intent_Latitude), marker.getPosition().latitude);
+        intent.putExtra(getString(R.string.word_intent_Longitude), marker.getPosition().longitude);
         startActivity(intent);
     }
 

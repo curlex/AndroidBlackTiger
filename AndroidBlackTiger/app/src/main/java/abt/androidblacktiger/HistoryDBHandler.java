@@ -21,7 +21,7 @@ public class HistoryDBHandler extends SQLiteOpenHelper {
     // Database Name
     private static final String DATABASE_NAME = "HistoryDB";
     // Database Table
-    private static final String TABLE_HISTORY = "History2";
+    private static final String TABLE_HISTORY = "History";
     // Locations Table
     private static final String TABLE_LOCATIONS = "Locations";
 
@@ -74,6 +74,7 @@ public class HistoryDBHandler extends SQLiteOpenHelper {
 
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_HISTORY);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_LOCATIONS);
+
         onCreate(db);
     }
 
@@ -92,13 +93,33 @@ public class HistoryDBHandler extends SQLiteOpenHelper {
         if (db == null)  System.out.println("DB is null");
         System.out.println("Got writeable db");
         try{
+            WordHistory found = findWord(wordData.getWord(),wordData.getLang());
+            wordData.setShown(found.getShown()+1);
+            /**
+             *   ContentValues args = new ContentValues();
+             args.put(KEY_NAME, name);
+             args.put(KEY_EMAIL, email);
+             return db.update(DATABASE_TABLE, args, KEY_ROWID + "=" + rowId, null) > 0;
+             */
 
             ContentValues values = new ContentValues();
-            values.put(COLUMN_WORD, wordData.getWord());
-            values.put(COLUMN_LANG, wordData.getLang());
-            long rows = db.update(TABLE_HISTORY, values, COLUMN_SHOWN+"=",
+            //values.put(COLUMN_WORD, wordData.getWord());
+            // values.put(COLUMN_LANG, wordData.getLang());
+            values.put(COLUMN_TRANSLATION, wordData.getTranslation());
+            values.put(COLUMN_SHOWN, wordData.getShown());
+            if (wordData.getAgain() == true ) values.put(COLUMN_AGAIN, 1);
+            else values.put(COLUMN_AGAIN, 0);
+            values.put(COLUMN_IMAGE, wordData.getImagePath());
+            if (db != null) {
+                System.out.println("Updating Row");
+                db.update(TABLE_HISTORY, values,
+                                COLUMN_WORD + " =  \"" + wordData.getWord() + "\"" +
+                                " AND "+ COLUMN_LANG +  " = \"" + wordData.getLang()+"\"", null );
+            }
+            else System.out.println("DB was null");
+            /*long rows = db.update(TABLE_HISTORY, values, COLUMN_SHOWN+"=",
                     new String[] {((Integer) (findWord(wordData.getWord(),wordData.getLang()).getShown()+1)).toString()});
-            System.out.println("Update Word in DB");
+            System.out.println("Update Word in DB");*/
         }
         catch (Exception e) {
             ContentValues values = new ContentValues();

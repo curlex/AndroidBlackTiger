@@ -1,5 +1,6 @@
 package abt.androidblacktiger;
 
+import android.content.Context;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.util.Log;
@@ -22,6 +23,11 @@ import java.util.ArrayList;
 // must be created inside an activity
 public class GetLocations extends AsyncTask<String,Void,ArrayList<LocationObject>> {
     private final static String LOG_TAG = GetLocations.class.getSimpleName();
+    Context c;
+    public GetLocations(Context context) {
+        c = context;
+    }
+
     @Override
     protected void onPreExecute(){
         CharSequence message = "";
@@ -30,7 +36,11 @@ public class GetLocations extends AsyncTask<String,Void,ArrayList<LocationObject
     protected ArrayList<LocationObject> doInBackground(String... params) {
         // If there's no geometry, there's nothing to look up.  Verify size of params.
         if (params.length == 0) {
-            return null;
+            Log.v("GetLocations","Params are null");
+//            Toast.makeText(c,"GPS location not found", Toast.LENGTH_LONG)
+//                    .show();
+
+            return new ArrayList<LocationObject>();
         }
         HttpURLConnection urlConnection = null;
         BufferedReader reader = null;
@@ -38,7 +48,7 @@ public class GetLocations extends AsyncTask<String,Void,ArrayList<LocationObject
         String nearbyPlacesJsonStr = null;
         // new server key to be able to use Google Places Web Service API
         String key = "AIzaSyD50RlH8xh80ouLULgvNCiMntFVnFTxjuI";
-        String distance = "100";  //in meters
+        String distance = "50";  //in meters
         String type = "";
         String d = "distance";
         try {
@@ -58,12 +68,15 @@ public class GetLocations extends AsyncTask<String,Void,ArrayList<LocationObject
                     .appendQueryParameter(KEY_PARAM, key)
                     .build();
             URL url = new URL(builtUri.toString());
-
             Log.v(LOG_TAG, "Built URI " + builtUri.toString());
             // Create the request , and open the connection
+            Log.v("GetLocation","Opening connection!");
             urlConnection = (HttpURLConnection) url.openConnection();
+            Log.v("GetLocation","Setting Request Method GET");
             urlConnection.setRequestMethod("GET");
+            Log.v("GetLocation", "Set The Request!!!");
             urlConnection.connect();
+            Log.v("GetLocation","Connecting!!!");
             // Read the input stream into a String
             InputStream inputStream = urlConnection.getInputStream();
             nearbyPlacesJsonStr = readStream(inputStream);
@@ -71,9 +84,11 @@ public class GetLocations extends AsyncTask<String,Void,ArrayList<LocationObject
         }
         catch (IOException e) {
             Log.e(LOG_TAG, "Error ", e);
+            Log.v("IOException", " Why are you erroring");
+//            Toast.makeText(c , "Connecting to internet failed", Toast.LENGTH_LONG).show();
             // If the code didn't successfully get the data, there's no point in attemping
             // to parse it.
-            return null;
+            return new ArrayList<LocationObject>();
         }
 
         finally {
@@ -97,7 +112,7 @@ public class GetLocations extends AsyncTask<String,Void,ArrayList<LocationObject
         }
 
         // This will only happen if there was an error getting or parsing the info.
-        return null;
+        return new ArrayList<LocationObject>();
     }
     /**
      * Take the String representing the nearby in JSON Format and

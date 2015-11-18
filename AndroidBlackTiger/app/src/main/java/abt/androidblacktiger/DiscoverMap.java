@@ -78,7 +78,7 @@ public class DiscoverMap extends FragmentActivity implements LocationListener,
                 try {
                     currlocation = gps.getLocation();
                     String toPass = currlocation.getLatitude() + "," + currlocation.getLongitude();
-                    nearbyLocations = new GetLocations().execute(toPass).get();
+                    nearbyLocations = new GetLocations(getApplicationContext()).execute(toPass).get();
                     if (nearbyLocations != null) {
                         try {
 
@@ -144,26 +144,24 @@ public class DiscoverMap extends FragmentActivity implements LocationListener,
     public void addMarkers(){
         mMap.clear();
         if(nearbyLocations.size()>0) {
-            Marker[] markers = new Marker[nearbyLocations.size()];
-            for (int i = 0; i < nearbyLocations.size(); i++) {
-                MarkerOptions markerOptions = new MarkerOptions();
-                LocationObject googlePlace = nearbyLocations.get(i);
-                double lat = googlePlace.getLatitude();
-                double lng = googlePlace.getLongitude();
-                String placeName = googlePlace.getName();
-                String types = googlePlace.getPairsSet();
-                String word = googlePlace.getTypes().get(0);
-                LatLng latLng = new LatLng(lat, lng);
-                markerOptions.position(latLng);
-                markerOptions.title(placeName);
-                markerOptions.snippet(types+ "\n"+ word);
-                markers[i] = mMap.addMarker(markerOptions);
+            MarkerSetUp m = new MarkerSetUp(getApplicationContext());
+            try {
+                Object o [] = new Object[2];
+                o[0]= mMap;
+                o[1] = nearbyLocations;
+
+                mMap = (GoogleMap) m.execute(o).get()[1];
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            } catch (ExecutionException e) {
+                e.printStackTrace();
             }
             mMap.setInfoWindowAdapter(new PopupAdapter(getLayoutInflater()));
             mMap.setOnInfoWindowClickListener(this);
             LatLngBounds.Builder builder = new LatLngBounds.Builder();
-            for (Marker marker : markers) {
-                builder.include(marker.getPosition());
+            for (LocationObject l : nearbyLocations) {
+                LatLng position = new LatLng(l.getLatitude(),l.getLongitude());
+                builder.include(position);
             }
             LatLngBounds bounds = builder.build();
             int padding = 70; // offset from edges of the map in pixels

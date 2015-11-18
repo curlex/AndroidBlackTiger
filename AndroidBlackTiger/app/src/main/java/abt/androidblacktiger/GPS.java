@@ -62,10 +62,11 @@ public class GPS extends Service implements LocationListener,
             }
         };
         preferences.registerOnSharedPreferenceChangeListener(changeListener);
-        //  if (checkPlayServices()) {
-        buildGoogleApiClient();
-        createLocationRequest();
-        // }
+        Toast.makeText(this, "Checking play services...", Toast.LENGTH_SHORT).show();
+        if (checkPlayServices()) {
+            buildGoogleApiClient();
+            createLocationRequest();
+        }
     }
 
     private void checkGPSSettings(SharedPreferences prefs) {
@@ -137,6 +138,7 @@ public class GPS extends Service implements LocationListener,
      * Starting the location updates
      * */
     protected void startLocationUpdates() {
+        Toast.makeText(this, "Location updates starting", Toast.LENGTH_SHORT).show();
         LocationServices.FusedLocationApi.requestLocationUpdates(
                 mGoogleApiClient, mLocationRequest, this);
     }
@@ -145,7 +147,7 @@ public class GPS extends Service implements LocationListener,
      * Stopping location updates
      */
     protected void stopLocationUpdates() {
-        Toast.makeText(this, "updates stopping", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "Location updates stopping", Toast.LENGTH_SHORT).show();
         LocationServices.FusedLocationApi.removeLocationUpdates(
                 mGoogleApiClient, this);
     }
@@ -199,7 +201,7 @@ public class GPS extends Service implements LocationListener,
                 Toast.LENGTH_SHORT).show();
         String loc = latitude+","+longitude;
         try {
-            pointOfInterest = new GetLocations().execute(loc).get();
+            pointOfInterest = new GetLocations(getApplicationContext()).execute(loc).get();
             //if list of nearby places is not empty
             if(pointOfInterest.size()>0) {
                 poiLat = pointOfInterest.get(0).getLatitude();
@@ -208,11 +210,10 @@ public class GPS extends Service implements LocationListener,
                 if( !pointOfInterest.get(0).getTypes().isEmpty()){
                     // first type which should be of significance is used
                     poi = pointOfInterest.get(0).getTypes().get(0);
-                    Translator translator = new Translator(getApplicationContext());
                     ArrayList<String> strings = new ArrayList<String>();
                     strings.add(poi);
                     try {
-                        translatedString = translator.execute(strings).get().get(0);
+                        translatedString = new Translator(getApplicationContext()).execute(strings).get().get(0);
                     } catch (InterruptedException | ExecutionException e) {
                         e.printStackTrace();
                     }
@@ -222,6 +223,9 @@ public class GPS extends Service implements LocationListener,
                             .show();
 
                 }
+                else Toast.makeText(getApplicationContext(),
+                        "No new nearby locations found!", Toast.LENGTH_LONG)
+                        .show();
                 NewLocationNotification.notify(getApplicationContext(),pointOfInterest.get(0).getName()+" "+ poi, translatedString, poiLat,poilng);
             }
 

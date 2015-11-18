@@ -1,39 +1,54 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-			  android:layout_width="match_parent"
-			  android:layout_height="match_parent"
-			  android:orientation="vertical"
-			  android:weightSum="1">
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent"
+	android:layout_gravity="center_horizontal"
+	android:weightSum="1">
 
-<Button       android:id="@+id/word_history_button"
-			  android:layout_width="wrap_content"
-			  android:layout_height="wrap_content"
+
+	<ImageButton
+			  android:id="@+id/word_history_button"
+			  android:layout_width="95dp"
+			  android:layout_height="126dp"
 			  android:text="Word History"
 			  android:onClick="OpenNewActivity"
 			  android:layout_gravity="center_horizontal"
-			  android:layout_weight="0.33"/>
+			  android:background="@drawable/owl"
+		android:layout_alignParentTop="true"
+		android:layout_centerHorizontal="true"
+		android:layout_marginTop="57dp" />
 
-<Button       android:id="@+id/dictionary_button"
-			  android:layout_width="wrap_content"
-			  android:layout_height="wrap_content"
-			  android:text="Test Camera"
-			  android:onClick="OpenNewActivity"
-			  android:layout_gravity="center_horizontal"
-			  android:layout_weight="0.34"/>
-<Button       android:id="@+id/gps_button"
-			  android:layout_width="wrap_content"
-			  android:layout_height="wrap_content"
-			  android:text="Gps"
-              android:onClick="OpenNewActivity"
-              android:layout_gravity="center_horizontal"
-              android:layout_weight="0.34"/>
+	<TextView
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:textAppearance="?android:attr/textAppearanceMedium"
+		android:text="History "
+		android:id="@+id/textView3"
+		android:layout_gravity="center_horizontal"
+		android:layout_below="@+id/word_history_button"
+		android:layout_centerHorizontal="true" />
 
-<ImageButton  android:id="@+id/map_discovery_button"
+	<ImageButton
+			  android:id="@+id/map_discovery_button"
 			  android:layout_width="100dp"
 			  android:layout_height="100dp"
 			  android:text="Map Discovery"
 			  android:onClick="OpenNewActivity"
 			  android:layout_gravity="center_horizontal"
-			  android:background="@drawable/mao" />
+			  android:background="@drawable/mao"
+		android:layout_above="@+id/textView4"
+		android:layout_alignLeft="@+id/word_history_button"
+		android:layout_alignStart="@+id/word_history_button" />
 
-</LinearLayout>
+	<TextView
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:textAppearance="?android:attr/textAppearanceMedium"
+		android:text="Map Discovery"
+		android:id="@+id/textView4"
+		android:layout_gravity="center_horizontal"
+		android:layout_marginBottom="135dp"
+		android:layout_alignParentBottom="true"
+		android:layout_centerHorizontal="true" />
+
+</RelativeLayout>

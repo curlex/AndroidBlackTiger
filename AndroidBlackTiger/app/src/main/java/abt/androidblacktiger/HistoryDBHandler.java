@@ -21,13 +21,13 @@ public class HistoryDBHandler extends SQLiteOpenHelper {
     // Database Name
     private static final String DATABASE_NAME = "HistoryDB";
     // Database Table
-    private static final String TABLE_HISTORY = "History";
+    private static final String TABLE_HISTORY = "History2";
     // Locations Table
     private static final String TABLE_LOCATIONS = "Locations";
 
 
     public static final String COLUMN_WORD = "word";
-    public static final String COLUMN_LANG = "lang";
+    public static final String COLUMN_LANG = "language";
     public static final String COLUMN_TRANSLATION = "translation";
     public static final String COLUMN_LOCATION_X = "locationX";
     public static final String COLUMN_LOCATION_Y = "locationY";
@@ -51,7 +51,7 @@ public class HistoryDBHandler extends SQLiteOpenHelper {
                 + COLUMN_LANG + " TEXT,"
                 + COLUMN_TRANSLATION + " TEXT,"
                 + COLUMN_SHOWN + " INTEGER,"
-                + COLUMN_AGAIN + "INTEGER"
+                + COLUMN_AGAIN + " INTEGER,"
                 + COLUMN_IMAGE + " TEXT,"
                 + COMPOSITE_KEY_HIST
                 + ")";
@@ -96,7 +96,7 @@ public class HistoryDBHandler extends SQLiteOpenHelper {
             ContentValues values = new ContentValues();
             values.put(COLUMN_WORD, wordData.getWord());
             values.put(COLUMN_LANG, wordData.getLang());
-            long rows = db.update(TABLE_HISTORY, values, COLUMN_SHOWN+"=?",
+            long rows = db.update(TABLE_HISTORY, values, COLUMN_SHOWN+"=",
                     new String[] {((Integer) (findWord(wordData.getWord(),wordData.getLang()).getShown()+1)).toString()});
             System.out.println("Update Word in DB");
         }
@@ -106,7 +106,7 @@ public class HistoryDBHandler extends SQLiteOpenHelper {
             values.put(COLUMN_LANG, wordData.getLang());
             values.put(COLUMN_TRANSLATION, wordData.getTranslation());
             values.put(COLUMN_SHOWN, wordData.getShown());
-            if (wordData.getAgain()) values.put(COLUMN_AGAIN, 1);
+            if (wordData.getAgain() == true ) values.put(COLUMN_AGAIN, 1);
             else values.put(COLUMN_AGAIN, 0);
             values.put(COLUMN_IMAGE, wordData.getImagePath());
             System.out.println("New Word for DB");
@@ -119,7 +119,7 @@ public class HistoryDBHandler extends SQLiteOpenHelper {
 
         }
         finally {
-            db.close();
+            //db.close();
         }
     }
 
@@ -139,7 +139,7 @@ public class HistoryDBHandler extends SQLiteOpenHelper {
                 System.out.println("Location already in DB");
             }
             finally {
-                db.close();
+                //db.close();
             }
 
         }
@@ -156,6 +156,7 @@ public class HistoryDBHandler extends SQLiteOpenHelper {
     private WordHistory queryWord(String word, String lang){
         String query = "Select * FROM " + TABLE_HISTORY + " WHERE "
                                         + COLUMN_WORD + " =  \"" + word + "\""
+                                        + " AND "
                                         + COLUMN_LANG + " =  \"" + lang + "\"";
 
         SQLiteDatabase db = this.getWritableDatabase();
@@ -177,7 +178,7 @@ public class HistoryDBHandler extends SQLiteOpenHelper {
             data = null;
         }
         cursor.close();
-        db.close();
+        //db.close();
         List<CoOrdinates> loc = queryLoc(word);
         data.setLocations(loc);
         return data;
@@ -200,7 +201,7 @@ public class HistoryDBHandler extends SQLiteOpenHelper {
             data = null;
         }
         cursor.close();
-        db.close();
+        //db.close();
         return data;
     }
 
@@ -232,7 +233,7 @@ public class HistoryDBHandler extends SQLiteOpenHelper {
         }
         cursor.close();
         // return contact list
-        db.close();
+        //db.close();
         return wordList;
     }
 }

@@ -10,7 +10,11 @@
     <TextView android:id="@android:id/empty"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#FF0000"
-        android:text="No data"/>
+        android:gravity="center"
+        android:includeFontPadding="false"
+        android:paddingLeft="8dp"
+        android:paddingRight="8dp"
+        android:textSize="30sp"
+        android:text="You have not discovered any words in this language yet!"/>
 
 </FrameLayout>

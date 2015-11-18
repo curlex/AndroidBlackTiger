@@ -81,25 +81,25 @@ public class WelcomeActivity extends Activity implements AdapterView.OnItemSelec
         String option =  parent.getItemAtPosition(position).toString();
         SharedPreferences.Editor editor = langPrefs.edit();
         if(option.equals("Irish")){
-            editor.putString(SettingsListener.DESTINATION_LANGUAGE, Language.IRISH.toString());
+            editor.putString(getString(R.string.preference_language), Language.IRISH.toString());
         }
         else if(option.equals("French")){
-            editor.putString(SettingsListener.DESTINATION_LANGUAGE, Language.FRENCH.toString());
+            editor.putString(getString(R.string.preference_language), Language.FRENCH.toString());
         }
         else if(option.equals("Dutch")){
-            editor.putString(SettingsListener.DESTINATION_LANGUAGE, Language.DUTCH.toString());
+            editor.putString(getString(R.string.preference_language), Language.DUTCH.toString());
         }
         else if(option.equals("Italian")){
-            editor.putString(SettingsListener.DESTINATION_LANGUAGE, Language.ITALIAN.toString());
+            editor.putString(getString(R.string.preference_language), Language.ITALIAN.toString());
         }
         else if(option.equals("Portuguese")){
-            editor.putString(SettingsListener.DESTINATION_LANGUAGE, Language.PORTUGUESE.toString());
+            editor.putString(getString(R.string.preference_language), Language.PORTUGUESE.toString());
         }
         else if(option.equals("Spanish")){
-            editor.putString(SettingsListener.DESTINATION_LANGUAGE, Language.SPANISH.toString());
+            editor.putString(getString(R.string.preference_language), Language.SPANISH.toString());
         }
         else if(option.equals("German")){
-            editor.putString(SettingsListener.DESTINATION_LANGUAGE, Language.GERMAN.toString());
+            editor.putString(getString(R.string.preference_language), Language.GERMAN.toString());
         }
         editor.apply();
         System.out.println(langPrefs.getAll());

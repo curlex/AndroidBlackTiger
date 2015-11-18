@@ -78,7 +78,7 @@ public class DiscoverMap extends FragmentActivity implements LocationListener,
                 try {
                     currlocation = gps.getLocation();
                     String toPass = currlocation.getLatitude() + "," + currlocation.getLongitude();
-                    nearbyLocations = new GetLocations().execute(toPass).get();
+                    nearbyLocations = new GetLocations(getApplicationContext()).execute(toPass).get();
                     if (nearbyLocations != null) {
                         try {
 

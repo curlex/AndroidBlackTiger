@@ -52,12 +52,17 @@ public class GPS extends Service implements LocationListener,
     */
     @Override
     public void onCreate() {
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        final SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         changeListener = new SharedPreferences.OnSharedPreferenceChangeListener() {
             @Override
             public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
                 if (key.equals(getString(R.string.preference_gps))) {
                     checkGPSSettings(sharedPreferences);
+                }
+                else if(key.equals(getString(R.string.preference_frequency))){
+                    String interval = preferences.getString(getString(R.string.preference_frequency), "100");
+                    int inval = Integer.parseInt(interval)*60000;
+                    changeUpdateFreq(inval);
                 }
             }
         };
@@ -77,6 +82,13 @@ public class GPS extends Service implements LocationListener,
         }
     }
 
+    public void changeUpdateFreq(int update){
+        UPDATE_INTERVAL = update; // 10 sec
+        mLocationRequest.setInterval(UPDATE_INTERVAL);
+        Toast.makeText(this, "Frequency Change", Toast.LENGTH_SHORT).show();
+        Log.v("GPS", "Frequency changed to: " + update);
+        startLocationUpdates();
+    }
     /**
      * Method to verify google play services on the device
      * */
@@ -199,7 +211,7 @@ public class GPS extends Service implements LocationListener,
                 Toast.LENGTH_SHORT).show();
         String loc = latitude+","+longitude;
         try {
-            pointOfInterest = new GetLocations().execute(loc).get();
+            pointOfInterest = new GetLocations(getApplicationContext()).execute(loc).get();
             //if list of nearby places is not empty
             if(pointOfInterest.size()>0) {
                 poiLat = pointOfInterest.get(0).getLatitude();

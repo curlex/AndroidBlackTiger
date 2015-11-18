@@ -1,5 +1,6 @@
 package abt.androidblacktiger;
 
+import android.content.Context;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.util.Log;
@@ -22,9 +23,14 @@ import java.util.ArrayList;
 // must be created inside an activity
 public class GetLocations extends AsyncTask<String,Void,ArrayList<LocationObject>> {
     private final static String LOG_TAG = GetLocations.class.getSimpleName();
-    @Override
+    Context c;
+
+    GetLocations(Context context){
+        c = context;
+    }
     protected void onPreExecute(){
         CharSequence message = "";
+
 
     }
     protected ArrayList<LocationObject> doInBackground(String... params) {
@@ -32,6 +38,7 @@ public class GetLocations extends AsyncTask<String,Void,ArrayList<LocationObject
         if (params.length == 0) {
             return null;
         }
+
         HttpURLConnection urlConnection = null;
         BufferedReader reader = null;
         // Will contain the raw JSON response as a string.

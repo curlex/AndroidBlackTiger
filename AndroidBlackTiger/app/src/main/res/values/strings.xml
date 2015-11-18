@@ -45,6 +45,8 @@
     <string name="word_intent_Latitude">abt.word_intent.Latitude</string>
     <string name="word_intent_image">abt.word_intent.Image</string>
     <string name="word_intent_language">abt.word_intent.Language</string>
+    <string name="word_intent_shown">abt.word_intent.Language</string>
+    <string name="word_intent_again">abt.word_intent.Language</string>
 
     <!-- KEYS FOR PREFERENCES -->
     <string name="preference_gps">track_setting</string>

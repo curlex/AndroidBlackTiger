@@ -69,6 +69,9 @@ public class WordListFragment extends android.app.ListFragment {
         intent.putExtra(getString(R.string.word_intent_Latitude), clickedWord.getLocations().get(0).getLat());
         intent.putExtra(getString(R.string.word_intent_Longitude), clickedWord.getLocations().get(0).getLng());
         intent.putExtra(getString(R.string.word_intent_language), clickedWord.getLang());
+        intent.putExtra(getString(R.string.word_intent_image), clickedWord.getImagePath());
+        intent.putExtra(getString(R.string.word_intent_again), clickedWord.getAgain());
+        intent.putExtra(getString(R.string.word_intent_shown), clickedWord.getShown());
         startActivity(intent);
     }
 

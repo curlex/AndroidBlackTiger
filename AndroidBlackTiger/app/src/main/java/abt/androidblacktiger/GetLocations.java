@@ -39,7 +39,7 @@ public class GetLocations extends AsyncTask<String,Void,ArrayList<LocationObject
         // new server key to be able to use Google Places Web Service API
         String key = "AIzaSyD50RlH8xh80ouLULgvNCiMntFVnFTxjuI";
         String distance = "100";  //in meters
-        String type = "school";
+        String type = "";
         String d = "distance";
         try {
             // Construct the URL
@@ -109,7 +109,8 @@ public class GetLocations extends AsyncTask<String,Void,ArrayList<LocationObject
         try{
             Log.v(LOG_TAG, "The JSON response: " + nearbyPlaces);
             JSONObject jsonObject= new JSONObject( nearbyPlaces );
-            if(jsonObject.has("results")){
+            Log.v(LOG_TAG, "Has results? : " + !jsonObject.get("status").equals("ZERO_RESULTS"));
+            if(!jsonObject.get("status").equals("ZERO_RESULTS")){
                 Log.v(LOG_TAG, "has results? : " + jsonObject.has("results"));
                 JSONArray jsonArray = jsonObject.getJSONArray("results");
                 Log.v(LOG_TAG, "Parsing JSON: "+jsonArray.toString());

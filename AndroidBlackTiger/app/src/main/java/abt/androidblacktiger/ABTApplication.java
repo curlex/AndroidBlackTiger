@@ -37,9 +37,9 @@ public class ABTApplication extends Application {
         mockLoc2.add(new CoOrdinates(0,2));
         List<CoOrdinates> mockLoc3 = new LinkedList<CoOrdinates>();
         mockLoc3.add(new CoOrdinates(0,3));
-        WordHistory mock1 = new WordHistory("bus stop","Irish","staid an mbus", mockLoc,1 ,true, "imagepath1");
-        WordHistory mock2 = new WordHistory("college","Irish", "ullscoil", mockLoc2,2 ,true, "imagepath2");
-        WordHistory mock3 = new WordHistory("shop","Irish", "siopa", mockLoc3, 3 , true, "imagepath3");
+        WordHistory mock1 = new WordHistory("bus stop","ga","staid an mbus", mockLoc,1 ,true, "imagepath1");
+        WordHistory mock2 = new WordHistory("college","ga", "ullscoil", mockLoc2,2 ,true, "imagepath2");
+        WordHistory mock3 = new WordHistory("shop","ga", "siopa", mockLoc3, 3 , true, "imagepath3");
         System.out.println("initDB try add mock data 1");
         System.out.print("\n\n\n\n\n\n\n\n");
         db.addWordHistory(mock1);

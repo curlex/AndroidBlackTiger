@@ -2,8 +2,11 @@ package abt.androidblacktiger;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -45,7 +48,9 @@ public class WordListFragment extends android.app.ListFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        words = (ArrayList<WordHistory>) ABTApplication.db.getAllWords();
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getActivity().getApplicationContext());
+        String language = preferences.getString(getString(R.string.preference_language), "en");
+        words = (ArrayList<WordHistory>) ABTApplication.db.getAllWords(language);
         System.out.println(words);
         WordArrayAdapter adapter = new WordArrayAdapter(getActivity(), words);
         setListAdapter(adapter);

@@ -23,9 +23,6 @@ public class MainActivity extends AppCompatActivity {
     public  void  firstTime() {
 
         PreferenceManager.setDefaultValues(getApplicationContext(), R.xml.pref_general, false);
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-        SettingsListener listener = new SettingsListener(getApplicationContext());
-        sharedPreferences.registerOnSharedPreferenceChangeListener(listener);
 
         SharedPreferences sharedTime = getSharedPreferences(preferences_language, 0);
         if (sharedTime.getBoolean("setLanguage", true)) {

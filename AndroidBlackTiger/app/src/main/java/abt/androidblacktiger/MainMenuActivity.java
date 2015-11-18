@@ -69,7 +69,6 @@ public class MainMenuActivity extends AppCompatActivity {
         {
             //Replace MainMenuActivity.class with the name of activity corresponding to the dictionary
 
-            intent = new Intent(this, CameraActivity.class);
         }
         else if(view.getId()==R.id.gps_button){
             intent = new Intent(this, NewGPS.class);

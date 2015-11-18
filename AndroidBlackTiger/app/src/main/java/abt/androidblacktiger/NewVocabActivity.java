@@ -3,6 +3,9 @@ package abt.androidblacktiger;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.net.Uri;
+import android.os.Environment;
+import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Gravity;
@@ -17,6 +20,12 @@ import android.widget.TextSwitcher;
 import android.widget.TextView;
 import android.widget.ViewSwitcher;
 
+import java.io.File;
+import java.io.IOException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 public class NewVocabActivity extends AppCompatActivity {
     private String engWord = "";
     private String translatedWord = "";
@@ -26,6 +35,7 @@ public class NewVocabActivity extends AppCompatActivity {
     private int currentIndex = -1;
     private Button changeWordBtn;
     private TextSwitcher mySwitcher;
+    Uri imagePath;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -97,8 +107,34 @@ public class NewVocabActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    private static final int CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE = 100;
+
     public void openActivity(View view) {
-        startActivity(new Intent(NewVocabActivity.this, CameraActivity.class));
+        String time = SimpleDateFormat.getDateTimeInstance(DateFormat.SHORT, DateFormat.SHORT).format(new Date());
+        time = android.net.Uri.encode(time);
+        File imageDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
+        File imagefile = new File(imageDir,time+".jpg");
+        imagePath = android.net.Uri.fromFile(imagefile);
+        if(!imagefile.exists()){
+            try {
+                imagefile.createNewFile();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        if(imagefile.isFile()) {
+            Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+            intent.putExtra(MediaStore.EXTRA_OUTPUT, imagePath);
+            startActivityForResult(intent, CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE);
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        Intent intent = new Intent(getApplicationContext(), NewVocabActivity.class);
+        intent.putExtra(getString(R.string.word_intent_image),imagePath);
+        startActivity(intent);
     }
 
     public void doNotRepeatWord(View view) {

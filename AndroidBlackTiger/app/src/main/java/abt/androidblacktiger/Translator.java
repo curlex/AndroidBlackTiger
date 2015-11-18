@@ -31,7 +31,7 @@ public class Translator extends AsyncTask<ArrayList<String>, Void, ArrayList<Str
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context.getApplicationContext());
         Translate.setKey(ApiKeys.YANDEX_API_KEY);
         Language srcLang = Language.ENGLISH;
-        Language destLang = Language.fromString(prefs.getString(SettingsListener.DESTINATION_LANGUAGE, "en"));
+        Language destLang = Language.fromString(prefs.getString(context.getString(R.string.preference_language), "en"));
         for (String param : englishWords) {
             try {
                 words.add(Translate.execute(param, srcLang, destLang));

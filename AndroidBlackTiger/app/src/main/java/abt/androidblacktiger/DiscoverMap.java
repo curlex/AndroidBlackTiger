@@ -48,7 +48,7 @@ public class DiscoverMap extends FragmentActivity implements com.google.android.
     private static int DISPLACEMENT = 10; // 10 meters
     GPSTracker gps;
     private Location currlocation;
-    private Handler asyncHandler;
+    private AsyncTask getLocations = null;
     MarkerOptions markers[] = null ;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,28 +70,6 @@ public class DiscoverMap extends FragmentActivity implements com.google.android.
         createLocationRequest();
         mGoogleApiClient.connect();
         setUpMapIfNeeded();
-        // Once AsyncTask for getting locations and translations is done it signals DiscoverMap to update markers
-        asyncHandler = new Handler(new Handler.Callback(){
-            @Override
-            public boolean handleMessage(Message msg){
-                switch (msg.what) {
-                    case 1:
-                        mMap.clear();
-                        try {
-                            markers = new SetUpMarkers().execute(nearbyLocations).get();
-                            addMarkers();
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
-                        } catch (ExecutionException e) {
-                            e.printStackTrace();
-                        }
-                        return true;
-                    default:
-                        return false;
-                }
-
-            }
-        });
         final DiscoverMap dm = this;
         btnFind.setOnClickListener(new OnClickListener() {
             @Override
@@ -100,7 +78,7 @@ public class DiscoverMap extends FragmentActivity implements com.google.android.
                     currlocation = getLastLocation();
                     Log.v("DiscoverMap", "Location got");
                     String toPass = currlocation.getLatitude() + "," + currlocation.getLongitude();
-                    new GetLocations(asyncHandler, getApplicationContext(), dm).execute(toPass);
+                    getLocations = new GetLocations(getApplicationContext(), dm).execute(toPass);
             }
         });
     }
@@ -201,6 +179,7 @@ public class DiscoverMap extends FragmentActivity implements com.google.android.
     protected void onPause(){
         super.onPause();
         if(mGoogleApiClient.isConnected()){stopLocationUpdates();}
+        if(getLocations != null) getLocations.cancel(true);
     }
     @Override
     protected void onResume(){

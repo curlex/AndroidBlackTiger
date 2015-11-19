@@ -42,7 +42,6 @@ public class GPS extends Service implements LocationListener, CallbackReceiver,
     double poiLat = 0;
     double poilng= 0;
     String poi ="house";
-    static Handler asyncHandler;
     ArrayList <LocationObject> pointOfInterest ;
     private String translatedString;
 
@@ -77,22 +76,6 @@ public class GPS extends Service implements LocationListener, CallbackReceiver,
         //  if (checkPlayServices()) {
         buildGoogleApiClient();
         createLocationRequest();
-        asyncHandler = new Handler(new Handler.Callback(){
-            @Override
-            public boolean handleMessage(Message msg){
-                // super.handleMessage(msg);
-                //What did that async task say?
-                switch (msg.what) {
-                    case 1:
-                        Log.v("GPS: ", "setUp the details method!");
-                        setUpLocationDetail();
-                        return true;
-                    default:
-                        return false;
-                }
-
-            }
-        });
     }
 
     private void checkGPSSettings(SharedPreferences prefs) {
@@ -229,7 +212,7 @@ public class GPS extends Service implements LocationListener, CallbackReceiver,
         Toast.makeText(GPS.this, "Location changed!", Toast.LENGTH_LONG).show();
         String loc = latitude+","+longitude;
             Log.v("GPS: ","locationChanged call to asynctask");
-            new GetLocations(asyncHandler,getApplicationContext(), this).execute(loc);
+            new GetLocations(getApplicationContext(), this).execute(loc);
 
     }
     private void setUpLocationDetail(){

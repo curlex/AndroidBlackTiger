@@ -27,10 +27,8 @@ public class GetLocations extends AsyncTask<String,Void,ArrayList<LocationObject
     private final static String LOG_TAG = GetLocations.class.getSimpleName();
     Context c;
     private CallbackReceiver cbr;
-    //Used to send messages back to the mainUI
-    Handler mainUIHandler;
-    GetLocations(Handler mainUIHandler,Context c, CallbackReceiver cbr){
-        this.mainUIHandler = mainUIHandler;
+
+    GetLocations(Context c, CallbackReceiver cbr){
         this.c = c;
         this.cbr = cbr;
     }

@@ -61,10 +61,10 @@ public class NewVocabActivity extends AppCompatActivity {
         again = intent.getBooleanExtra(getString(R.string.word_intent_again), true);
 
         TextView txtViewEng = (TextView) findViewById(R.id.engWord);
-        txtViewEng.setText(engWord.toString());
+        txtViewEng.setText(engWord);
 
         TextView txtViewTranslation = (TextView) findViewById(R.id.translation);
-        txtViewTranslation.setText(translatedWord.toString());
+        txtViewTranslation.setText(translatedWord);
 
         ImageView imageView = (ImageView) findViewById(R.id.photo);
 

@@ -25,7 +25,7 @@ public class WelcomeActivity extends Activity implements AdapterView.OnItemSelec
         Spinner spinner = (Spinner) findViewById(R.id.language_spinner);
         // Create an ArrayAdapter using the string array and a default spinner layout
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
-                R.array.language_options, android.R.layout.simple_spinner_item);
+                R.array.pref_language_titles, android.R.layout.simple_spinner_item);
         // Specify the layout to use when the list of choices appears
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         // Apply the adapter to the spinner
@@ -79,30 +79,13 @@ public class WelcomeActivity extends Activity implements AdapterView.OnItemSelec
 
         SharedPreferences langPrefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         String option =  parent.getItemAtPosition(position).toString();
+        String[] values = getResources().getStringArray(R.array.pref_language_values);
+        String lang = values[position];
         SharedPreferences.Editor editor = langPrefs.edit();
-        if(option.equals("Irish")){
-            editor.putString(getString(R.string.preference_language), Language.IRISH.toString());
-        }
-        else if(option.equals("French")){
-            editor.putString(getString(R.string.preference_language), Language.FRENCH.toString());
-        }
-        else if(option.equals("Dutch")){
-            editor.putString(getString(R.string.preference_language), Language.DUTCH.toString());
-        }
-        else if(option.equals("Italian")){
-            editor.putString(getString(R.string.preference_language), Language.ITALIAN.toString());
-        }
-        else if(option.equals("Portuguese")){
-            editor.putString(getString(R.string.preference_language), Language.PORTUGUESE.toString());
-        }
-        else if(option.equals("Spanish")){
-            editor.putString(getString(R.string.preference_language), Language.SPANISH.toString());
-        }
-        else if(option.equals("German")){
-            editor.putString(getString(R.string.preference_language), Language.GERMAN.toString());
-        }
+        editor.putString(getString(R.string.preference_language), lang);
         editor.apply();
         System.out.println(langPrefs.getAll());
+        System.out.println(lang);
         System.out.println(option);
 
     }

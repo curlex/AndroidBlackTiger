@@ -26,10 +26,8 @@
         <item>Dutch</item>
     </string-array>
     <string name="title_activity_new_vocab">NewVocabActivity</string>
-    <string name="EnglishWord">University</string>
-    <string name="TranslatedWord">Universidade</string>
     <string name="DoNotShowLocationCheckBox">Do not show this location again.</string>
-    <string name="TakePictureButton">Take a picture</string>
+    <string name="TakePictureButton">Take picture</string>
 
     <string name="new_location_notification_title_template">New location: %1$s</string>
 

@@ -2,6 +2,8 @@ package abt.androidblacktiger;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Environment;
@@ -24,14 +26,12 @@ import android.widget.ViewSwitcher;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URI;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
 import java.util.Date;
-import java.util.LinkedList;
-import java.util.List;
+
+
 
 public class NewVocabActivity extends AppCompatActivity {
     private String engWord = "";
@@ -42,11 +42,7 @@ public class NewVocabActivity extends AppCompatActivity {
     private int shown;
     private Boolean again;
     private String image = "";
-    private String[] wordsToShow = {"", ""};
-    private int wordsCount = wordsToShow.length;
-    private int currentIndex = -1;
-    private Button changeWordBtn;
-    private TextSwitcher mySwitcher;
+    private int currentIndex = 0;
     Uri imagePath;
     HistoryDBHandler db;
 
@@ -64,46 +60,37 @@ public class NewVocabActivity extends AppCompatActivity {
         shown = intent.getIntExtra(getString(R.string.word_intent_shown), 0);
         again = intent.getBooleanExtra(getString(R.string.word_intent_again), true);
 
-        wordsToShow[0] = engWord;
-        wordsToShow[1] = translatedWord;
+        TextView txtViewEng = (TextView) findViewById(R.id.engWord);
+        txtViewEng.setText(engWord.toString());
 
-        changeWordBtn = (Button) findViewById(R.id.changeWordsButton);
-        mySwitcher = (TextSwitcher) findViewById(R.id.textSwitcher);
+        TextView txtViewTranslation = (TextView) findViewById(R.id.translation);
+        txtViewTranslation.setText(translatedWord.toString());
 
-        //set how the words will appear on the screen
-        mySwitcher.setFactory(new ViewSwitcher.ViewFactory() {
-            @Override
-            public View makeView() {
-                TextView txt = new TextView(NewVocabActivity.this);
-                txt.setGravity(Gravity.CENTER);
-                txt.setTextSize(30);
-                txt.setTextColor(Color.BLUE);
-                return txt;
+        ImageView imageView = (ImageView) findViewById(R.id.photo);
+
+        imagePath = intent.getData();
+        String path;
+
+        if(imagePath != null) {
+            path = imagePath.toString();
+            if(path.toLowerCase().startsWith("file://")) {
+                path = (new File(URI.create(path))).getAbsolutePath();
+                Bitmap bmap = BitmapFactory.decodeFile(path);
+                imageView.setImageBitmap(bmap);
             }
-        });
+        }
 
-        // set the typo of animation to change
-        Animation in = AnimationUtils.loadAnimation(this, android.R.anim.slide_in_left);
-        Animation out = AnimationUtils.loadAnimation(this, android.R.anim.slide_out_right);
-
-        mySwitcher.setAnimation(in);
-        mySwitcher.setAnimation(out);
-
-        // set the button listener for swapping the words
-        changeWordBtn.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View view) {
-                currentIndex++;
-
-                if(currentIndex == wordsCount)
-                    currentIndex = 0;
-
-                mySwitcher.setText(wordsToShow[currentIndex]);
-            }
-        });
-
-//        View view = inflater.inflate(R.layout.activity_new_vocab, container, false);
-//        ImageView imageView = (ImageView) view.findViewById(R.id.photo);
-//        imageView.setImageURI(imagePath);
+        Button vocabSaveWordBtn = (Button) findViewById(R.id.vocabSaveWordBtn);
+        vocabSaveWordBtn.setOnClickListener(
+                new Button.OnClickListener() {
+                        public void onClick(View v) {
+                            db = ABTApplication.db;
+                            CoOrdinates loc = new CoOrdinates(locationLat, locationLong);
+                            WordHistory data = new WordHistory(engWord,language,translatedWord, loc, shown, again, image);
+                            db.addWordHistory(data);
+                        }
+                }
+        );
     }
 
     @Override

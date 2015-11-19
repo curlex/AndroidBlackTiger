@@ -11,55 +11,69 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="New Vocabulary"
-        android:textSize="30dp"
+        android:textSize="35dp"
         android:textStyle="italic"
         android:textColor="#008"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="20dp" />
 
-    <TextSwitcher
-        android:id="@+id/textSwitcher"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:layout_centerInParent="true"
-        android:layout_marginTop="45dp">
-    </TextSwitcher>
-
-    <Button
-        android:id="@+id/changeWordsButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/showTranslationButton"
-        android:layout_marginTop="260dp"
-        android:layout_centerHorizontal="true" />
-
     <CheckBox
         android:id="@+id/newVocabCheckBox"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/DoNotShowLocationCheckBox"
         android:textStyle="bold"
         android:checked="false"
         android:onClick="doNotRepeatWord"
-        android:layout_marginBottom="30dp"
-        android:layout_above="@+id/newVocabButton"
-        android:layout_centerHorizontal="true" />
-
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/TakePictureButton"
-        android:id="@+id/newVocabButton"
-        android:onClick="openActivity"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true" />
 
-    <ImageView
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:id="@+id/photo"
-        android:layout_marginTop="20dp"
+    <Button
+        android:layout_width="125dp"
+        android:layout_height="wrap_content"
+        android:text="@string/TakePictureButton"
+        android:id="@+id/vocabTakePictButton"
+        android:onClick="openActivity"
+        android:layout_above="@+id/newVocabCheckBox"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
 
-        />
+    <ImageView
+        android:id="@+id/photo"
+        android:layout_width="120dp"
+        android:layout_height="120dp"
+        android:layout_marginTop="80dp"
+        android:background="@drawable/default_photo"
+        android:layout_centerHorizontal="true"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/engWord"
+        android:textStyle="bold"
+        android:textSize="20dp"
+        android:textColor="#008"
+        android:layout_marginTop="250dp"
+        android:layout_centerHorizontal="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/translation"
+        android:layout_marginTop="42dp"
+        android:textStyle="bold"
+        android:textSize="20dp"
+        android:textColor="#008"
+        android:layout_below="@+id/engWord"
+        android:layout_centerHorizontal="true" />
+
+    <Button
+        android:id="@+id/vocabSaveWordBtn"
+        android:layout_width="125dp"
+        android:layout_height="wrap_content"
+        android:text="Save Word"
+        android:layout_above="@+id/newVocabCheckBox"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
 
 </RelativeLayout>

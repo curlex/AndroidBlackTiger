@@ -3,6 +3,8 @@ package abt.androidblacktiger;
 import android.content.Context;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Handler;
+import android.os.Message;
 import android.util.Log;
 
 import org.json.JSONArray;
@@ -24,9 +26,11 @@ import java.util.ArrayList;
 public class GetLocations extends AsyncTask<String,Void,ArrayList<LocationObject>> {
     private final static String LOG_TAG = GetLocations.class.getSimpleName();
     Context c;
-
-    GetLocations(Context context){
-        c = context;
+    //Used to send messages back to the mainUI
+    Handler mainUIHandler;
+    GetLocations(Handler mainUIHandler,Context c){
+        this.mainUIHandler = mainUIHandler;
+        this.c = c;
     }
     protected void onPreExecute(){
         CharSequence message = "";
@@ -60,12 +64,11 @@ public class GetLocations extends AsyncTask<String,Void,ArrayList<LocationObject
             Uri builtUri = Uri.parse(GOOGLE_NEARBY_SEARCH_URL).buildUpon()
                     .appendQueryParameter(LOCATION_PARAM,location[0]+","+location[1])
                     .appendQueryParameter(RADIUS_PARAM, distance)
-                    //.appendQueryParameter(RANKBY_PARAM, d)
+                            //.appendQueryParameter(RANKBY_PARAM, d)
                     .appendQueryParameter(TYPE_PARAM, type)
                     .appendQueryParameter(KEY_PARAM, key)
                     .build();
             URL url = new URL(builtUri.toString());
-
             Log.v(LOG_TAG, "Built URI " + builtUri.toString());
             // Create the request , and open the connection
             urlConnection = (HttpURLConnection) url.openConnection();
@@ -75,6 +78,7 @@ public class GetLocations extends AsyncTask<String,Void,ArrayList<LocationObject
             InputStream inputStream = urlConnection.getInputStream();
             nearbyPlacesJsonStr = readStream(inputStream);
             Log.v(LOG_TAG, "Nearby JSON String: " + nearbyPlacesJsonStr);
+
         }
         catch (IOException e) {
             Log.e(LOG_TAG, "Error ", e);
@@ -106,11 +110,30 @@ public class GetLocations extends AsyncTask<String,Void,ArrayList<LocationObject
         // This will only happen if there was an error getting or parsing the info.
         return null;
     }
+
+    private void translate(ArrayList<LocationObject> nearby) {
+        Log.v(LOG_TAG, "Translating...");
+        MyTranslate m = new MyTranslate(c);
+        if(nearby.size()>0){
+            for (int i = 0; i < nearby.size(); i++) {
+                ArrayList<String> translatedWords = null;
+                translatedWords = m.doInBackground(nearby.get(i).getTypes());
+                for (int j = 0; j < nearby.get(i).getTypes().size(); j++) {
+                    if(translatedWords!=null && translatedWords.size()>0) {
+                        nearby.get(i).setTranslatedWord(nearby.get(i).getTypes().get(j), translatedWords.get(j));
+                    }
+                }
+            }
+
+        }
+        Log.v(LOG_TAG, "Translating Ended!!!");
+    }
+
     /**
      * Take the String representing the nearby in JSON Format and
      * pull out the data we need to construct the Strings needed for the displaying i.e tpye.
      */
-    private static ArrayList<LocationObject> getTypesFromJson(String nearbyPlaces)throws JSONException {
+    private  ArrayList<LocationObject> getTypesFromJson(String nearbyPlaces)throws JSONException {
         ArrayList<LocationObject> types = new ArrayList<LocationObject>();
         StringBuilder sb = new StringBuilder();
         try{
@@ -139,6 +162,7 @@ public class GetLocations extends AsyncTask<String,Void,ArrayList<LocationObject
                         }
                     }
                 }
+                translate(types);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -174,5 +198,11 @@ public class GetLocations extends AsyncTask<String,Void,ArrayList<LocationObject
         }
         return jsonParsed;
     }
-
+    @Override
+    protected void onPostExecute(ArrayList<LocationObject> nearby){
+        super.onPostExecute(nearby);
+        Message msg = Message.obtain();
+        msg.what = 1; //A public enumeration signifying success would be better.
+        mainUIHandler.sendMessage(msg);
+    }
 }

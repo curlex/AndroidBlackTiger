@@ -2,7 +2,6 @@ package abt.androidblacktiger;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.os.AsyncTask;
 import android.preference.PreferenceManager;
 
 import com.rmtheis.yandtran.ApiKeys;
@@ -12,21 +11,17 @@ import com.rmtheis.yandtran.translate.Translate;
 import java.util.ArrayList;
 
 /**
- * An {@link AsyncTask} for the translation functionality provided by {@link com.rmtheis.yandtran.YandexTranslatorAPI}
- * Should be called as Translator.execute()
- * Author: Diarmuid
+ * Created by User on 19/11/2015.
  */
-public class Translator extends AsyncTask<ArrayList<String>, Void, ArrayList<String>> {
-
+public class MyTranslate {
     private Context context;
 
-    public Translator(Context context) {
+    public MyTranslate(Context context) {
         this.context = context;
     }
 
-    @Override
-    protected ArrayList<String> doInBackground(ArrayList<String>... toTranslate) {
-        ArrayList<String> englishWords = toTranslate[0];
+    protected ArrayList<String> doInBackground(ArrayList<String> toTranslate) {
+        ArrayList<String> englishWords = toTranslate;
         ArrayList<String> words = new ArrayList<>();
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context.getApplicationContext());
         Translate.setKey(ApiKeys.YANDEX_API_KEY);
@@ -41,10 +36,5 @@ public class Translator extends AsyncTask<ArrayList<String>, Void, ArrayList<Str
             }
         }
         return words;
-    }
-
-    protected void onPostExecute(ArrayList<String> translated){
-        super.onPostExecute(translated);
-
     }
 }

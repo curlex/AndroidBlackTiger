@@ -42,7 +42,7 @@
         </activity>
         <activity
             android:name=".MainMenuActivity"
-            android:label="Main_Menu"
+            android:label="Main Menu"
             android:parentActivityName=".MainActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
@@ -50,7 +50,7 @@
         </activity>
         <activity
             android:name=".WelcomeActivity"
-            android:label="Main_Menu"
+            android:label="Welcome"
             android:parentActivityName=".MainActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
@@ -62,7 +62,7 @@
         </activity>
         <activity
             android:name=".NewGPS"
-            android:label="NewGPS" >
+            android:label="GPS" >
         </activity>
 
         <meta-data

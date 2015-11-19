@@ -26,11 +26,13 @@ import java.util.ArrayList;
 public class GetLocations extends AsyncTask<String,Void,ArrayList<LocationObject>> {
     private final static String LOG_TAG = GetLocations.class.getSimpleName();
     Context c;
+    private CallbackReceiver cbr;
     //Used to send messages back to the mainUI
     Handler mainUIHandler;
-    GetLocations(Handler mainUIHandler,Context c){
+    GetLocations(Handler mainUIHandler,Context c, CallbackReceiver cbr){
         this.mainUIHandler = mainUIHandler;
         this.c = c;
+        this.cbr = cbr;
     }
     protected void onPreExecute(){
         CharSequence message = "";
@@ -201,8 +203,9 @@ public class GetLocations extends AsyncTask<String,Void,ArrayList<LocationObject
     @Override
     protected void onPostExecute(ArrayList<LocationObject> nearby){
         super.onPostExecute(nearby);
-        Message msg = Message.obtain();
-        msg.what = 1; //A public enumeration signifying success would be better.
-        mainUIHandler.sendMessage(msg);
+//        Message msg = Message.obtain();
+//        msg.what = 1; //A public enumeration signifying success would be better.
+//        mainUIHandler.sendMessage(msg);
+        cbr.receiveData(nearby);
     }
 }

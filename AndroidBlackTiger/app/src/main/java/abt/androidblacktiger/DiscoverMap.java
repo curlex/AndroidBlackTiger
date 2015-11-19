@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v4.app.FragmentActivity;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -30,7 +31,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import java.util.ArrayList;
 import java.util.concurrent.ExecutionException;
 
-public class DiscoverMap extends FragmentActivity implements com.google.android.gms.location.LocationListener,
+public class DiscoverMap extends FragmentActivity implements com.google.android.gms.location.LocationListener, CallbackReceiver,
         GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, GoogleMap.OnMyLocationChangeListener,
         GoogleMap.OnInfoWindowClickListener {
     GoogleMap mMap;
@@ -91,19 +92,15 @@ public class DiscoverMap extends FragmentActivity implements com.google.android.
 
             }
         });
+        final DiscoverMap dm = this;
         btnFind.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                try {
+                    Log.v("DiscoverMap", "Listener launched");
                     currlocation = getLastLocation();
+                    Log.v("DiscoverMap", "Location got");
                     String toPass = currlocation.getLatitude() + "," + currlocation.getLongitude();
-                    nearbyLocations = new GetLocations(asyncHandler,getApplicationContext()).execute(toPass).get();
-
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                } catch (ExecutionException e) {
-                    e.printStackTrace();
-                }
+                    new GetLocations(asyncHandler, getApplicationContext(), dm).execute(toPass);
             }
         });
     }
@@ -203,7 +200,7 @@ public class DiscoverMap extends FragmentActivity implements com.google.android.
     @Override
     protected void onPause(){
         super.onPause();
-        stopLocationUpdates();
+        if(mGoogleApiClient.isConnected()){stopLocationUpdates();}
     }
     @Override
     protected void onResume(){
@@ -217,6 +214,19 @@ public class DiscoverMap extends FragmentActivity implements com.google.android.
     public void onMyLocationChange(Location location) {
         onLocationChanged(location);
     }
+
+    @Override
+    public void receiveData(ArrayList<LocationObject> result) {
+            mMap.clear();
+        nearbyLocations = result;
+            try {
+                markers = new SetUpMarkers().execute(result).get();
+                addMarkers();
+            } catch (InterruptedException | ExecutionException e) {
+                e.printStackTrace();
+            }
+    }
+
     //Populates map with markers in another thread and updates UI thread for every marker
     private class SetUpMarkers extends AsyncTask<ArrayList<LocationObject>,MarkerOptions, MarkerOptions[]> {
         @Override

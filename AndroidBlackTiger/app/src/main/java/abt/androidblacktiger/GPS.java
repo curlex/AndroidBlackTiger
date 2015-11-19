@@ -25,7 +25,7 @@ import com.google.android.gms.location.places.Places;
 import java.util.ArrayList;
 import java.util.concurrent.ExecutionException;
 
-public class GPS extends Service implements LocationListener,
+public class GPS extends Service implements LocationListener, CallbackReceiver,
         GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener {
     // Location updates intervals in sec
@@ -228,15 +228,8 @@ public class GPS extends Service implements LocationListener,
         longitude = location.getLongitude();
         Toast.makeText(GPS.this, "Location changed!", Toast.LENGTH_LONG).show();
         String loc = latitude+","+longitude;
-        try {
             Log.v("GPS: ","locationChanged call to asynctask");
-            pointOfInterest = new GetLocations(asyncHandler,getApplicationContext()).execute(loc).get();
-
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-        }
+            new GetLocations(asyncHandler,getApplicationContext(), this).execute(loc);
 
     }
     private void setUpLocationDetail(){
@@ -273,5 +266,10 @@ public class GPS extends Service implements LocationListener,
         Toast.makeText(GPS.this, "Service Stopping", Toast.LENGTH_LONG).show();
         stopLocationUpdates();
         super.onDestroy();
+    }
+
+    @Override
+    public void receiveData(ArrayList<LocationObject> result) {
+        pointOfInterest = result;
     }
 }

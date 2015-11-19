@@ -122,17 +122,18 @@ public class DiscoverMap extends FragmentActivity implements com.google.android.
     }
     public void addMarkers(){
         // Update the map with new view of all the markers
-        mMap.setInfoWindowAdapter(new PopupAdapter(getLayoutInflater()));
-        mMap.setOnInfoWindowClickListener(DiscoverMap.this);
-        LatLngBounds.Builder builder = new LatLngBounds.Builder();
-        for (LocationObject Nearbypoi : nearbyLocations) {
-            builder.include(Nearbypoi.getPosition());
+        if(nearbyLocations != null) {
+            mMap.setInfoWindowAdapter(new PopupAdapter(getLayoutInflater()));
+            mMap.setOnInfoWindowClickListener(DiscoverMap.this);
+            LatLngBounds.Builder builder = new LatLngBounds.Builder();
+            for (LocationObject Nearbypoi : nearbyLocations) {
+                builder.include(Nearbypoi.getPosition());
+            }
+            LatLngBounds bounds = builder.build();
+            int padding = 70; // offset from edges of the map in pixels
+            CameraUpdate cu = CameraUpdateFactory.newLatLngBounds(bounds, padding);
+            mMap.animateCamera(cu);
         }
-        LatLngBounds bounds = builder.build();
-        int padding = 70; // offset from edges of the map in pixels
-        CameraUpdate cu = CameraUpdateFactory.newLatLngBounds(bounds, padding);
-        mMap.animateCamera(cu);
-
     }
 
     @Override
@@ -210,21 +211,24 @@ public class DiscoverMap extends FragmentActivity implements com.google.android.
     private class SetUpMarkers extends AsyncTask<ArrayList<LocationObject>,MarkerOptions, MarkerOptions[]> {
         @Override
         protected MarkerOptions[] doInBackground(ArrayList<LocationObject>... params) {
-            MarkerOptions markers[] = new MarkerOptions[params[0].size()];
-            if (params[0].size() > 0) {
-                for (int i = 0; i < params[0].size(); i++) {
-                    markers[i] = new MarkerOptions();
-                    LocationObject googlePlace = params[0].get(i);
-                    String placeName = googlePlace.getName();
-                    String types = googlePlace.getPairsSet();
-                    String word = googlePlace.getTypes().get(0);
-                    markers[i].position(googlePlace.getPosition());
-                    markers[i].title(placeName);
-                    markers[i].snippet(types + "\n" + word);
-                    publishProgress(markers[i]);
+            if(params[0] != null) {
+                MarkerOptions markers[] = new MarkerOptions[params[0].size()];
+                if (params[0].size() > 0) {
+                    for (int i = 0; i < params[0].size(); i++) {
+                        markers[i] = new MarkerOptions();
+                        LocationObject googlePlace = params[0].get(i);
+                        String placeName = googlePlace.getName();
+                        String types = googlePlace.getPairsSet();
+                        String word = googlePlace.getTypes().get(0);
+                        markers[i].position(googlePlace.getPosition());
+                        markers[i].title(placeName);
+                        markers[i].snippet(types + "\n" + word);
+                        publishProgress(markers[i]);
+                    }
                 }
+                return markers;
             }
-            return markers;
+            else return null;
         }
 
         protected void onProgressUpdate(MarkerOptions... progress) {

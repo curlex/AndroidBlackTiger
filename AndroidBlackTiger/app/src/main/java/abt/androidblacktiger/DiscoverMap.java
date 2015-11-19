@@ -1,11 +1,13 @@
 package abt.androidblacktiger;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.location.Location;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.preference.PreferenceManager;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.View;
@@ -50,10 +52,22 @@ public class DiscoverMap extends FragmentActivity implements com.google.android.
     private Location currlocation;
     private AsyncTask getLocations = null;
     MarkerOptions markers[] = null ;
+    private String engWord;
+    private String translatedWord;
+    private String title;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         //show error dialog if GoolglePlayServices not available
+
+        Intent intent = getIntent();
+        title = intent.getStringExtra(getString(R.string.word_intent_title));
+        engWord = intent.getStringExtra(getString(R.string.word_intent_word));
+        translatedWord = intent.getStringExtra(getString(R.string.word_intent_translation));
+        latitude = intent.getDoubleExtra(getString(R.string.word_intent_Latitude), 0);
+        longitude = intent.getDoubleExtra(getString(R.string.word_intent_Longitude), 0);
+
         if (!isGooglePlayServicesAvailable()) {
             finish();
         }
@@ -70,6 +84,9 @@ public class DiscoverMap extends FragmentActivity implements com.google.android.
         createLocationRequest();
         mGoogleApiClient.connect();
         setUpMapIfNeeded();
+        if(longitude!=0 && latitude!=0){
+            addLocation();
+        }
         final DiscoverMap dm = this;
         btnFind.setOnClickListener(new OnClickListener() {
             @Override
@@ -120,6 +137,14 @@ public class DiscoverMap extends FragmentActivity implements com.google.android.
                 .position(currLocation)
                 .title("You Are Here!"));
     }
+    public void addLocation(){
+        LatLng currLocation = new LatLng(latitude,longitude);
+        //Marker window with info
+        Marker currentlocation = mMap.addMarker(new MarkerOptions()
+                .position(currLocation)
+                .title(title)
+                .snippet(engWord+"\n"+translatedWord));
+    }
     public void addMarkers(){
         // Update the map with new view of all the markers
         if(nearbyLocations != null) {
@@ -140,8 +165,8 @@ public class DiscoverMap extends FragmentActivity implements com.google.android.
     public void onInfoWindowClick(Marker marker) {
         Toast.makeText(this, marker.getTitle(), Toast.LENGTH_LONG).show();
         Intent intent = new Intent(this,NewVocabActivity.class);
-        intent.putExtra(getString(R.string.word_intent_word),marker.getTitle());
-        intent.putExtra(getString(R.string.word_intent_translation),marker.getSnippet());
+        intent.putExtra(getString(R.string.word_intent_word),marker.getSnippet().split("\n")[0]);
+        intent.putExtra(getString(R.string.word_intent_translation),marker.getSnippet().split("\n")[1]);
         intent.putExtra(getString(R.string.word_intent_Latitude),marker.getPosition().latitude);
         intent.putExtra(getString(R.string.word_intent_Longitude),marker.getPosition().longitude);
         startActivity(intent);
@@ -219,8 +244,8 @@ public class DiscoverMap extends FragmentActivity implements com.google.android.
                         markers[i] = new MarkerOptions();
                         LocationObject googlePlace = params[0].get(i);
                         String placeName = googlePlace.getName();
-                        String types = googlePlace.getPairsSet();
-                        String word = googlePlace.getTypes().get(0);
+                        String types = googlePlace.getTypes().get(0);
+                        String word = googlePlace.getKey(types);
                         markers[i].position(googlePlace.getPosition());
                         markers[i].title(placeName);
                         markers[i].snippet(types + "\n" + word);

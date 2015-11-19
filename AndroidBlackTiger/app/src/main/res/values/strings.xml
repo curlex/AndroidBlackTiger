@@ -45,6 +45,7 @@
     <string name="word_intent_language">abt.word_intent.Language</string>
     <string name="word_intent_shown">abt.word_intent.Shown</string>
     <string name="word_intent_again">abt.word_intent.Again</string>
+    <string name="word_intent_title">abt.word_intent.Title</string>
 
     <!-- KEYS FOR PREFERENCES -->
     <string name="preference_gps">track_setting</string>

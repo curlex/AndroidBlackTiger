@@ -56,14 +56,6 @@ public class MainMenuActivity extends AppCompatActivity {
         {
             intent = new Intent(this, HistoryActivity.class);
         }
-        /*else if (view.getId()==R.id.dictionary_button)
-        {
-            //Replace MainMenuActivity.class with the name of activity corresponding to the dictionary
-
-        }
-        else if(view.getId()==R.id.gps_button){
-            intent = new Intent(this, NewGPS.class);
-        }*/
         else
         {
             //Replace MainMenuActivity.class with the name of activity corresponding to Map

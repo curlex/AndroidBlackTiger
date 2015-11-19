@@ -1,5 +1,7 @@
 package abt.androidblacktiger;
 
+import com.google.android.gms.maps.model.LatLng;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -26,6 +28,9 @@ public class LocationObject {
     }
     public void setName(String name){
         this.name = name;
+    }
+    public LatLng getPosition(){
+        return new LatLng(latitude,longitude);
     }
     public ArrayList<String> getTypes(){
         return types;

@@ -42,4 +42,9 @@ public class Translator extends AsyncTask<ArrayList<String>, Void, ArrayList<Str
         }
         return words;
     }
+
+    protected void onPostExecute(ArrayList<String> translated){
+        super.onPostExecute(translated);
+
+    }
 }

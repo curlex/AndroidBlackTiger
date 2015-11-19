@@ -3,6 +3,8 @@ package abt.androidblacktiger;
 import android.app.Activity;
 import android.location.Location;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -55,6 +57,7 @@ public class NewGPS extends Activity implements LocationListener,ConnectionCallb
     public Button btnShowLocation, btnStartLocationUpdates;
     private String poi = "";
     private String translatedString = "";
+    private Handler asyncHandler;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,6 +74,21 @@ public class NewGPS extends Activity implements LocationListener,ConnectionCallb
             buildGoogleApiClient();
             createLocationRequest();
         }
+        asyncHandler = new Handler(new Handler.Callback(){
+            @Override
+            public boolean handleMessage(Message msg){
+                // super.handleMessage(msg);
+                //What did that async task say?
+                switch (msg.what) {
+                    case 1:
+                        handleAsyncResult();
+                        return true;
+                    default:
+                        return false;
+                }
+
+            }
+        });
         pointOfInterest = new LocationObject();
         // Show location button click listener
         btnShowLocation.setOnClickListener(new View.OnClickListener() {
@@ -311,10 +329,15 @@ public class NewGPS extends Activity implements LocationListener,ConnectionCallb
         // calls an asynctask to get JSON data of nearby locations and its types
         //task takes loc which is the latitude and longitude of the current location split with a comma
         try {
-            pointOfInterest = new GetLocations(getApplicationContext()).execute(loc).get().get(0);
+            pointOfInterest = new GetLocations(asyncHandler,getApplicationContext()).execute(loc).get().get(0);
         } catch (InterruptedException | ExecutionException e) {
             e.printStackTrace();
         }
+
+        displayLocation();
+
+    }
+    public void handleAsyncResult(){
         // gets the locatoin of the POI needed later to use to show on map
         double poiLat = pointOfInterest.getLatitude();
         double poilng = pointOfInterest.getLongitude();
@@ -337,7 +360,5 @@ public class NewGPS extends Activity implements LocationListener,ConnectionCallb
         // Displaying the new location on UI
         mLastLocation.setLongitude(pointOfInterest.getLongitude());
         mLastLocation.setLatitude(pointOfInterest.getLatitude());
-        displayLocation();
-
     }
 }

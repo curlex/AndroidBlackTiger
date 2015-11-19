@@ -5,7 +5,11 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.location.Location;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.HandlerThread;
 import android.os.IBinder;
+import android.os.Looper;
+import android.os.Message;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import android.widget.Toast;
@@ -27,7 +31,7 @@ public class GPS extends Service implements LocationListener,
     // Location updates intervals in sec
     private static final String TAG = MainActivity.class.getSimpleName();
     private static int UPDATE_INTERVAL = 10000; // 10 sec
-    private static int FASTEST_INTERVAL = 5000; // 5 sec
+    private static int FASTEST_INTERVAL = UPDATE_INTERVAL+120000; // add 2 mins to the update tnerval
     private static int DISPLACEMENT = 10; // 100 meters
     private final static int PLAY_SERVICES_RESOLUTION_REQUEST = 1000;
     private LocationRequest mLocationRequest;
@@ -37,11 +41,14 @@ public class GPS extends Service implements LocationListener,
     double longitude; // longitude
     double poiLat = 0;
     double poilng= 0;
-    String poi ="house"; //
+    String poi ="house";
+    static Handler asyncHandler;
     ArrayList <LocationObject> pointOfInterest ;
     private String translatedString;
 
     private SharedPreferences.OnSharedPreferenceChangeListener changeListener;
+    private HandlerThread handlerThread;
+    private Looper looper;
 
     public GPS() {
 
@@ -70,7 +77,22 @@ public class GPS extends Service implements LocationListener,
         //  if (checkPlayServices()) {
         buildGoogleApiClient();
         createLocationRequest();
-        // }
+        asyncHandler = new Handler(new Handler.Callback(){
+            @Override
+            public boolean handleMessage(Message msg){
+                // super.handleMessage(msg);
+                //What did that async task say?
+                switch (msg.what) {
+                    case 1:
+                        Log.v("GPS: ", "setUp the details method!");
+                        setUpLocationDetail();
+                        return true;
+                    default:
+                        return false;
+                }
+
+            }
+        });
     }
 
     private void checkGPSSettings(SharedPreferences prefs) {
@@ -83,9 +105,11 @@ public class GPS extends Service implements LocationListener,
     }
 
     public void changeUpdateFreq(int update){
-        UPDATE_INTERVAL = update; // 10 sec
+        UPDATE_INTERVAL = update;
+        FASTEST_INTERVAL = update + 120000; // update plus 2 mins
         mLocationRequest.setInterval(UPDATE_INTERVAL);
-        Toast.makeText(this, "Frequency Change", Toast.LENGTH_SHORT).show();
+        mLocationRequest.setFastestInterval(FASTEST_INTERVAL);
+        Toast.makeText(GPS.this, "Frequency Changed", Toast.LENGTH_LONG).show();
         Log.v("GPS", "Frequency changed to: " + update);
         startLocationUpdates();
     }
@@ -97,14 +121,11 @@ public class GPS extends Service implements LocationListener,
                 .isGooglePlayServicesAvailable(this);
         if (resultCode != ConnectionResult.SUCCESS) {
             if (GooglePlayServicesUtil.isUserRecoverableError(resultCode)) {
-                // GooglePlayServicesUtil.getErrorDialog(resultCode,PLAY_SERVICES_RESOLUTION_REQUEST).show();
-                Toast.makeText(getApplicationContext(),
-                        "UserRecoverableError.", Toast.LENGTH_LONG)
-                        .show();
+                Toast.makeText(GPS.this,"UserRecoverableError.", Toast.LENGTH_LONG).show();
+
             } else {
-                Toast.makeText(getApplicationContext(),
-                        "This device is not supported.", Toast.LENGTH_LONG)
-                        .show();
+                Toast.makeText(GPS.this,"This device is not supported", Toast.LENGTH_LONG).show();
+
             }
             return false;
         }
@@ -128,21 +149,19 @@ public class GPS extends Service implements LocationListener,
                 .build();
     }
  /*
-  You need to write the code to be executed on service start. Sometime due to memory congestion DVM kill the 
+  You need to write the code to be executed on service start. Sometime due to memory congestion DVM kill the
   running service but it can be restarted when the memory is enough to run the service again.
  */
 
 
     public int onStartCommand(Intent intent, int flags, int startId) {
         super.onStartCommand(intent, flags, startId);
-        Toast.makeText(this, "Service starting", Toast.LENGTH_SHORT).show();
-//        // If we get killed, after returning from here, restart
-//        // Building the GoogleApi client
-        if (mGoogleApiClient != null) {
-            mGoogleApiClient.connect();
-        }
-        else mGoogleApiClient.connect();
-        Toast.makeText(this, "IS IT CONNECTED: "+mGoogleApiClient.isConnected(), Toast.LENGTH_SHORT).show();
+        Toast.makeText(GPS.this, "Service starting", Toast.LENGTH_SHORT).show();
+        mGoogleApiClient.connect();
+        handlerThread = new HandlerThread("MyHandlerThread");
+        handlerThread.start();
+        looper = handlerThread.getLooper();
+        Toast.makeText(GPS.this, "IS IT CONNECTED: " + mGoogleApiClient.isConnected(), Toast.LENGTH_SHORT).show();
         return START_STICKY;
     }
     /**
@@ -150,14 +169,14 @@ public class GPS extends Service implements LocationListener,
      * */
     protected void startLocationUpdates() {
         LocationServices.FusedLocationApi.requestLocationUpdates(
-                mGoogleApiClient, mLocationRequest, this);
+                mGoogleApiClient, mLocationRequest, this, looper);
     }
 
     /**
      * Stopping location updates
      */
     protected void stopLocationUpdates() {
-        Toast.makeText(this, "updates stopping", Toast.LENGTH_SHORT).show();
+        Toast.makeText(GPS.this, "Updates Stopping", Toast.LENGTH_LONG).show();
         LocationServices.FusedLocationApi.removeLocationUpdates(
                 mGoogleApiClient, this);
     }
@@ -166,10 +185,10 @@ public class GPS extends Service implements LocationListener,
     public IBinder onBind(Intent intent) {
         return null;
     }
- 
+
  /*
   Overriden method of the interface GooglePlayServicesClient.OnConnectionFailedListener .
-  called when connection to the Google Play Service are not able to connect 
+  called when connection to the Google Play Service are not able to connect
  */
 
     @Override
@@ -207,35 +226,11 @@ public class GPS extends Service implements LocationListener,
     public void onLocationChanged(Location location) {
         latitude = location.getLatitude();
         longitude = location.getLongitude();
-        Toast.makeText(getApplicationContext(), "Location changed!",
-                Toast.LENGTH_SHORT).show();
+        Toast.makeText(GPS.this, "Location changed!", Toast.LENGTH_LONG).show();
         String loc = latitude+","+longitude;
         try {
-            pointOfInterest = new GetLocations(getApplicationContext()).execute(loc).get();
-            //if list of nearby places is not empty
-            if(pointOfInterest.size()>0) {
-                poiLat = pointOfInterest.get(0).getLatitude();
-                poilng = pointOfInterest.get(0).getLongitude();
-                //if types is not empty which should never happen :P
-                if( !pointOfInterest.get(0).getTypes().isEmpty()){
-                    // first type which should be of significance is used
-                    poi = pointOfInterest.get(0).getTypes().get(0);
-                    Translator translator = new Translator(getApplicationContext());
-                    ArrayList<String> strings = new ArrayList<String>();
-                    strings.add(poi);
-                    try {
-                        translatedString = translator.execute(strings).get().get(0);
-                    } catch (InterruptedException | ExecutionException e) {
-                        e.printStackTrace();
-                    }
-                    Log.v(TAG, "Translation: "+ translatedString);
-                    Toast.makeText(getApplicationContext(),
-                            poi +"  " + translatedString, Toast.LENGTH_LONG)
-                            .show();
-
-                }
-                NewLocationNotification.notify(getApplicationContext(),pointOfInterest.get(0).getName()+" "+ poi, translatedString, poiLat,poilng);
-            }
+            Log.v("GPS: ","locationChanged call to asynctask");
+            pointOfInterest = new GetLocations(asyncHandler,getApplicationContext()).execute(loc).get();
 
         } catch (InterruptedException e) {
             e.printStackTrace();
@@ -244,7 +239,20 @@ public class GPS extends Service implements LocationListener,
         }
 
     }
-
+    private void setUpLocationDetail(){
+        if(pointOfInterest!= null) {
+            poi = pointOfInterest.get(0).getTypes().get(0);
+            poiLat = pointOfInterest.get(0).getLatitude();
+            poilng = pointOfInterest.get(0).getLongitude();
+            // gets first type in the list and then uses it as key to get translated version
+            translatedString = pointOfInterest.get(0).getKey(pointOfInterest.get(0).getTypes().get(0));
+            // need to remove getName to only return the type only
+            Log.v("GPS: ", "Creating notification!");
+            NewLocationNotification.notify(getApplicationContext(), poi, translatedString, poiLat, poilng);
+            Log.v("GPS: ", "Finished setting up and created notifications");
+        }
+        Log.v("GPS:","pointOfInterst is it null?"+ (pointOfInterest==null));
+    }
     /**
      * Verify that Google Play services is available before making a request.
      * @return true if Google Play services is available, otherwise false
@@ -252,7 +260,6 @@ public class GPS extends Service implements LocationListener,
     private boolean isServicesConnected() {
         // Check that Google Play services is available
         int resultCode = GooglePlayServicesUtil.isGooglePlayServicesAvailable(GPS.this);
-
         // If Google Play services is available
         return ConnectionResult.SUCCESS == resultCode;
     }
@@ -263,7 +270,7 @@ public class GPS extends Service implements LocationListener,
     @Override
     public void onDestroy() {
         Log.i("info", "Service is destroyed");
-        Toast.makeText(this, "service stopping", Toast.LENGTH_LONG).show();
+        Toast.makeText(GPS.this, "Service Stopping", Toast.LENGTH_LONG).show();
         stopLocationUpdates();
         super.onDestroy();
     }

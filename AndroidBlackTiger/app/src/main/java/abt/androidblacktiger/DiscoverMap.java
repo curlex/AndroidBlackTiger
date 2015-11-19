@@ -2,10 +2,11 @@ package abt.androidblacktiger;
 
 import android.content.Intent;
 import android.location.Location;
-import android.location.LocationListener;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v4.app.FragmentActivity;
-import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -27,10 +28,9 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.concurrent.ExecutionException;
 
-public class DiscoverMap extends FragmentActivity implements LocationListener,
+public class DiscoverMap extends FragmentActivity implements com.google.android.gms.location.LocationListener,
         GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, GoogleMap.OnMyLocationChangeListener,
         GoogleMap.OnInfoWindowClickListener {
     GoogleMap mMap;
@@ -40,7 +40,6 @@ public class DiscoverMap extends FragmentActivity implements LocationListener,
     private int PROXIMITY_RADIUS = 5000;
     private ArrayList<LocationObject> nearbyLocations;
     private ArrayList<String> translatedStrings;
-    private HashMap<LocationObject,String> comboWords;
     private GoogleApiClient mGoogleApiClient;
     private LocationRequest mLocationRequest;
     private static int UPDATE_INTERVAL = 10000; // 10 sec
@@ -48,7 +47,8 @@ public class DiscoverMap extends FragmentActivity implements LocationListener,
     private static int DISPLACEMENT = 10; // 10 meters
     GPSTracker gps;
     private Location currlocation;
-
+    private Handler asyncHandler;
+    MarkerOptions markers[] = null ;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -59,7 +59,6 @@ public class DiscoverMap extends FragmentActivity implements LocationListener,
         setContentView(R.layout.discovermap);
         translatedStrings = new ArrayList<>();
         nearbyLocations = new ArrayList<>();
-        comboWords = new HashMap<>();
         placeText = (EditText) findViewById(R.id.placeText);
         Button btnFind = (Button) findViewById(R.id.btnFind);
         mGoogleApiClient = new GoogleApiClient.Builder(this)
@@ -69,37 +68,37 @@ public class DiscoverMap extends FragmentActivity implements LocationListener,
                 .build();
         createLocationRequest();
         mGoogleApiClient.connect();
-        gps = new GPSTracker(this);
-        currlocation = gps.getLocation();
         setUpMapIfNeeded();
+        // Once AsyncTask for getting locations and translations is done it signals DiscoverMap to update markers
+        asyncHandler = new Handler(new Handler.Callback(){
+            @Override
+            public boolean handleMessage(Message msg){
+                switch (msg.what) {
+                    case 1:
+                        mMap.clear();
+                        try {
+                            markers = new SetUpMarkers().execute(nearbyLocations).get();
+                            addMarkers();
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        } catch (ExecutionException e) {
+                            e.printStackTrace();
+                        }
+                        return true;
+                    default:
+                        return false;
+                }
+
+            }
+        });
         btnFind.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
                 try {
-                    currlocation = gps.getLocation();
+                    currlocation = getLastLocation();
                     String toPass = currlocation.getLatitude() + "," + currlocation.getLongitude();
-                    nearbyLocations = new GetLocations(getApplicationContext()).execute(toPass).get();
-                    if (nearbyLocations != null) {
-                        try {
+                    nearbyLocations = new GetLocations(asyncHandler,getApplicationContext()).execute(toPass).get();
 
-                            for (int i = 0; i < nearbyLocations.size(); i++) {
-                                translatedStrings.add(i, nearbyLocations.get(i).getName());
-                                // Changed this to accommadate changes to Translator that were made
-                                // to accomodate this but now I realist that's pointless as they
-                                // still have to be added to nearbyLocations in the for loop?
-                                Translator translator = new Translator(getApplicationContext());
-                                ArrayList<String> translatedWords = translator.execute(nearbyLocations.get(i).getTypes()).get();
-                                for (int j = 0; j < nearbyLocations.get(i).getTypes().size(); j++) {
-                                    nearbyLocations.get(i).setTranslatedWord(nearbyLocations.get(i).getTypes().get(j), translatedWords.get(j));
-                                }
-                                addMarkers();
-                            }
-
-                        } catch (InterruptedException | ExecutionException e) {
-                            e.printStackTrace();
-                        }
-                        Log.v("DiscoverMap", "Translation: " + translatedStrings.toString());
-                    }
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 } catch (ExecutionException e) {
@@ -107,6 +106,9 @@ public class DiscoverMap extends FragmentActivity implements LocationListener,
                 }
             }
         });
+    }
+    private  Location getLastLocation(){
+        return LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
     }
     protected void createLocationRequest() {
         mLocationRequest = new LocationRequest();
@@ -116,7 +118,9 @@ public class DiscoverMap extends FragmentActivity implements LocationListener,
         mLocationRequest.setSmallestDisplacement(DISPLACEMENT);
     }
     protected void startLocationUpdates() {
-        currlocation = gps.getLocation();
+        LocationServices.FusedLocationApi.requestLocationUpdates(
+                mGoogleApiClient, mLocationRequest, (com.google.android.gms.location.LocationListener) this);
+        currlocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
         setUpMap();
     }
     protected void stopLocationUpdates() {
@@ -142,37 +146,20 @@ public class DiscoverMap extends FragmentActivity implements LocationListener,
                 .title("You Are Here!"));
     }
     public void addMarkers(){
-        mMap.clear();
-        if(nearbyLocations.size()>0) {
-            Marker[] markers = new Marker[nearbyLocations.size()];
-            for (int i = 0; i < nearbyLocations.size(); i++) {
-                MarkerOptions markerOptions = new MarkerOptions();
-                LocationObject googlePlace = nearbyLocations.get(i);
-                double lat = googlePlace.getLatitude();
-                double lng = googlePlace.getLongitude();
-                String placeName = googlePlace.getName();
-                String types = googlePlace.getPairsSet();
-                String word = googlePlace.getTypes().get(0);
-                LatLng latLng = new LatLng(lat, lng);
-                markerOptions.position(latLng);
-                markerOptions.title(placeName);
-                markerOptions.snippet(types+ "\n"+ word);
-                markers[i] = mMap.addMarker(markerOptions);
-            }
-            mMap.setInfoWindowAdapter(new PopupAdapter(getLayoutInflater()));
-            mMap.setOnInfoWindowClickListener(this);
-            LatLngBounds.Builder builder = new LatLngBounds.Builder();
-            for (Marker marker : markers) {
-                builder.include(marker.getPosition());
-            }
-            LatLngBounds bounds = builder.build();
-            int padding = 70; // offset from edges of the map in pixels
-            CameraUpdate cu = CameraUpdateFactory.newLatLngBounds(bounds, padding);
-            mMap.animateCamera(cu);
-
+        // Update the map with new view of all the markers
+        mMap.setInfoWindowAdapter(new PopupAdapter(getLayoutInflater()));
+        mMap.setOnInfoWindowClickListener(DiscoverMap.this);
+        LatLngBounds.Builder builder = new LatLngBounds.Builder();
+        for (LocationObject Nearbypoi : nearbyLocations) {
+            builder.include(Nearbypoi.getPosition());
         }
+        LatLngBounds bounds = builder.build();
+        int padding = 70; // offset from edges of the map in pixels
+        CameraUpdate cu = CameraUpdateFactory.newLatLngBounds(bounds, padding);
+        mMap.animateCamera(cu);
 
     }
+
     @Override
     public void onInfoWindowClick(Marker marker) {
         Toast.makeText(this, marker.getTitle(), Toast.LENGTH_LONG).show();
@@ -186,6 +173,7 @@ public class DiscoverMap extends FragmentActivity implements LocationListener,
     public void onLocationChanged(Location location) {
         latitude = location.getLatitude();
         longitude = location.getLongitude();
+        currlocation = location;
         LatLng latLng = new LatLng(latitude, longitude);
         mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
         mMap.animateCamera(CameraUpdateFactory.zoomTo(12));
@@ -196,34 +184,13 @@ public class DiscoverMap extends FragmentActivity implements LocationListener,
             // Try to obtain the map from the SupportMapFragment.
             mMap = ((SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map))
                     .getMap();
-            // Check if we were successful in obtaining the map.
-            if (mMap != null) {
-                setUpMap();
-            }
         }
-    }
-    @Override
-    public void onProviderDisabled(String provider) {
-        // TODO Auto-generated method stub
-
-    }
-
-    @Override
-    public void onProviderEnabled(String provider) {
-        // TODO Auto-generated method stub
-
-    }
-
-    @Override
-    public void onStatusChanged(String provider, int status, Bundle extras) {
-        // TODO Auto-generated method stub
     }
 
     @Override
     public void onConnected(Bundle bundle) {
-        //startLocationUpdates();
+        startLocationUpdates();
     }
-
     @Override
     public void onConnectionSuspended(int i) {
 
@@ -233,9 +200,52 @@ public class DiscoverMap extends FragmentActivity implements LocationListener,
     public void onConnectionFailed(ConnectionResult connectionResult) {
 
     }
-
+    @Override
+    protected void onPause(){
+        super.onPause();
+        stopLocationUpdates();
+    }
+    @Override
+    protected void onResume(){
+        super.onResume();
+    }
+    protected void onDestroy(){
+        super.onDestroy();
+        stopLocationUpdates();
+    }
     @Override
     public void onMyLocationChange(Location location) {
         onLocationChanged(location);
+    }
+    //Populates map with markers in another thread and updates UI thread for every marker
+    private class SetUpMarkers extends AsyncTask<ArrayList<LocationObject>,MarkerOptions, MarkerOptions[]> {
+        @Override
+        protected MarkerOptions[] doInBackground(ArrayList<LocationObject>... params) {
+            MarkerOptions markers[] = new MarkerOptions[params[0].size()];
+            if (params[0].size() > 0) {
+                for (int i = 0; i < params[0].size(); i++) {
+                    markers[i] = new MarkerOptions();
+                    LocationObject googlePlace = params[0].get(i);
+                    String placeName = googlePlace.getName();
+                    String types = googlePlace.getPairsSet();
+                    String word = googlePlace.getTypes().get(0);
+                    markers[i].position(googlePlace.getPosition());
+                    markers[i].title(placeName);
+                    markers[i].snippet(types + "\n" + word);
+                    publishProgress(markers[i]);
+                }
+            }
+            return markers;
+        }
+
+        protected void onProgressUpdate(MarkerOptions... progress) {
+            mMap.addMarker(progress[0]);
+        }
+
+        @Override
+        protected void onPostExecute(MarkerOptions [] markers){
+            super.onPostExecute(markers);
+            //addMarkers();
+        }
     }
 }

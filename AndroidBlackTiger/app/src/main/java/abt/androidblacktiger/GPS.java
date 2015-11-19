@@ -254,5 +254,6 @@ public class GPS extends Service implements LocationListener, CallbackReceiver,
     @Override
     public void receiveData(ArrayList<LocationObject> result) {
         pointOfInterest = result;
+        setUpLocationDetail();
     }
 }

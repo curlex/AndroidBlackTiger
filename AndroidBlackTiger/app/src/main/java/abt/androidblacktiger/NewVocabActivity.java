@@ -1,28 +1,22 @@
 package abt.androidblacktiger;
 
-import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Color;
 import android.net.Uri;
+import android.os.Bundle;
 import android.os.Environment;
+import android.preference.PreferenceManager;
 import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
-import android.view.Gravity;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.ImageView;
-import android.widget.TextSwitcher;
 import android.widget.TextView;
-import android.widget.ViewSwitcher;
 
 import java.io.File;
 import java.io.IOException;
@@ -54,7 +48,8 @@ public class NewVocabActivity extends AppCompatActivity {
         Intent intent = getIntent();
         engWord = intent.getStringExtra(getString(R.string.word_intent_word));
         translatedWord = intent.getStringExtra(getString(R.string.word_intent_translation));
-        language = intent.getStringExtra(getString(R.string.word_intent_language));
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        language = prefs.getString(getString(R.string.preference_language),"en");
         locationLat = intent.getDoubleExtra(getString(R.string.word_intent_Latitude), 0);
         locationLong = intent.getDoubleExtra(getString(R.string.word_intent_Longitude), 0);
         shown = intent.getIntExtra(getString(R.string.word_intent_shown), 0);

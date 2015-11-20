@@ -5,11 +5,9 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.location.Location;
 import android.os.Bundle;
-import android.os.Handler;
 import android.os.HandlerThread;
 import android.os.IBinder;
 import android.os.Looper;
-import android.os.Message;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import android.widget.Toast;
@@ -23,7 +21,6 @@ import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.location.places.Places;
 
 import java.util.ArrayList;
-import java.util.concurrent.ExecutionException;
 
 public class GPS extends Service implements LocationListener, CallbackReceiver,
         GoogleApiClient.ConnectionCallbacks,
@@ -211,23 +208,34 @@ public class GPS extends Service implements LocationListener, CallbackReceiver,
         longitude = location.getLongitude();
         Toast.makeText(GPS.this, "Location changed!", Toast.LENGTH_LONG).show();
         String loc = latitude+","+longitude;
-            Log.v("GPS: ","locationChanged call to asynctask");
-            new GetLocations(getApplicationContext(), this).execute(loc);
+        Log.v("GPS: ","locationChanged call to asynctask");
+        new GetLocations(getApplicationContext(), this).execute(loc);
 
     }
     private void setUpLocationDetail(){
         if(pointOfInterest!= null) {
-            poi = pointOfInterest.get(0).getTypes().get(0);
-            poiLat = pointOfInterest.get(0).getLatitude();
-            poilng = pointOfInterest.get(0).getLongitude();
-            // gets first type in the list and then uses it as key to get translated version
-            translatedString = pointOfInterest.get(0).getKey(pointOfInterest.get(0).getTypes().get(0));
-            // need to remove getName to only return the type only
-            Log.v("GPS: ", "Creating notification!");
-            NewLocationNotification.notify(getApplicationContext(), poi, translatedString, poiLat, poilng);
-            Log.v("GPS: ", "Finished setting up and created notifications");
+            HistoryDBHandler db = ABTApplication.db;
+            SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+            String language = prefs.getString(getString(R.string.preference_language), "en");
+            int i = 0;
+            do {
+                Log.v("GPS","Get this word or dont show again");
+                poi = pointOfInterest.get(i).getTypes().get(0);
+                poiLat = pointOfInterest.get(i).getLatitude();
+                poilng = pointOfInterest.get(i).getLongitude();
+                translatedString = pointOfInterest.get(i).getKey(pointOfInterest.get(i).getTypes().get(0));
+                Log.v("GPS","Cur Word: "+poi);
+                if(db.findWord(poi,language)==null) break;
+                Log.v("GPS", "Show again? "+db.findWord(poi,language).getAgain());
+                i++;
+            }while(!db.findWord(poi,language).getAgain() && i<pointOfInterest.size());
+            if(db.findWord(poi,language)==null || db.findWord(poi,language).getAgain()){
+                Log.v("GPS", "Creating notification!");
+                NewLocationNotification.notify(getApplicationContext(), pointOfInterest.get(i).getName(), poi, translatedString, poiLat, poilng);
+                Log.v("GPS", "Finished setting up and created notifications");
+            }
         }
-        Log.v("GPS:","pointOfInterst is it null?"+ (pointOfInterest==null));
+        Log.v("GPS","pointOfInterst is null? "+ (pointOfInterest==null));
     }
     /**
      * Verify that Google Play services is available before making a request.

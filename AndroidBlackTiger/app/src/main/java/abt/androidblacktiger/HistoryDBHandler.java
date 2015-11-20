@@ -159,7 +159,7 @@ public class HistoryDBHandler extends SQLiteOpenHelper {
     public WordHistory findWord(String word, String lang) {
         WordHistory result = queryWord(word, lang);
         List<CoOrdinates> locations = queryLoc(word);
-        result.setLocations(locations);
+        if(result!= null) result.setLocations(locations);
         return result;
     }
 
@@ -191,6 +191,7 @@ public class HistoryDBHandler extends SQLiteOpenHelper {
         cursor.close();
         //db.close();
         List<CoOrdinates> loc = queryLoc(word);
+        if(data==null) return null ;
         data.setLocations(loc);
         return data;
     }

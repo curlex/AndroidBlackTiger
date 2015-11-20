@@ -3,8 +3,6 @@ package abt.androidblacktiger;
 import android.content.Context;
 import android.net.Uri;
 import android.os.AsyncTask;
-import android.os.Handler;
-import android.os.Message;
 import android.util.Log;
 
 import org.json.JSONArray;
@@ -201,9 +199,6 @@ public class GetLocations extends AsyncTask<String,Void,ArrayList<LocationObject
     @Override
     protected void onPostExecute(ArrayList<LocationObject> nearby){
         super.onPostExecute(nearby);
-//        Message msg = Message.obtain();
-//        msg.what = 1; //A public enumeration signifying success would be better.
-//        mainUIHandler.sendMessage(msg);
         cbr.receiveData(nearby);
     }
 }

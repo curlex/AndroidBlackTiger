@@ -56,4 +56,12 @@ public class HistoryActivity extends AppCompatActivity implements WordListFragme
     public void onFragmentInteraction(Uri uri) {
         System.out.println(uri.toString());
     }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        Intent intent = new Intent(this, MainMenuActivity.class);
+        startActivity(intent);
+    }
+
 }

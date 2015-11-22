@@ -1,5 +1,6 @@
 package abt.androidblacktiger;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
@@ -36,6 +37,10 @@ public class NewVocabActivity extends AppCompatActivity {
     private String image = "";
     private Uri imagePath;
     private HistoryDBHandler db;
+    SharedPreferences settings;
+    private TextView txtViewEng;
+    private TextView txtViewTranslation;
+    private CheckBox cb;
 
 
     @Override
@@ -54,14 +59,20 @@ public class NewVocabActivity extends AppCompatActivity {
         image = intent.getStringExtra(getString(R.string.word_intent_image));
         db = ABTApplication.db;
 
-        TextView txtViewEng = (TextView) findViewById(R.id.engWord);
+        //settings = getSharedPreferences("vocabPref", 0);
+        txtViewEng = (TextView) findViewById(R.id.engWord);
         txtViewEng.setText(engWord);
 
-        TextView txtViewTranslation = (TextView) findViewById(R.id.translation);
+        txtViewTranslation = (TextView) findViewById(R.id.translation);
         txtViewTranslation.setText(translatedWord);
 
-        if (image != null)
+        cb = (CheckBox) findViewById(R.id.newVocabCheckBox);
+        cb.setChecked(!again);
+
+        if (image != null) {
             setPhoto(image);
+            updateDB();
+        }
     }
 
     @Override
@@ -107,9 +118,6 @@ public class NewVocabActivity extends AppCompatActivity {
             intent.putExtra(MediaStore.EXTRA_OUTPUT, imagePath);
             startActivityForResult(intent, CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE);
         }
-
-        image = imagePath.getPath();
-        updateDB();
     }
 
     @Override
@@ -117,38 +125,42 @@ public class NewVocabActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         Intent intent = new Intent(getApplicationContext(), NewVocabActivity.class);
         intent.putExtra(getString(R.string.word_intent_image), imagePath.getPath());
+        image = imagePath.getPath();
+        updateDB();
         startActivity(this.getIntent());
     }
 
     public void doNotRepeatWord(View view) {
-        CheckBox cb = (CheckBox) view.findViewById(R.id.newVocabCheckBox);
+        cb = (CheckBox) view.findViewById(R.id.newVocabCheckBox);
 
-        cb.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-
-
-            }
-        });
+        if(cb.isChecked()) {
+            cb.setChecked(true);
+            again = false;
+        }
+        else {
+            cb.setChecked(false);
+            again = true;
+        }
+        updateDB();
     }
 
     public void updateDB() {
         CoOrdinates loc = new CoOrdinates(locationLat, locationLong);
         WordHistory data;
-        shown++;
-
-        // if the word is already in the database
-        if(db.findWord(engWord, language) != null){
-            // if no photo was taken store the default value of image (null)
-            if(db.findWord(engWord, language).getImagePath() == null)
-                data = new WordHistory(engWord, language, translatedWord, loc, shown, again, image);
+        // the word is already in the database
+        if(db.findWord(engWord,language)!=null) {
+            // if the image path is empty, get the path of the image
+            if (db.findWord(engWord, language).getImagePath() != null && image == null)
+                data = new WordHistory(engWord, language, translatedWord, loc, shown, again, db.findWord(engWord, language).getImagePath());
 
             else
-                data = new WordHistory(engWord, language, translatedWord, loc, shown, again, db.findWord(engWord,language).getImagePath());
-        }
-        else
-            data = new WordHistory(engWord,language,translatedWord, loc, shown, again, image);
+                data = new WordHistory(engWord,language,translatedWord, loc, shown, again, image);
 
-        // add the word into the database
+        }
+        // new word for the database
+        else {
+            data = new WordHistory(engWord,language,translatedWord, loc, shown, again, image);
+        }
         db.addWordHistory(data);
     }
 
@@ -192,4 +204,14 @@ public class NewVocabActivity extends AppCompatActivity {
         updateDB();
         startActivity(intent);
     }
+
+//    @Override
+//    protected void onPause() {
+//        super.onPause();
+//        SharedPreferences.Editor editor = settings.edit();
+//        editor.putString(engWord, txtViewEng.getText().toString());
+//        editor.putString(translatedWord, txtViewTranslation.getText().toString());
+//        editor.putString(image, image);
+//        editor.commit();
+//    }
 }

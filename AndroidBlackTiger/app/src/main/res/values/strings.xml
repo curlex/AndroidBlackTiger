@@ -25,7 +25,7 @@
         <item>Italian</item>
         <item>Dutch</item>
     </string-array>
-    <string name="title_activity_new_vocab">Word</string>
+    <string name="title_activity_new_vocab">AndroidBlackTiger</string>
     <string name="DoNotShowLocationCheckBox">Do not show this location again.</string>
     <string name="TakePictureButton">Take picture</string>
 

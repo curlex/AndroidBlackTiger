@@ -1,13 +1,9 @@
 package abt.androidblacktiger;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.location.Location;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
-import android.preference.PreferenceManager;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.View;
@@ -87,6 +83,7 @@ public class DiscoverMap extends FragmentActivity implements com.google.android.
         if(longitude!=0 && latitude!=0){
             addLocation();
         }
+
         final DiscoverMap dm = this;
         btnFind.setOnClickListener(new OnClickListener() {
             @Override
@@ -98,7 +95,20 @@ public class DiscoverMap extends FragmentActivity implements com.google.android.
                     getLocations = new GetLocations(getApplicationContext(), dm).execute(toPass);
             }
         });
+        if(savedInstanceState!=null){
+            if(savedInstanceState.containsKey("Locations")){
+                nearbyLocations = savedInstanceState.getParcelableArrayList("Locations");
+            }
+        }
     }
+
+    public void onSaveInstanceState(Bundle savedInstanceState) {
+        // Save the user's current game state
+        savedInstanceState.putParcelableArrayList("Locations", nearbyLocations);
+        // Always call the superclass so it can save the view hierarchy state
+        super.onSaveInstanceState(savedInstanceState);
+    }
+
     private  Location getLastLocation(){
         return LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
     }
@@ -136,6 +146,14 @@ public class DiscoverMap extends FragmentActivity implements com.google.android.
         Marker currentlocation = mMap.addMarker(new MarkerOptions()
                 .position(currLocation)
                 .title("You Are Here!"));
+        if(nearbyLocations.size()>0){
+            try {
+                markers = new SetUpMarkers().execute(nearbyLocations).get();
+                addMarkers();
+            } catch (InterruptedException | ExecutionException e) {
+                e.printStackTrace();
+            }
+        }
     }
     public void addLocation(){
         LatLng currLocation = new LatLng(latitude,longitude);

@@ -77,6 +77,7 @@
         </activity>
         <activity
             android:name=".DiscoverMap"
+            android:configChanges="orientation|screenSize"
             android:label="@string/title_activity_discover_map" >
         </activity>
         <activity

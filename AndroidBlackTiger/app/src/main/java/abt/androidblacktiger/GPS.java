@@ -229,8 +229,8 @@ public class GPS extends Service implements LocationListener, CallbackReceiver,
                 Log.v("GPS", "Show again? "+db.findWord(poi,language).getAgain());
                 i++;
             }while(!db.findWord(poi,language).getAgain() && i<pointOfInterest.size());
-            i--;
-            if(db.findWord(poi,language)==null || db.findWord(poi,language).getAgain()){
+            if(i>=pointOfInterest.size())i--;
+            if(db.findWord(poi,language)==null || db.findWord(poi,language).getAgain()) {
                 Log.v("GPS", "Creating notification!");
                 NewLocationNotification.notify(getApplicationContext(), pointOfInterest.get(i).getName(), poi, translatedString, poiLat, poilng);
                 Log.v("GPS", "Finished setting up and created notifications");

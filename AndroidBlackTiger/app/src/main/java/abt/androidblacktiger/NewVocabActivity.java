@@ -1,6 +1,5 @@
 package abt.androidblacktiger;
 
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
@@ -15,7 +14,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -124,9 +122,14 @@ public class NewVocabActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         Intent intent = new Intent(getApplicationContext(), NewVocabActivity.class);
+
         intent.putExtra(getString(R.string.word_intent_image), imagePath.getPath());
-        image = imagePath.getPath();
+        if(imagePath!=null){
+            image = imagePath.getPath();
+        }
+        //0.0else image = getString(R.string.word_intent_image);
         updateDB();
+        this.getIntent().putExtra(getString(R.string.word_intent_image),image);
         startActivity(this.getIntent());
     }
 

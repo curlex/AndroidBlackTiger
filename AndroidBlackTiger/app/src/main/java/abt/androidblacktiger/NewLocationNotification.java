@@ -30,7 +30,7 @@ public class NewLocationNotification {
      * @param translation The translated word to be displayed
      * Author: Diarmuid
      */
-    public static void notify(final Context context, final String word, final String translation, final double lat,final double lng) {
+    public static void notify(final Context context, final String placeTitle, final String word, final String translation, final double lat,final double lng) {
         final Resources res = context.getResources();
         // This image is used as the notification's large icon (thumbnail).
         final Bitmap picture = BitmapFactory.decodeResource(res, R.drawable.mao);
@@ -43,6 +43,7 @@ public class NewLocationNotification {
         intent.putExtra(context.getString(R.string.word_intent_translation), translation);
         intent.putExtra(context.getString(R.string.word_intent_Latitude), lat);
         intent.putExtra(context.getString(R.string.word_intent_Longitude), lng);
+        intent.putExtra(context.getString(R.string.word_intent_title),placeTitle);
         Intent settingsIntent = new Intent(context, SettingsActivity.class);
         PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, settingsIntent,Intent.FILL_IN_ACTION);
         final NotificationCompat.Builder builder = new NotificationCompat.Builder(context)

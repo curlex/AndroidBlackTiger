@@ -3,7 +3,7 @@
 
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
-    <string name="title_activity_history">HistoryActivity</string>
+    <string name="title_activity_history">Word History</string>
     <string name="welcome_text">Welcome</string>
     <string name="start_text">Save</string>
     <string name="select_lang">Please select Language</string>
@@ -25,7 +25,7 @@
         <item>Italian</item>
         <item>Dutch</item>
     </string-array>
-    <string name="title_activity_new_vocab">NewVocabActivity</string>
+    <string name="title_activity_new_vocab">AndroidBlackTiger</string>
     <string name="DoNotShowLocationCheckBox">Do not show this location again.</string>
     <string name="TakePictureButton">Take picture</string>
 
@@ -45,6 +45,7 @@
     <string name="word_intent_language">abt.word_intent.Language</string>
     <string name="word_intent_shown">abt.word_intent.Shown</string>
     <string name="word_intent_again">abt.word_intent.Again</string>
+    <string name="word_intent_title">abt.word_intent.Title</string>
 
     <!-- KEYS FOR PREFERENCES -->
     <string name="preference_gps">track_setting</string>

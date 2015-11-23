@@ -7,38 +7,36 @@
 
 
 	<ImageButton
-			  android:id="@+id/word_history_button"
-			  android:layout_width="95dp"
-			  android:layout_height="126dp"
-			  android:text="Word History"
-			  android:onClick="OpenNewActivity"
-			  android:layout_gravity="center_horizontal"
-			  android:background="@drawable/owl"
+        android:id="@+id/word_history_button"
+        android:layout_width="95dp"
+        android:layout_height="126dp"
+        android:text="Word History"
+        android:onClick="OpenNewActivity"
+        android:layout_gravity="center_horizontal"
+        android:background="@drawable/owl"
 		android:layout_alignParentTop="true"
 		android:layout_centerHorizontal="true"
-		android:layout_marginTop="57dp" />
+		android:layout_marginTop="60dp" />
 		<!-- <div>Icon made by <a href="http://www.freepik.com" title="Freepik">Freepik</a> from <a href="http://www.flaticon.com" title="Flaticon">www.flaticon.com</a> is licensed under <a href="http://creativecommons.org/licenses/by/3.0/" title="Creative Commons BY 3.0">CC BY 3.0</a></div>-->
 	<TextView
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
 		android:textAppearance="?android:attr/textAppearanceMedium"
-		android:text="History "
+		android:text="History"
 		android:id="@+id/textView3"
 		android:layout_gravity="center_horizontal"
 		android:layout_below="@+id/word_history_button"
 		android:layout_centerHorizontal="true" />
 
 	<ImageButton
-			  android:id="@+id/map_discovery_button"
-			  android:layout_width="100dp"
-			  android:layout_height="100dp"
-			  android:text="Map Discovery"
-			  android:onClick="OpenNewActivity"
-			  android:layout_gravity="center_horizontal"
-			  android:background="@drawable/mao"
+        android:id="@+id/map_discovery_button"
+		android:layout_width="100dp"
+		android:layout_height="100dp"
+		android:text="Map Discovery"
+		android:onClick="OpenNewActivity"
+		android:background="@drawable/mao"
 		android:layout_above="@+id/textView4"
-		android:layout_alignLeft="@+id/word_history_button"
-		android:layout_alignStart="@+id/word_history_button" />
+		android:layout_centerHorizontal="true" />
 
 	<TextView
 		android:layout_width="wrap_content"
@@ -47,7 +45,7 @@
 		android:text="Map Discovery"
 		android:id="@+id/textView4"
 		android:layout_gravity="center_horizontal"
-		android:layout_marginBottom="135dp"
+		android:layout_marginBottom="60dp"
 		android:layout_alignParentBottom="true"
 		android:layout_centerHorizontal="true" />
 

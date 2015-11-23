@@ -141,5 +141,4 @@ public class WordListFragment extends android.app.ListFragment {
         // TODO: Update argument type and name
         public void onFragmentInteraction(Uri uri);
     }
-
 }

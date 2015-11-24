@@ -56,7 +56,7 @@ public class NewVocabActivity extends AppCompatActivity {
         again = intent.getBooleanExtra(getString(R.string.word_intent_again), true);
         image = intent.getStringExtra(getString(R.string.word_intent_image));
         db = ABTApplication.db;
-
+        getDbInfo();
         //settings = getSharedPreferences("vocabPref", 0);
         txtViewEng = (TextView) findViewById(R.id.engWord);
         txtViewEng.setText(engWord);
@@ -70,6 +70,12 @@ public class NewVocabActivity extends AppCompatActivity {
         if (image != null) {
             setPhoto(image);
             updateDB();
+        }
+    }
+    public void getDbInfo(){
+        if(db.findWord(engWord,language)!=null){
+            image = db.findWord(engWord,language).getImagePath();
+            again = db.findWord(engWord,language).getAgain();
         }
     }
 
@@ -123,11 +129,10 @@ public class NewVocabActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         Intent intent = new Intent(getApplicationContext(), NewVocabActivity.class);
 
-        intent.putExtra(getString(R.string.word_intent_image), imagePath.getPath());
+        intent.putExtra(getString(R.string.word_intent_image), imagePath);
         if(imagePath!=null){
             image = imagePath.getPath();
         }
-        //0.0else image = getString(R.string.word_intent_image);
         updateDB();
         this.getIntent().putExtra(getString(R.string.word_intent_image),image);
         startActivity(this.getIntent());

@@ -4,6 +4,8 @@ package abt.androidblacktiger;
  * Created by Ciarán on 14/10/2015.
  */
 
+import android.app.ActivityManager;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -23,10 +25,20 @@ public class MainMenuActivity extends AppCompatActivity {
         //Button button_Gps = (Button) findViewById(R.id.gps_button);
         ImageButton button_map_discovery = (ImageButton) findViewById(R.id.map_discovery_button);
         button_map_discovery.setBackgroundResource(R.drawable.mao); // name map gave error :P
-        startService(new Intent(this, GPS.class));
+        if(!isMyServiceRunning(GPS.class)) {
+            startService(new Intent(this, GPS.class));
+        }
        // startService(new Intent(this, GPSTracker.class));
     }
-
+    private boolean isMyServiceRunning(Class<?> serviceClass) {
+        ActivityManager manager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
+        for (ActivityManager.RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {
+            if (serviceClass.getName().equals(service.service.getClassName())) {
+                return true;
+            }
+        }
+        return false;
+    }
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);

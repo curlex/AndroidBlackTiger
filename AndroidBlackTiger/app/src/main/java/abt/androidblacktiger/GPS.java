@@ -89,7 +89,7 @@ public class GPS extends Service implements LocationListener, CallbackReceiver,
         FASTEST_INTERVAL = update + 120000; // update plus 2 mins
         mLocationRequest.setInterval(UPDATE_INTERVAL);
         mLocationRequest.setFastestInterval(FASTEST_INTERVAL);
-        Toast.makeText(GPS.this, "Frequency Changed", Toast.LENGTH_LONG).show();
+        //Toast.makeText(GPS.this, "Frequency Changed", Toast.LENGTH_LONG).show();
         Log.v("GPS", "Frequency changed to: " + update);
         startLocationUpdates();
     }
@@ -136,12 +136,12 @@ public class GPS extends Service implements LocationListener, CallbackReceiver,
 
     public int onStartCommand(Intent intent, int flags, int startId) {
         super.onStartCommand(intent, flags, startId);
-        Toast.makeText(GPS.this, "Service starting", Toast.LENGTH_SHORT).show();
+        Toast.makeText(GPS.this, "Location service starting", Toast.LENGTH_SHORT).show();
         mGoogleApiClient.connect();
         handlerThread = new HandlerThread("MyHandlerThread");
         handlerThread.start();
         looper = handlerThread.getLooper();
-        Toast.makeText(GPS.this, "IS IT CONNECTED: " + mGoogleApiClient.isConnected(), Toast.LENGTH_SHORT).show();
+       // Toast.makeText(GPS.this, "IS IT CONNECTED: " + mGoogleApiClient.isConnected(), Toast.LENGTH_SHORT).show();
         return START_STICKY;
     }
     /**
@@ -206,7 +206,7 @@ public class GPS extends Service implements LocationListener, CallbackReceiver,
     public void onLocationChanged(Location location) {
         latitude = location.getLatitude();
         longitude = location.getLongitude();
-        Toast.makeText(GPS.this, "Location changed!", Toast.LENGTH_LONG).show();
+        //Toast.makeText(GPS.this, "Location changed!", Toast.LENGTH_LONG).show();
         String loc = latitude+","+longitude;
         Log.v("GPS: ","locationChanged call to asynctask");
         new GetLocations(getApplicationContext(), this).execute(loc);

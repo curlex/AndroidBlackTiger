@@ -212,6 +212,7 @@ public class GPS extends Service implements LocationListener, CallbackReceiver,
         new GetLocations(getApplicationContext(), this).execute(loc);
 
     }
+
     private void setUpLocationDetail(){
         if(pointOfInterest!= null) {
             HistoryDBHandler db = ABTApplication.db;
@@ -220,12 +221,12 @@ public class GPS extends Service implements LocationListener, CallbackReceiver,
             int i = 0;
             do {
                 Log.v("GPS","Get this word or dont show again");
-                poi = pointOfInterest.get(i).getTypes().get(0);
+                poi =  pointOfInterest.get(i).getTypes().get(0);
                 poiLat = pointOfInterest.get(i).getLatitude();
                 poilng = pointOfInterest.get(i).getLongitude();
                 translatedString = pointOfInterest.get(i).getKey(pointOfInterest.get(i).getTypes().get(0));
                 Log.v("GPS","Cur Word: "+poi);
-                if(db.findWord(poi,language)==null) break;
+                if (db.findWord(poi,language)==null) break;
                 Log.v("GPS", "Show again? "+db.findWord(poi,language).getAgain());
                 i++;
             }while(!db.findWord(poi,language).getAgain() && i<pointOfInterest.size());
@@ -242,6 +243,7 @@ public class GPS extends Service implements LocationListener, CallbackReceiver,
      * Verify that Google Play services is available before making a request.
      * @return true if Google Play services is available, otherwise false
      */
+
     private boolean isServicesConnected() {
         // Check that Google Play services is available
         int resultCode = GooglePlayServicesUtil.isGooglePlayServicesAvailable(GPS.this);

@@ -1,0 +1,83 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent" android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:adjustViewBounds="true"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    tools:context="abt.androidblacktiger.NewVocabActivity">
+
+    <TextView
+        android:id="@+id/newVocabTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Word Details"
+        android:textSize="35dp"
+        android:textStyle="italic"
+        android:textColor="#008"
+        android:layout_above="@+id/photo"
+        android:layout_toLeftOf="@+id/vocabTakePictButton"
+        android:layout_toStartOf="@+id/vocabTakePictButton" />
+
+    <CheckBox
+        android:id="@+id/newVocabCheckBox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/DoNotShowLocationCheckBox"
+        android:textStyle="bold"
+        android:onClick="doNotRepeatWord"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginLeft="30dp"
+        android:layout_marginStart="30dp" />
+
+    <Button
+        android:layout_width="125dp"
+        android:layout_height="wrap_content"
+        android:text="@string/TakePictureButton"
+        android:id="@+id/vocabTakePictButton"
+        android:onClick="openActivity"
+        android:layout_alignBottom="@+id/newVocabCheckBox"
+        android:layout_toRightOf="@+id/newVocabCheckBox"
+        android:layout_toEndOf="@+id/newVocabCheckBox"
+        android:layout_marginLeft="69dp"
+        android:layout_marginStart="69dp" />
+
+    <ImageView
+        android:id="@+id/photo"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:background="@drawable/no_photo"
+        android:adjustViewBounds="true"
+        android:layout_centerVertical="true"
+        android:layout_alignLeft="@+id/vocabTakePictButton"
+        android:layout_alignStart="@+id/vocabTakePictButton" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/engWord"
+        android:text="EngWord"
+        android:textStyle="bold"
+        android:textSize="20dp"
+        android:textColor="#008"
+        android:layout_marginLeft="45dp"
+        android:layout_marginStart="45dp"
+        android:layout_centerVertical="true"
+        android:layout_alignLeft="@+id/newVocabTextView"
+        android:layout_alignStart="@+id/newVocabTextView" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/translation"
+        android:text="Translation"
+        android:textStyle="bold"
+        android:textSize="20dp"
+        android:textColor="#008"
+        android:layout_alignBottom="@+id/photo"
+        android:layout_alignLeft="@+id/engWord"
+        android:layout_alignStart="@+id/engWord" />
+
+</RelativeLayout>

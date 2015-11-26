@@ -19,7 +19,7 @@ public class WelcomeActivity extends Activity implements AdapterView.OnItemSelec
     HistoryDBHandler db;
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.welcome_activity);
+        setContentView(R.layout.activity_welcome);
         Spinner spinner = (Spinner) findViewById(R.id.language_spinner);
         // Create an ArrayAdapter using the string array and a default spinner layout
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,

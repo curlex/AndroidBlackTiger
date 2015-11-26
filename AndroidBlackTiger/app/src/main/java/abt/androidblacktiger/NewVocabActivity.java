@@ -1,6 +1,5 @@
 package abt.androidblacktiger;
 
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
@@ -15,7 +14,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -58,7 +56,7 @@ public class NewVocabActivity extends AppCompatActivity {
         again = intent.getBooleanExtra(getString(R.string.word_intent_again), true);
         image = intent.getStringExtra(getString(R.string.word_intent_image));
         db = ABTApplication.db;
-
+        getDbInfo();
         //settings = getSharedPreferences("vocabPref", 0);
         txtViewEng = (TextView) findViewById(R.id.engWord);
         txtViewEng.setText(engWord);
@@ -72,6 +70,12 @@ public class NewVocabActivity extends AppCompatActivity {
         if (image != null) {
             setPhoto(image);
             updateDB();
+        }
+    }
+    public void getDbInfo(){
+        if(db.findWord(engWord,language)!=null){
+            image = db.findWord(engWord,language).getImagePath();
+            again = db.findWord(engWord,language).getAgain();
         }
     }
 
@@ -124,9 +128,13 @@ public class NewVocabActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         Intent intent = new Intent(getApplicationContext(), NewVocabActivity.class);
-        intent.putExtra(getString(R.string.word_intent_image), imagePath.getPath());
-        image = imagePath.getPath();
+
+        intent.putExtra(getString(R.string.word_intent_image), imagePath);
+        if(imagePath!=null){
+            image = imagePath.getPath();
+        }
         updateDB();
+        this.getIntent().putExtra(getString(R.string.word_intent_image),image);
         startActivity(this.getIntent());
     }
 

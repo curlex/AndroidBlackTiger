@@ -149,7 +149,11 @@ public class GetLocations extends AsyncTask<String,Void,ArrayList<LocationObject
                             types.get(i).setName(jsonArray.getJSONObject(i).get("name").toString());
                             JSONArray typesArray = jsonArray.getJSONObject(i).getJSONArray("types");
                             for (int j = 0; j < typesArray.length(); j++) {
-                                types.get(i).addType(typesArray.getString(j));
+                                if (typesArray.getString(j).contains("_")){
+                                    types.get(i).addType(typesArray.getString(j).replaceAll("_"," "));
+                                    Log.v("GetLocations","Removing '_' :");
+                                }
+                                else types.get(i).addType(typesArray.getString(j));
                                 Log.v(LOG_TAG, "Parsing TYPES: "+ typesArray.getString(j));
                             }
                             String lat = jsonArray.getJSONObject(i).getJSONObject("geometry").getJSONObject("location").get("lat").toString();

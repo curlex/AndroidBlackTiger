@@ -89,7 +89,7 @@ public class GPS extends Service implements LocationListener, CallbackReceiver,
         FASTEST_INTERVAL = update + 120000; // update plus 2 mins
         mLocationRequest.setInterval(UPDATE_INTERVAL);
         mLocationRequest.setFastestInterval(FASTEST_INTERVAL);
-        Toast.makeText(GPS.this, "Frequency Changed", Toast.LENGTH_LONG).show();
+        //Toast.makeText(GPS.this, "Frequency Changed", Toast.LENGTH_LONG).show();
         Log.v("GPS", "Frequency changed to: " + update);
         startLocationUpdates();
     }
@@ -136,12 +136,12 @@ public class GPS extends Service implements LocationListener, CallbackReceiver,
 
     public int onStartCommand(Intent intent, int flags, int startId) {
         super.onStartCommand(intent, flags, startId);
-        Toast.makeText(GPS.this, "Service starting", Toast.LENGTH_SHORT).show();
+        Toast.makeText(GPS.this, "Location service starting", Toast.LENGTH_SHORT).show();
         mGoogleApiClient.connect();
         handlerThread = new HandlerThread("MyHandlerThread");
         handlerThread.start();
         looper = handlerThread.getLooper();
-        Toast.makeText(GPS.this, "IS IT CONNECTED: " + mGoogleApiClient.isConnected(), Toast.LENGTH_SHORT).show();
+       // Toast.makeText(GPS.this, "IS IT CONNECTED: " + mGoogleApiClient.isConnected(), Toast.LENGTH_SHORT).show();
         return START_STICKY;
     }
     /**
@@ -206,12 +206,13 @@ public class GPS extends Service implements LocationListener, CallbackReceiver,
     public void onLocationChanged(Location location) {
         latitude = location.getLatitude();
         longitude = location.getLongitude();
-        Toast.makeText(GPS.this, "Location changed!", Toast.LENGTH_LONG).show();
+        //Toast.makeText(GPS.this, "Location changed!", Toast.LENGTH_LONG).show();
         String loc = latitude+","+longitude;
         Log.v("GPS: ","locationChanged call to asynctask");
         new GetLocations(getApplicationContext(), this).execute(loc);
 
     }
+
     private void setUpLocationDetail(){
         if(pointOfInterest!= null) {
             HistoryDBHandler db = ABTApplication.db;
@@ -220,17 +221,17 @@ public class GPS extends Service implements LocationListener, CallbackReceiver,
             int i = 0;
             do {
                 Log.v("GPS","Get this word or dont show again");
-                poi = pointOfInterest.get(i).getTypes().get(0);
+                poi =  pointOfInterest.get(i).getTypes().get(0);
                 poiLat = pointOfInterest.get(i).getLatitude();
                 poilng = pointOfInterest.get(i).getLongitude();
                 translatedString = pointOfInterest.get(i).getKey(pointOfInterest.get(i).getTypes().get(0));
                 Log.v("GPS","Cur Word: "+poi);
-                if(db.findWord(poi,language)==null) break;
+                if (db.findWord(poi,language)==null) break;
                 Log.v("GPS", "Show again? "+db.findWord(poi,language).getAgain());
                 i++;
             }while(!db.findWord(poi,language).getAgain() && i<pointOfInterest.size());
-            i--;
-            if(db.findWord(poi,language)==null || db.findWord(poi,language).getAgain()){
+            if(i>=pointOfInterest.size())i--;
+            if(db.findWord(poi,language)==null || db.findWord(poi,language).getAgain()) {
                 Log.v("GPS", "Creating notification!");
                 NewLocationNotification.notify(getApplicationContext(), pointOfInterest.get(i).getName(), poi, translatedString, poiLat, poilng);
                 Log.v("GPS", "Finished setting up and created notifications");
@@ -242,6 +243,7 @@ public class GPS extends Service implements LocationListener, CallbackReceiver,
      * Verify that Google Play services is available before making a request.
      * @return true if Google Play services is available, otherwise false
      */
+
     private boolean isServicesConnected() {
         // Check that Google Play services is available
         int resultCode = GooglePlayServicesUtil.isGooglePlayServicesAvailable(GPS.this);

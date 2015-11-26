@@ -62,13 +62,6 @@
             android:value="@string/google_api_key" />
 
         <activity
-            android:name=".MapsActivity"
-            android:label="@string/title_activity_maps" >
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="abt.androidblacktiger.MainMenuActivity" />
-        </activity>
-        <activity
             android:name=".DiscoverMap"
             android:configChanges="orientation|screenSize"
             android:label="@string/title_activity_discover_map" >

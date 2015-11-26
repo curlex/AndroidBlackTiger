@@ -24,37 +24,30 @@
 
 
     <application
+        android:label="@string/app_name"
         android:name=".ABTApplication"
         android:allowBackup="true"
         android:icon="@drawable/mao"
         android:largeHeap="true"
-        android:label="@string/app_name"
         android:theme="@style/AppTheme" >
 
         <activity
-            android:name=".MainActivity"
+            android:name=".MainMenuActivity"
             android:label="@string/app_name" >
             <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
+                <action android:name="android.intent.action.MAIN"
+                        android:label="@string/app_name"/>
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity
-            android:name=".MainMenuActivity"
-            android:label="Main Menu"
-            android:parentActivityName=".MainActivity" >
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="abt.androidblacktiger.MainActivity" />
-        </activity>
-        <activity
             android:name=".WelcomeActivity"
-            android:label="Welcome"
-            android:parentActivityName=".MainActivity" >
+            android:label="@string/title_activity_welcome"
+            android:parentActivityName=".MainMenuActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="abt.androidblacktiger.MainActivity" />
+                android:value="abt.androidblacktiger.MainMenuActivity" />
         </activity>
         <activity
             android:name=".HistoryActivity"

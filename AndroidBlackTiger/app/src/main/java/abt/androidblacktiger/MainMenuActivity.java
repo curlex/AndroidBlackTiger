@@ -7,7 +7,9 @@ package abt.androidblacktiger;
 import android.app.ActivityManager;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -19,17 +21,31 @@ public class MainMenuActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_screen);
+        setTitle(R.string.title_activity_main_menu);
+        firstTime();
 
-        ImageButton button_word_history = (ImageButton) findViewById(R.id.word_history_button);
-        // Button button_dictionary = (Button) findViewById(R.id.dictionary_button);
-        //Button button_Gps = (Button) findViewById(R.id.gps_button);
-        ImageButton button_map_discovery = (ImageButton) findViewById(R.id.map_discovery_button);
-        button_map_discovery.setBackgroundResource(R.drawable.mao); // name map gave error :P
-        if(!isMyServiceRunning(GPS.class)) {
-            startService(new Intent(this, GPS.class));
-        }
-       // startService(new Intent(this, GPSTracker.class));
     }
+
+
+
+
+    public  void  firstTime() {
+        PreferenceManager.setDefaultValues(getApplicationContext(), R.xml.pref_general, false);
+        String preferences_language = "setLanguage";
+        SharedPreferences sharedTime = getSharedPreferences(preferences_language, 0);
+        if (sharedTime.getBoolean("setLanguage", true)) {
+            //Call Language Set Activity
+            startActivity(new Intent(MainMenuActivity.this, WelcomeActivity.class));
+        } else {
+            ImageButton button_word_history = (ImageButton) findViewById(R.id.word_history_button);
+            ImageButton button_map_discovery = (ImageButton) findViewById(R.id.map_discovery_button);
+            button_map_discovery.setBackgroundResource(R.drawable.mao); // name map gave error :P
+            if(!isMyServiceRunning(GPS.class)) {
+                startService(new Intent(this, GPS.class));
+            }
+        }
+    }
+
     private boolean isMyServiceRunning(Class<?> serviceClass) {
         ActivityManager manager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
         for (ActivityManager.RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {

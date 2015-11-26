@@ -26,7 +26,7 @@ public class GPS extends Service implements LocationListener, CallbackReceiver,
         GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener {
     // Location updates intervals in sec
-    private static final String TAG = MainActivity.class.getSimpleName();
+    private static final String TAG = MainMenuActivity.class.getSimpleName();
     private static int UPDATE_INTERVAL = 10000; // 10 sec
     private static int FASTEST_INTERVAL = UPDATE_INTERVAL+120000; // add 2 mins to the update tnerval
     private static int DISPLACEMENT = 10; // 100 meters

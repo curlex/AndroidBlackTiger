@@ -12,8 +12,6 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 
-import com.rmtheis.yandtran.language.Language;
-
 /**
  * Created by Maria on 14/10/2015.
  */
@@ -66,6 +64,9 @@ public class WelcomeActivity extends Activity implements AdapterView.OnItemSelec
         Intent intent = null;
         if(view.getId()==R.id.save_button)
         {
+            String preferences_language = "setLanguage";
+            SharedPreferences sharedTime = getSharedPreferences(preferences_language, 0);
+            sharedTime.edit().putBoolean("setLanguage", false).apply();
             intent = new Intent(this, MainMenuActivity.class);
         }
         if(intent != null) {

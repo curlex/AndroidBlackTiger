@@ -2,6 +2,7 @@ package abt.androidblacktiger;
 
 /**
  * Created by Maria on 12/11/2015.
+ * Custom class to keep lats & longs together
  */
 public class CoOrdinates {
     protected double lat;
@@ -12,6 +13,9 @@ public class CoOrdinates {
         this.lng = longitude;
     }
 
+    /**
+     * Getters and Setters
+     **/
     public double getLat(){
         return lat;
     }
@@ -24,5 +28,7 @@ public class CoOrdinates {
         this.lat = latitude;
     }
 
-    public void setLng(double longitude){ this.lng = longitude;}
+    public void setLng(double longitude){
+        this.lng = longitude;
+    }
 }

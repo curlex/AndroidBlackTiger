@@ -17,19 +17,13 @@ public class ABTApplication extends Application {
         super.onCreate();
         if(!activeDB) {
             db = new HistoryDBHandler(this.getApplicationContext());
-            System.out.println("onCreate ABTapp");
-//            initDB();
-            System.out.println("onCreate after ABTapp: initDB");
+            //initDB();
             activeDB = true;
         }
 
     }
 
     protected void initDB(){
-        //Context contextNew = this;
-        //SQLiteDatabase  database = this.openOrCreateDatabase("HistoryDB", MODE_PRIVATE, null);
-        //db.onCreate(db.getWritableDatabase());
-        System.out.println("initDB start ABTapp");
         List<CoOrdinates> mockLoc = new LinkedList<>();
         mockLoc.add(new CoOrdinates(0, 1));
         WordHistory mock1 = new WordHistory("bus stop","ga","staid an mbus", mockLoc,1 ,true, "imagepath1");

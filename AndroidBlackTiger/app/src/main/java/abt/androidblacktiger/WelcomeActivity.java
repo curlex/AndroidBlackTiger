@@ -62,6 +62,7 @@ public class WelcomeActivity extends Activity implements AdapterView.OnItemSelec
     public void OpenNewActivity(View view)
     {
         Intent intent = null;
+        // updates the varible to mark the language as set so it won't launch the welcome screen again
         if(view.getId()==R.id.save_button)
         {
             String preferences_language = "setLanguage";
@@ -85,9 +86,6 @@ public class WelcomeActivity extends Activity implements AdapterView.OnItemSelec
         SharedPreferences.Editor editor = langPrefs.edit();
         editor.putString(getString(R.string.preference_language), lang);
         editor.apply();
-        System.out.println(langPrefs.getAll());
-        System.out.println(lang);
-        System.out.println(option);
 
     }
 
@@ -96,6 +94,9 @@ public class WelcomeActivity extends Activity implements AdapterView.OnItemSelec
 
     }
 
+    /**
+     * If back is selected from the welcome screen will exit app
+     */
     @Override
     public void onBackPressed() {
         Intent intent = new Intent(Intent.ACTION_MAIN);

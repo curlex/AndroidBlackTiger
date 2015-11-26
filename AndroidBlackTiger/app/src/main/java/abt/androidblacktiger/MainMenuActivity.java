@@ -27,8 +27,10 @@ public class MainMenuActivity extends AppCompatActivity {
     }
 
 
-
-
+    /**
+     * Helper Method which determines if the Welcome screen needs to be run based on a preference variable
+     * Other wise runs the main menu screen as normal.
+     */
     public  void  firstTime() {
         PreferenceManager.setDefaultValues(getApplicationContext(), R.xml.pref_general, false);
         String preferences_language = "setLanguage";
@@ -40,6 +42,7 @@ public class MainMenuActivity extends AppCompatActivity {
             ImageButton button_word_history = (ImageButton) findViewById(R.id.word_history_button);
             ImageButton button_map_discovery = (ImageButton) findViewById(R.id.map_discovery_button);
             button_map_discovery.setBackgroundResource(R.drawable.mao); // name map gave error :P
+            button_word_history.setBackgroundResource(R.drawable.owl);
             if(!isMyServiceRunning(GPS.class)) {
                 startService(new Intent(this, GPS.class));
             }
@@ -94,6 +97,11 @@ public class MainMenuActivity extends AppCompatActivity {
         }
     }
 
+
+    /**
+     * If back is selected from the main menu screen will exit app
+     * rather than returning to welcome or other screens
+     */
     @Override
     public void onBackPressed() {
         Intent intent = new Intent(Intent.ACTION_MAIN);

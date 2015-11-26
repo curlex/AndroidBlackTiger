@@ -40,12 +40,14 @@ public class HistoryDBHandler extends SQLiteOpenHelper {
 
     public HistoryDBHandler(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
-        System.out.println("Constructor  db handler");
     }
 
+    /**
+     * Create the Db with the necessary tables on create
+     * @param db
+     */
     @Override
     public void onCreate(SQLiteDatabase db) {
-        System.out.println("Creating DB in onCreate");
         String CREATE_TABLE_HISTORY = "CREATE TABLE " +
                 TABLE_HISTORY + "("
                 + COLUMN_WORD + " TEXT,"
@@ -70,6 +72,12 @@ public class HistoryDBHandler extends SQLiteOpenHelper {
 
     }
 
+    /**
+     * Method to upgrade the DB
+     * @param db
+     * @param oldVersion
+     * @param newVersion
+     */
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion,int newVersion) {
 
@@ -79,20 +87,22 @@ public class HistoryDBHandler extends SQLiteOpenHelper {
         onCreate(db);
     }
 
+    /**
+     * Method to add a word to the db
+     * @param wordData
+     */
     public void addWordHistory(WordHistory wordData) {
-        System.out.println("Add word history");
         addWord(wordData);
-        System.out.println("Add locations");
         addLocations(wordData.getWord(), wordData.getLocations());
     }
 
 
-
+    /**
+     * Helper method to add the relevant word data to the word history table & locations table
+     * @param wordData
+     */
     private void addWord(WordHistory wordData){
-        System.out.println("In addWord");
         SQLiteDatabase db = this.getWritableDatabase();
-        if (db == null)  System.out.println("DB is null");
-        System.out.println("Got writeable db");
         try{
             WordHistory found = findWord(wordData.getWord(),wordData.getLang());
             wordData.setShown(found.getShown()+1);
@@ -103,12 +113,10 @@ public class HistoryDBHandler extends SQLiteOpenHelper {
             else values.put(COLUMN_AGAIN, 0);
             values.put(COLUMN_IMAGE, wordData.getImagePath());
             if (db != null) {
-                System.out.println("Updating Row");
                 db.update(TABLE_HISTORY, values,
                                 COLUMN_WORD + " =  \"" + wordData.getWord() + "\"" +
                                 " AND "+ COLUMN_LANG +  " = \"" + wordData.getLang()+"\"", null );
             }
-            else System.out.println("DB was null");
         }
         catch (Exception e) {
             ContentValues values = new ContentValues();
@@ -119,13 +127,7 @@ public class HistoryDBHandler extends SQLiteOpenHelper {
             if (wordData.getAgain() == true ) values.put(COLUMN_AGAIN, 1);
             else values.put(COLUMN_AGAIN, 0);
             values.put(COLUMN_IMAGE, wordData.getImagePath());
-            System.out.println("New Word for DB");
-
-
-
-
             db.insert(TABLE_HISTORY, null, values);
-            System.out.print("close");
 
         }
         finally {
@@ -133,6 +135,11 @@ public class HistoryDBHandler extends SQLiteOpenHelper {
         }
     }
 
+    /**
+     * Helper method to add the locations to the db
+     * @param word
+     * @param locations
+     */
     private void addLocations(String word, List<CoOrdinates> locations){
         List<CoOrdinates> oldLoc = queryLoc(word);
         for(CoOrdinates loc : locations){
@@ -147,7 +154,7 @@ public class HistoryDBHandler extends SQLiteOpenHelper {
 
             }
             catch (SQLiteConstraintException e){
-                System.out.println("Location already in DB");
+                //System.out.println("Location already in DB");
             }
             finally {
                 //db.close();
@@ -156,6 +163,12 @@ public class HistoryDBHandler extends SQLiteOpenHelper {
         }
     }
 
+    /**
+     * Method to find  a specific word in DB
+     * @param word to find
+     * @param lang language it should have been translated into
+     * @return null if not found else the word
+     */
     public WordHistory findWord(String word, String lang) {
         WordHistory result = queryWord(word, lang);
         List<CoOrdinates> locations = queryLoc(word);
@@ -164,6 +177,12 @@ public class HistoryDBHandler extends SQLiteOpenHelper {
     }
 
 
+    /**
+     * Helper method to get the word data from history table
+     * @param word
+     * @param lang
+     * @return the word if found
+     */
     private WordHistory queryWord(String word, String lang){
         String query = "Select * FROM " + TABLE_HISTORY + " WHERE "
                                         + COLUMN_WORD + " =  \"" + word + "\""
@@ -197,6 +216,11 @@ public class HistoryDBHandler extends SQLiteOpenHelper {
     }
 
 
+    /**
+     * Helper method to get the locations for an associated word
+     * @param word
+     * @return
+     */
     private List<CoOrdinates> queryLoc(String word){
         String query = "Select * FROM " + TABLE_LOCATIONS + " WHERE " + COLUMN_WORD + " =  \"" + word + "\"";
         SQLiteDatabase db = this.getWritableDatabase();
@@ -217,7 +241,11 @@ public class HistoryDBHandler extends SQLiteOpenHelper {
         return data;
     }
 
-    // Getting All Contacts
+    /**
+     * Method to obtain all the words for a given language translation.
+     * @param lang
+     * @return
+     */
     public List<WordHistory> getAllWords(String lang) {
         List<WordHistory> wordList = new ArrayList<WordHistory>();
         // Select All Query

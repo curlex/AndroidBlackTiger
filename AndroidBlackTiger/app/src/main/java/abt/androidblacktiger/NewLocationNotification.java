@@ -1,13 +1,14 @@
 package abt.androidblacktiger;
 
 import android.annotation.TargetApi;
-import android.app.*;
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.net.Uri;
 import android.os.Build;
 import android.support.v4.app.NotificationCompat;
 
@@ -37,7 +38,6 @@ public class NewLocationNotification {
         final String title = res.getString(R.string.new_location_notification_title_template, word);
         final String text = res.getString(
                 R.string.new_location_notification_placeholder_text_template, word, translation);
-//        Intent intent = new Intent(context, MapsActivity.class);
         Intent intent = new Intent(context, NewVocabActivity.class);
         intent.putExtra(context.getString(R.string.word_intent_word), word);
         intent.putExtra(context.getString(R.string.word_intent_translation), translation);

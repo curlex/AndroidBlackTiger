@@ -44,7 +44,6 @@ public class DiscoverMap extends FragmentActivity implements com.google.android.
     private static int UPDATE_INTERVAL = 10000; // 10 sec
     private static int FASTEST_INTERVAL = 5000; // 5 sec
     private static int DISPLACEMENT = 10; // 10 meters
-    GPSTracker gps;
     private Location currlocation;
     private AsyncTask getLocations = null;
     MarkerOptions markers[] = null ;
